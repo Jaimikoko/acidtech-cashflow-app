@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, request, jsonify
 from flask_login import login_required
 from datetime import datetime, date, timedelta
-from app.models.transaction import Transaction
-from app.models.purchase_order import PurchaseOrder
-from app.utils.ai_predictor import CashFlowPredictor
+from models.transaction import Transaction
+from models.purchase_order import PurchaseOrder
+from utils.ai_predictor import CashFlowPredictor
 from app import db
 import json
 

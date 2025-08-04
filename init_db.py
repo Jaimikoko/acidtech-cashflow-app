@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 import os
 from datetime import datetime, date, timedelta
-from app import create_app, db
-from app.models.user import User
-from app.models.transaction import Transaction
-from app.models.purchase_order import PurchaseOrder, PurchaseOrderItem
+from app import create_app
+from app import db
+from models.user import User
+from models.transaction import Transaction
+from models.purchase_order import PurchaseOrder, PurchaseOrderItem
 
 def init_database():
     app = create_app()

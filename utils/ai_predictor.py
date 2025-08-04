@@ -1,5 +1,5 @@
 from datetime import datetime, date, timedelta
-from app.models.transaction import Transaction
+from models.transaction import Transaction
 from app import db
 import json
 

@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, jsonify
 from flask_login import login_required, current_user
 from datetime import datetime, date, timedelta
-from app.models.transaction import Transaction
-from app.models.purchase_order import PurchaseOrder
+from models.transaction import Transaction
+from models.purchase_order import PurchaseOrder
 from app import db
 import json
 

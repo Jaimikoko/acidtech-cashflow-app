@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from flask_login import login_required, current_user
 from datetime import datetime, date
-from app.models.purchase_order import PurchaseOrder, PurchaseOrderItem
+from models.purchase_order import PurchaseOrder, PurchaseOrderItem
 from app import db
 import json
 

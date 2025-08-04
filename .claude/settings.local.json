@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(npm init:*)",
-      "Bash(node_modules.bintailwindcss:*)"
+      "Bash(node_modules.bintailwindcss:*)",
+      "Bash(git remote remove:*)",
+      "Bash(find:*)"
     ],
     "deny": []
   }

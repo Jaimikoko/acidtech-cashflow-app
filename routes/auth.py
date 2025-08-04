@@ -2,8 +2,11 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_user, logout_user, login_required, current_user
 from urllib.parse import urlparse
 from datetime import datetime
-from app.models.user import User
-from app import db, login_manager
+from models.user import User
+from app import db
+from flask_login import LoginManager
+
+login_manager = LoginManager()
 
 bp = Blueprint('auth', __name__)
 

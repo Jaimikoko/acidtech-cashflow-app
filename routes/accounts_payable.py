@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 from datetime import datetime, date
-from app.models.transaction import Transaction
+from models.transaction import Transaction
 from app import db
 import os
 
