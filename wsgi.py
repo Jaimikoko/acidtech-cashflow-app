@@ -17,7 +17,12 @@ logger = logging.getLogger(__name__)
 
 try:
     # Add the application directory to the Python path
-    sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+    app_dir = os.path.abspath(os.path.dirname(__file__))
+    sys.path.insert(0, app_dir)
+    
+    logger.info(f"Working directory: {os.getcwd()}")
+    logger.info(f"Application directory: {app_dir}")
+    logger.info(f"Python path: {sys.path[:3]}")
     
     logger.info("Importing Flask application...")
     from app import application
@@ -25,9 +30,12 @@ try:
     # Azure App Service expects a variable named 'app'
     app = application
     logger.info("Flask application loaded successfully")
+    logger.info(f"App routes: {[rule.rule for rule in app.url_map.iter_rules()][:5]}")
     
 except Exception as e:
     logger.error(f"Failed to load Flask application: {e}")
+    logger.error(f"Current working directory: {os.getcwd()}")
+    logger.error(f"Files in directory: {os.listdir('.')}")
     raise
 
 if __name__ == "__main__":
