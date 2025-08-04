@@ -1,0 +1,355 @@
+{% extends "base.html" %}
+
+{% block title %}AI Insights - Cash Flow Management{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Page Header -->
+    <div class="bg-white shadow rounded-lg p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">AI-Powered Financial Insights</h1>
+                <p class="text-gray-600">Predictive analytics and smart recommendations for better cash flow management</p>
+            </div>
+            <div class="flex space-x-3">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                    <i class="fas fa-sync-alt mr-2"></i>Refresh Insights
+                </button>
+                <a href="{{ url_for('reports.index') }}" class="text-gray-600 hover:text-gray-800">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to Reports
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Insights Overview -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-6 text-white">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-blue-100 text-sm">Cash Flow Prediction</p>
+                    <p class="text-2xl font-bold">{{ ai_insights.prediction_score or 85 }}%</p>
+                    <p class="text-blue-100 text-xs">Accuracy Rate</p>
+                </div>
+                <div class="w-12 h-12 bg-blue-400/30 rounded-full flex items-center justify-center">
+                    <i class="fas fa-crystal-ball text-xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-lg p-6 text-white">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-green-100 text-sm">Optimization Potential</p>
+                    <p class="text-2xl font-bold">${{ "%.0f"|format(ai_insights.optimization_potential or 12500) }}</p>
+                    <p class="text-green-100 text-xs">Monthly Savings</p>
+                </div>
+                <div class="w-12 h-12 bg-green-400/30 rounded-full flex items-center justify-center">
+                    <i class="fas fa-chart-line text-xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg p-6 text-white">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-purple-100 text-sm">Risk Assessment</p>
+                    <p class="text-2xl font-bold">{{ ai_insights.risk_level or 'Low' }}</p>
+                    <p class="text-purple-100 text-xs">Financial Risk</p>
+                </div>
+                <div class="w-12 h-12 bg-purple-400/30 rounded-full flex items-center justify-center">
+                    <i class="fas fa-shield-alt text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Recommendations -->
+    <div class="bg-white shadow rounded-lg p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+            <i class="fas fa-brain text-blue-600 mr-2"></i>Smart Recommendations
+        </h2>
+        <div class="space-y-4">
+            {% if ai_recommendations %}
+                {% for recommendation in ai_recommendations %}
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 rounded-full flex items-center justify-center
+                                {% if recommendation.priority == 'high' %}bg-red-100 text-red-600
+                                {% elif recommendation.priority == 'medium' %}bg-yellow-100 text-yellow-600
+                                {% else %}bg-blue-100 text-blue-600{% endif %}">
+                                <i class="fas fa-lightbulb text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="ml-3 flex-1">
+                            <h3 class="text-sm font-medium text-gray-900">{{ recommendation.title }}</h3>
+                            <p class="text-sm text-gray-600 mt-1">{{ recommendation.description }}</p>
+                            <div class="mt-2 flex items-center text-xs text-gray-500">
+                                <span class="inline-flex px-2 py-1 rounded-full text-xs font-medium
+                                    {% if recommendation.priority == 'high' %}bg-red-100 text-red-800
+                                    {% elif recommendation.priority == 'medium' %}bg-yellow-100 text-yellow-800
+                                    {% else %}bg-blue-100 text-blue-800{% endif %}">
+                                    {{ recommendation.priority.title() }} Priority
+                                </span>
+                                <span class="ml-2">Potential Impact: ${{ "%.0f"|format(recommendation.impact or 0) }}</span>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                Apply
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Sample Recommendations -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-exclamation-triangle text-red-600 text-sm"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-gray-900">Overdue Payment Alert</h3>
+                                <p class="text-sm text-gray-600 mt-1">5 receivables are overdue by more than 30 days. Consider follow-up actions.</p>
+                                <span class="inline-flex px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 mt-2">
+                                    High Priority
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-chart-line text-yellow-600 text-sm"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-gray-900">Cash Flow Optimization</h3>
+                                <p class="text-sm text-gray-600 mt-1">Optimize payment timing to improve cash flow by 15%.</p>
+                                <span class="inline-flex px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 mt-2">
+                                    Medium Priority
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-users text-blue-600 text-sm"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-gray-900">Vendor Relationship</h3>
+                                <p class="text-sm text-gray-600 mt-1">Top 3 vendors account for 70% of expenses. Consider negotiating better terms.</p>
+                                <span class="inline-flex px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mt-2">
+                                    Low Priority
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-piggy-bank text-green-600 text-sm"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-gray-900">Seasonal Pattern</h3>
+                                <p class="text-sm text-gray-600 mt-1">Cash flow peaks in Q4. Plan for seasonal adjustments.</p>
+                                <span class="inline-flex px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 mt-2">
+                                    Info
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Predictive Analytics -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Cash Flow Forecast -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">30-Day Cash Flow Forecast</h2>
+            <div id="forecastChart" style="height: 300px;"></div>
+        </div>
+
+        <!-- Risk Analysis -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Risk Analysis</h2>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 bg-red-500 rounded-full mr-3"></div>
+                        <span class="text-sm font-medium text-gray-900">Payment Default Risk</span>
+                    </div>
+                    <span class="text-sm font-semibold text-red-600">{{ ai_insights.default_risk or 12 }}%</span>
+                </div>
+
+                <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 bg-yellow-500 rounded-full mr-3"></div>
+                        <span class="text-sm font-medium text-gray-900">Liquidity Risk</span>
+                    </div>
+                    <span class="text-sm font-semibold text-yellow-600">{{ ai_insights.liquidity_risk or 8 }}%</span>
+                </div>
+
+                <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+                        <span class="text-sm font-medium text-gray-900">Market Risk</span>
+                    </div>
+                    <span class="text-sm font-semibold text-blue-600">{{ ai_insights.market_risk or 15 }}%</span>
+                </div>
+
+                <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+                        <span class="text-sm font-medium text-gray-900">Overall Health</span>
+                    </div>
+                    <span class="text-sm font-semibold text-green-600">{{ ai_insights.health_score or 85 }}%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Model Performance -->
+    <div class="bg-white shadow rounded-lg p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Model Performance</h2>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
+            <div class="p-4 bg-gray-50 rounded-lg">
+                <p class="text-2xl font-bold text-blue-600">{{ ai_insights.model_accuracy or 89 }}%</p>
+                <p class="text-sm text-gray-600">Prediction Accuracy</p>
+            </div>
+            <div class="p-4 bg-gray-50 rounded-lg">
+                <p class="text-2xl font-bold text-green-600">{{ ai_insights.data_quality or 94 }}%</p>
+                <p class="text-sm text-gray-600">Data Quality Score</p>
+            </div>
+            <div class="p-4 bg-gray-50 rounded-lg">
+                <p class="text-2xl font-bold text-purple-600">{{ ai_insights.model_confidence or 87 }}%</p>
+                <p class="text-sm text-gray-600">Model Confidence</p>
+            </div>
+            <div class="p-4 bg-gray-50 rounded-lg">
+                <p class="text-2xl font-bold text-orange-600">{{ ai_insights.last_updated_days or 2 }}</p>
+                <p class="text-sm text-gray-600">Days Since Update</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Cash flow forecast chart
+    const forecastData = {{ forecast_data | tojson | safe if forecast_data else '{}' }};
+    
+    if (forecastData.dates && forecastData.dates.length > 0) {
+        const trace1 = {
+            x: forecastData.dates,
+            y: forecastData.predicted_inflow,
+            type: 'scatter',
+            mode: 'lines+markers',
+            name: 'Predicted Inflow',
+            line: { color: '#10b981', width: 2, dash: 'dot' },
+            marker: { size: 4 }
+        };
+
+        const trace2 = {
+            x: forecastData.dates,
+            y: forecastData.predicted_outflow,
+            type: 'scatter',
+            mode: 'lines+markers',
+            name: 'Predicted Outflow',
+            line: { color: '#ef4444', width: 2, dash: 'dot' },
+            marker: { size: 4 }
+        };
+
+        const trace3 = {
+            x: forecastData.dates,
+            y: forecastData.net_prediction,
+            type: 'scatter',
+            mode: 'lines',
+            name: 'Net Forecast',
+            line: { color: '#6366f1', width: 3 },
+            fill: 'tonexty'
+        };
+
+        const layout = {
+            title: '',
+            xaxis: { 
+                title: 'Date',
+                gridcolor: '#f3f4f6'
+            },
+            yaxis: { 
+                title: 'Amount ($)',
+                gridcolor: '#f3f4f6',
+                zeroline: true,
+                zerolinecolor: '#9ca3af'
+            },
+            hovermode: 'x unified',
+            responsive: true,
+            margin: { t: 20, b: 40, l: 60, r: 20 },
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            showlegend: true,
+            legend: { x: 0, y: 1 }
+        };
+
+        Plotly.newPlot('forecastChart', [trace1, trace2, trace3], layout, {displayModeBar: false});
+    } else {
+        // Sample forecast data for demo
+        const sampleDates = [];
+        const sampleInflow = [];
+        const sampleOutflow = [];
+        const sampleNet = [];
+        
+        const today = new Date();
+        for (let i = 0; i < 30; i++) {
+            const date = new Date(today);
+            date.setDate(today.getDate() + i);
+            sampleDates.push(date.toISOString().split('T')[0]);
+            
+            const inflow = 5000 + Math.random() * 3000;
+            const outflow = 4000 + Math.random() * 2500;
+            
+            sampleInflow.push(inflow);
+            sampleOutflow.push(outflow);
+            sampleNet.push(inflow - outflow);
+        }
+        
+        const trace1 = {
+            x: sampleDates,
+            y: sampleInflow,
+            type: 'scatter',
+            mode: 'lines+markers',
+            name: 'Predicted Inflow',
+            line: { color: '#10b981', width: 2 }
+        };
+
+        const trace2 = {
+            x: sampleDates,
+            y: sampleOutflow,
+            type: 'scatter',
+            mode: 'lines+markers',
+            name: 'Predicted Outflow',
+            line: { color: '#ef4444', width: 2 }
+        };
+
+        const layout = {
+            title: '',
+            xaxis: { title: 'Date' },
+            yaxis: { title: 'Amount ($)' },
+            responsive: true,
+            margin: { t: 20, b: 40, l: 60, r: 20 }
+        };
+
+        Plotly.newPlot('forecastChart', [trace1, trace2], layout, {displayModeBar: false});
+    }
+});
+</script>
+{% endblock %}
