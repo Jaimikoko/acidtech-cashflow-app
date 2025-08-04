@@ -2,7 +2,7 @@
 import os
 from datetime import datetime, date, timedelta
 from app import create_app
-from app import db
+from database import db
 from models.user import User
 from models.transaction import Transaction
 from models.purchase_order import PurchaseOrder, PurchaseOrderItem

@@ -4,7 +4,7 @@ from datetime import datetime, date, timedelta
 from models.transaction import Transaction
 from models.purchase_order import PurchaseOrder
 from utils.ai_predictor import CashFlowPredictor
-from app import db
+from database import db
 import json
 
 bp = Blueprint('reports', __name__)

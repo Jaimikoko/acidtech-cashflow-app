@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 from datetime import datetime, date
 from models.transaction import Transaction
-from app import db
+from database import db
 import os
 
 bp = Blueprint('accounts_payable', __name__)

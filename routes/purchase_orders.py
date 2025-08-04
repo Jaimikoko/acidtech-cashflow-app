@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from flask_login import login_required, current_user
 from datetime import datetime, date
 from models.purchase_order import PurchaseOrder, PurchaseOrderItem
-from app import db
+from database import db
 import json
 
 bp = Blueprint('purchase_orders', __name__)

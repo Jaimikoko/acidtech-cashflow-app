@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from datetime import datetime, date, timedelta
 from models.transaction import Transaction
 from models.purchase_order import PurchaseOrder
-from app import db
+from database import db
 import json
 
 bp = Blueprint('main', __name__)

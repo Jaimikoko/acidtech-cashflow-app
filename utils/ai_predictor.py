@@ -1,6 +1,6 @@
 from datetime import datetime, date, timedelta
 from models.transaction import Transaction
-from app import db
+from database import db
 import json
 
 class CashFlowPredictor:

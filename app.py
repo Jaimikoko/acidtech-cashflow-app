@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 import os
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from config import config
+from database import db
 
 # Initialize extensions
-db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
 
@@ -49,14 +48,13 @@ def create_app(config_name=None):
     
     return app
 
-# Create application instance first to avoid circular imports
-application = create_app(os.getenv('FLASK_CONFIG') or 'default')
+# Import models to ensure they're registered with SQLAlchemy
+from models.user import User
+from models.transaction import Transaction
+from models.purchase_order import PurchaseOrder
 
-# Import models after app creation to ensure they're registered with SQLAlchemy
-with application.app_context():
-    from models.user import User
-    from models.transaction import Transaction
-    from models.purchase_order import PurchaseOrder
+# Create application instance
+application = create_app(os.getenv('FLASK_CONFIG') or 'default')
 
 # Shell context processor
 @application.shell_context_processor
