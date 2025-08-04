@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
 import os
-from flask import Flask
+import logging
+from datetime import datetime
+from flask import Flask, jsonify
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from config import config
 from database import db
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Initialize extensions
 migrate = Migrate()
@@ -46,6 +52,36 @@ def create_app(config_name=None):
     # Create upload folder if it doesn't exist
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     
+    # Health check endpoint for Azure App Service
+    @app.route('/health')
+    def health():
+        try:
+            # Test database connection
+            db.engine.connect()
+            return jsonify({
+                'status': 'healthy',
+                'database': 'connected',
+                'timestamp': datetime.utcnow().isoformat()
+            }), 200
+        except Exception as e:
+            logger.error(f"Health check failed: {e}")
+            return jsonify({
+                'status': 'unhealthy',
+                'error': str(e),
+                'timestamp': datetime.utcnow().isoformat()
+            }), 503
+    
+    # Error handlers
+    @app.errorhandler(500)
+    def internal_error(error):
+        logger.error(f"Internal server error: {error}")
+        return jsonify({'error': 'Internal server error'}), 500
+    
+    @app.errorhandler(404)
+    def not_found(error):
+        logger.warning(f"Page not found: {error}")
+        return jsonify({'error': 'Page not found'}), 404
+    
     return app
 
 # Import models to ensure they're registered with SQLAlchemy
@@ -62,4 +98,4 @@ def make_shell_context():
     return {'db': db, 'User': User, 'Transaction': Transaction, 'PurchaseOrder': PurchaseOrder}
 
 if __name__ == '__main__':
-    application.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+    application.run(host='0.0.0.0', port=int(os.environ.get('PORT', 8000)), debug=False)

@@ -4,7 +4,12 @@
       "Bash(npm init:*)",
       "Bash(node_modules.bintailwindcss:*)",
       "Bash(git remote remove:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(gh run cancel:*)",
+      "Bash(python:*)",
+      "Bash(del \"static\\css\\input.css\")",
+      "Bash(rm:*)",
+      "Bash(git add:*)"
     ],
     "deny": []
   }

@@ -1,12 +1,17 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request, jsonify, send_from_directory
 from flask_login import login_required, current_user
 from datetime import datetime, date, timedelta
 from models.transaction import Transaction
 from models.purchase_order import PurchaseOrder
 from database import db
 import json
+import os
 
 bp = Blueprint('main', __name__)
+
+@bp.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(bp.root_path, '..', 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @bp.route('/')
 def index():
