@@ -197,6 +197,12 @@ For support and questions:
 
 ## 🔄 Version History
 
+- **v1.0.1** - Templates fix and Python 3.11 compatibility ✅
+  - Fixed missing templates causing Error 500
+  - Python 3.11 container rebuild resolved
+  - All 20 templates deployed successfully
+  - Application fully functional on Azure
+
 - **v1.0.0** - Initial release with complete cash flow management system
   - Full CRUD operations for AP/AR/PO
   - AI-powered analytics
