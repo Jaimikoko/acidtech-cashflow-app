@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm init:*)",
+      "Bash(node_modules.bintailwindcss:*)"
+    ],
+    "deny": []
+  }
+}

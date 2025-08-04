@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Cash Flow Management{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Page Header -->
+    <div class="bg-white shadow rounded-lg p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Welcome back, {{ current_user.first_name }}!</h1>
+                <p class="text-gray-600">Here's your cash flow overview</p>
+            </div>
+            <div class="text-right">
+                <p class="text-sm text-gray-500">Last updated</p>
+                <p class="text-lg font-semibold">{{ moment().format('MMM DD, YYYY') }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Total Receivables -->
+        <div class="bg-white shadow rounded-lg p-6 card-hover">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-arrow-up text-green-600"></i>
+                    </div>
+                </div>
+                <div class="ml-4 flex-1">
+                    <p class="text-sm font-medium text-gray-500">Total Receivables</p>
+                    <p class="text-2xl font-bold text-gray-900">${{ "%.2f"|format(total_receivables) }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Payables -->
+        <div class="bg-white shadow rounded-lg p-6 card-hover">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-arrow-down text-red-600"></i>
+                    </div>
+                </div>
+                <div class="ml-4 flex-1">
+                    <p class="text-sm font-medium text-gray-500">Total Payables</p>
+                    <p class="text-2xl font-bold text-gray-900">${{ "%.2f"|format(total_payables) }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Net Cash Flow -->
+        <div class="bg-white shadow rounded-lg p-6 card-hover">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-chart-line text-blue-600"></i>
+                    </div>
+                </div>
+                <div class="ml-4 flex-1">
+                    <p class="text-sm font-medium text-gray-500">Net Cash Flow</p>
+                    <p class="text-2xl font-bold {% if (total_receivables - total_payables) >= 0 %}text-green-600{% else %}text-red-600{% endif %}">
+                        ${{ "%.2f"|format(total_receivables - total_payables) }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overdue Items -->
+        <div class="bg-white shadow rounded-lg p-6 card-hover">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-yellow-600"></i>
+                    </div>
+                </div>
+                <div class="ml-4 flex-1">
+                    <p class="text-sm font-medium text-gray-500">Overdue Items</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ overdue_receivables + overdue_payables }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cash Flow Chart -->
+    <div class="bg-white shadow rounded-lg p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Cash Flow Trend (Last 30 Days)</h2>
+        <div id="cashFlowChart" style="height: 400px;"></div>
+    </div>
+
+    <!-- Recent Transactions and Quick Actions -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Recent Transactions -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-gray-900">Recent Transactions</h2>
+                <a href="{{ url_for('accounts_payable.index') }}" class="text-blue-600 hover:text-blue-800 text-sm">View all</a>
+            </div>
+            {% if recent_transactions %}
+                <div class="space-y-3">
+                    {% for transaction in recent_transactions %}
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 {% if transaction.type == 'receivable' %}bg-green-100{% else %}bg-red-100{% endif %} rounded-full flex items-center justify-center mr-3">
+                                <i class="fas {% if transaction.type == 'receivable' %}fa-arrow-up text-green-600{% else %}fa-arrow-down text-red-600{% endif %}"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900">{{ transaction.vendor_customer }}</p>
+                                <p class="text-sm text-gray-500">{{ transaction.invoice_number }}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-semibold {% if transaction.type == 'receivable' %}text-green-600{% else %}text-red-600{% endif %}">
+                                ${{ "%.2f"|format(transaction.amount) }}
+                            </p>
+                            <p class="text-xs text-gray-500">{{ transaction.due_date.strftime('%m/%d/%Y') }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-8">
+                    <i class="fas fa-inbox text-gray-400 text-4xl mb-4"></i>
+                    <p class="text-gray-500">No recent transactions</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <a href="{{ url_for('accounts_payable.create') }}" class="flex flex-col items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-plus text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-blue-900">Add Payable</span>
+                </a>
+                <a href="{{ url_for('accounts_receivable.create') }}" class="flex flex-col items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-plus text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-green-900">Add Receivable</span>
+                </a>
+                <a href="{{ url_for('purchase_orders.create') }}" class="flex flex-col items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-shopping-cart text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-purple-900">New PO</span>
+                </a>
+                <a href="{{ url_for('reports.index') }}" class="flex flex-col items-center p-4 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition-colors">
+                    <i class="fas fa-chart-bar text-yellow-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-yellow-900">Reports</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Fetch and display cash flow chart
+    fetch('/api/cash-flow-data')
+        .then(response => response.json())
+        .then(data => {
+            const trace1 = {
+                x: data.dates,
+                y: data.receivables,
+                type: 'scatter',
+                mode: 'lines+markers',
+                name: 'Receivables',
+                line: { color: '#10b981' }
+            };
+
+            const trace2 = {
+                x: data.dates,
+                y: data.payables,
+                type: 'scatter',
+                mode: 'lines+markers',
+                name: 'Payables',
+                line: { color: '#ef4444' }
+            };
+
+            const layout = {
+                title: '',
+                xaxis: { title: 'Date' },
+                yaxis: { title: 'Amount ($)' },
+                hovermode: 'x unified',
+                responsive: true,
+                margin: { t: 20, b: 40, l: 60, r: 20 }
+            };
+
+            Plotly.newPlot('cashFlowChart', [trace1, trace2], layout, {displayModeBar: false});
+        })
+        .catch(error => {
+            console.error('Error loading chart data:', error);
+            document.getElementById('cashFlowChart').innerHTML = '<div class="text-center text-gray-500 py-8">Unable to load chart data</div>';
+        });
+});
+</script>
+{% endblock %}
