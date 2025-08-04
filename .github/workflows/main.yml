@@ -3,41 +3,47 @@ name: Deploy to Azure App Service
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: acidtech-prod-app
+  PYTHON_VERSION: '3.11'
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v4
     
-    - name: Set up Python version
-      uses: actions/setup-python@v3
+    - name: Set up Python ${{ env.PYTHON_VERSION }}
+      uses: actions/setup-python@v4
       with:
-        python-version: '3.11'
+        python-version: ${{ env.PYTHON_VERSION }}
     
     - name: Create and start virtual environment
       run: |
         python -m venv venv
         source venv/bin/activate
         
-    - name: Install Python dependencies
+    - name: Install dependencies
       run: |
         source venv/bin/activate
         pip install --upgrade pip
         pip install -r requirements.txt
         
-    - name: Initialize database
+    - name: Collect static files and prepare app
       run: |
         source venv/bin/activate
+        # Initialize database for deployment
         python init_db.py
+        # Create any needed directories
+        mkdir -p static/uploads
         
     - name: Deploy to Azure App Service
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'acidtech-prod-app'
-        slot-name: 'production'
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         package: .
