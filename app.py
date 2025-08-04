@@ -20,8 +20,13 @@ def create_app(config_name=None):
     if config_name is None:
         config_name = os.environ.get('FLASK_CONFIG', 'default')
     
+    logger.info(f"Creating Flask app with config: {config_name}")
+    logger.info(f"Current working directory: {os.getcwd()}")
+    
     app = Flask(__name__)
     app.config.from_object(config[config_name])
+    
+    logger.info(f"Database URI: {app.config.get('SQLALCHEMY_DATABASE_URI', 'Not set')}")
     
     # Initialize extensions
     db.init_app(app)
@@ -30,27 +35,51 @@ def create_app(config_name=None):
     login_manager.login_view = 'auth.login'
     login_manager.login_message = 'Please log in to access this page.'
     
-    # Register blueprints
-    from routes.main import bp as main_bp
-    app.register_blueprint(main_bp)
-    
-    from routes.auth import bp as auth_bp
-    app.register_blueprint(auth_bp, url_prefix='/auth')
-    
-    from routes.accounts_payable import bp as ap_bp
-    app.register_blueprint(ap_bp, url_prefix='/ap')
-    
-    from routes.accounts_receivable import bp as ar_bp
-    app.register_blueprint(ar_bp, url_prefix='/ar')
-    
-    from routes.purchase_orders import bp as po_bp
-    app.register_blueprint(po_bp, url_prefix='/po')
-    
-    from routes.reports import bp as reports_bp
-    app.register_blueprint(reports_bp, url_prefix='/reports')
+    # Register blueprints with error handling
+    try:
+        from routes.main import bp as main_bp
+        app.register_blueprint(main_bp)
+        logger.info("Main blueprint registered")
+        
+        from routes.auth import bp as auth_bp
+        app.register_blueprint(auth_bp, url_prefix='/auth')
+        logger.info("Auth blueprint registered")
+        
+        from routes.accounts_payable import bp as ap_bp
+        app.register_blueprint(ap_bp, url_prefix='/ap')
+        logger.info("Accounts payable blueprint registered")
+        
+        from routes.accounts_receivable import bp as ar_bp
+        app.register_blueprint(ar_bp, url_prefix='/ar')
+        logger.info("Accounts receivable blueprint registered")
+        
+        from routes.purchase_orders import bp as po_bp
+        app.register_blueprint(po_bp, url_prefix='/po')
+        logger.info("Purchase orders blueprint registered")
+        
+        from routes.reports import bp as reports_bp
+        app.register_blueprint(reports_bp, url_prefix='/reports')
+        logger.info("Reports blueprint registered")
+        
+    except Exception as e:
+        logger.error(f"Failed to register blueprints: {e}")
+        raise
     
     # Create upload folder if it doesn't exist
-    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    try:
+        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+        logger.info(f"Upload folder ready: {app.config['UPLOAD_FOLDER']}")
+    except Exception as e:
+        logger.warning(f"Could not create upload folder: {e}")
+    
+    # Initialize database tables
+    with app.app_context():
+        try:
+            db.create_all()
+            logger.info("Database tables created/verified")
+        except Exception as e:
+            logger.error(f"Database initialization failed: {e}")
+            # Don't raise here, let the app start anyway
     
     # Health check endpoint for Azure App Service
     @app.route('/health')
