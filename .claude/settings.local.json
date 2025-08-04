@@ -9,7 +9,8 @@
       "Bash(python:*)",
       "Bash(del \"static\\css\\input.css\")",
       "Bash(rm:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git push:*)"
     ],
     "deny": []
   }
