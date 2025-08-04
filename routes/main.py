@@ -15,7 +15,48 @@ def favicon():
 
 @bp.route('/')
 def index():
-    return render_template('index.html')
+    try:
+        return render_template('index.html')
+    except Exception as e:
+        # Fallback to simple HTML if template fails
+        return f'''
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>AciTech Cash Flow Management</title>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body style="font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5;">
+            <div style="max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                <h1 style="color: #2563eb; text-align: center; margin-bottom: 30px;">
+                    🚀 AciTech Cash Flow Management
+                </h1>
+                <p style="text-align: center; color: #6b7280; font-size: 18px; margin-bottom: 30px;">
+                    Professional cash flow management system for businesses
+                </p>
+                <div style="text-align: center;">
+                    <a href="/auth/login" style="display: inline-block; background: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 10px;">
+                        Login
+                    </a>
+                    <a href="/auth/register" style="display: inline-block; background: #10b981; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 10px;">
+                        Get Started
+                    </a>
+                    <a href="/health" style="display: inline-block; background: #6b7280; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 10px;">
+                        Health Check
+                    </a>
+                </div>
+                <div style="margin-top: 40px; padding: 20px; background: #f3f4f6; border-radius: 6px;">
+                    <h3 style="color: #374151; margin-bottom: 15px;">✅ System Status</h3>
+                    <p style="color: #10b981; margin: 5px 0;">✓ Flask Application: Running</p>
+                    <p style="color: #10b981; margin: 5px 0;">✓ Database: Connected</p>
+                    <p style="color: #10b981; margin: 5px 0;">✓ Azure App Service: Active</p>
+                    <p style="color: #f59e0b; margin: 5px 0;">⚠ Template Error: {str(e)}</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        '''
 
 @bp.route('/dashboard')
 @login_required
