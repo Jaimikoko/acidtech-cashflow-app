@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Purchase Order - Cash Flow Management{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Page Header -->
+    <div class="bg-white shadow rounded-lg p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Edit Purchase Order</h1>
+                <p class="text-gray-600">Update purchase order details</p>
+            </div>
+            <a href="{{ url_for('purchase_orders.view', id=purchase_order.id) }}" class="text-gray-600 hover:text-gray-800">
+                <i class="fas fa-arrow-left mr-2"></i>Back to PO Details
+            </a>
+        </div>
+    </div>
+
+    <!-- Purchase Order Form -->
+    <div class="bg-white shadow rounded-lg p-6">
+        <form method="POST" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">PO Number</label>
+                    <input type="text" name="po_number" value="{{ purchase_order.po_number }}" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Vendor</label>
+                    <input type="text" name="vendor" value="{{ purchase_order.vendor }}" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Total Amount</label>
+                    <input type="number" step="0.01" name="total_amount" value="{{ purchase_order.total_amount or '' }}" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                    <select name="status" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <option value="draft" {% if purchase_order.status == 'draft' %}selected{% endif %}>Draft</option>
+                        <option value="sent" {% if purchase_order.status == 'sent' %}selected{% endif %}>Sent to Vendor</option>
+                        <option value="approved" {% if purchase_order.status == 'approved' %}selected{% endif %}>Approved</option>
+                        <option value="received" {% if purchase_order.status == 'received' %}selected{% endif %}>Received</option>
+                        <option value="cancelled" {% if purchase_order.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Order Date</label>
+                    <input type="date" name="order_date" value="{{ purchase_order.order_date.strftime('%Y-%m-%d') if purchase_order.order_date else '' }}" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Expected Delivery</label>
+                    <input type="date" name="expected_delivery" value="{{ purchase_order.expected_delivery.strftime('%Y-%m-%d') if purchase_order.expected_delivery else '' }}" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <textarea name="description" rows="4" 
+                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" 
+                          placeholder="Describe the items being ordered...">{{ purchase_order.description or '' }}</textarea>
+            </div>
+
+            <!-- Purchase Order Items Section -->
+            <div class="border-t pt-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-medium text-gray-900">Items</h3>
+                    <button type="button" id="add-item" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm">
+                        <i class="fas fa-plus mr-1"></i>Add Item
+                    </button>
+                </div>
+
+                <div id="items-container" class="space-y-3">
+                    {% if purchase_order.items %}
+                        {% for item in purchase_order.items %}
+                        <div class="grid grid-cols-12 gap-3 items-end border rounded-lg p-3 bg-gray-50">
+                            <div class="col-span-5">
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Description</label>
+                                <input type="text" name="items[{{ loop.index0 }}][description]" value="{{ item.description }}" 
+                                       class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-purple-500">
+                            </div>
+                            <div class="col-span-2">
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Quantity</label>
+                                <input type="number" name="items[{{ loop.index0 }}][quantity]" value="{{ item.quantity }}" 
+                                       class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-purple-500">
+                            </div>
+                            <div class="col-span-2">
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Unit Price</label>
+                                <input type="number" step="0.01" name="items[{{ loop.index0 }}][unit_price]" value="{{ item.unit_price }}" 
+                                       class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-purple-500">
+                            </div>
+                            <div class="col-span-2">
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Total</label>
+                                <input type="text" readonly value="${{ "%.2f"|format((item.quantity or 0) * (item.unit_price or 0)) }}" 
+                                       class="w-full px-2 py-1 text-sm bg-gray-100 border border-gray-300 rounded">
+                            </div>
+                            <div class="col-span-1">
+                                <button type="button" class="remove-item text-red-600 hover:text-red-800 text-sm">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center py-4 text-gray-500 text-sm">
+                            No items added. Click "Add Item" to start.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="flex justify-end space-x-4 pt-6 border-t">
+                <a href="{{ url_for('purchase_orders.view', id=purchase_order.id) }}" 
+                   class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                    Cancel
+                </a>
+                <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700">
+                    Update Purchase Order
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let itemIndex = {{ purchase_order.items|length if purchase_order.items else 0 }};
+    
+    // Add item functionality
+    document.getElementById('add-item').addEventListener('click', function() {
+        const container = document.getElementById('items-container');
+        const itemHtml = `
+            <div class="grid grid-cols-12 gap-3 items-end border rounded-lg p-3 bg-gray-50">
+                <div class="col-span-5">
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Description</label>
+                    <input type="text" name="items[${itemIndex}][description]" 
+                           class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-purple-500">
+                </div>
+                <div class="col-span-2">
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Quantity</label>
+                    <input type="number" name="items[${itemIndex}][quantity]" 
+                           class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-purple-500">
+                </div>
+                <div class="col-span-2">
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Unit Price</label>
+                    <input type="number" step="0.01" name="items[${itemIndex}][unit_price]" 
+                           class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-purple-500">
+                </div>
+                <div class="col-span-2">
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Total</label>
+                    <input type="text" readonly value="$0.00" 
+                           class="w-full px-2 py-1 text-sm bg-gray-100 border border-gray-300 rounded">
+                </div>
+                <div class="col-span-1">
+                    <button type="button" class="remove-item text-red-600 hover:text-red-800 text-sm">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', itemHtml);
+        itemIndex++;
+    });
+    
+    // Remove item functionality
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.remove-item')) {
+            e.target.closest('.grid').remove();
+        }
+    });
+});
+</script>
+{% endblock %}

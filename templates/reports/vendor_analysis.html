@@ -1,0 +1,287 @@
+{% extends "base.html" %}
+
+{% block title %}Vendor Analysis - Cash Flow Management{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Page Header -->
+    <div class="bg-white shadow rounded-lg p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Vendor Analysis</h1>
+                <p class="text-gray-600">Analyze vendor payment patterns and performance</p>
+            </div>
+            <div class="flex space-x-3">
+                <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
+                    <i class="fas fa-download mr-2"></i>Export Report
+                </button>
+                <a href="{{ url_for('reports.index') }}" class="text-gray-600 hover:text-gray-800">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to Reports
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Time Period Filter -->
+    <div class="bg-white shadow rounded-lg p-6">
+        <form method="GET" class="flex items-end space-x-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Analysis Period</label>
+                <select name="period" class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <option value="30" {% if period == '30' %}selected{% endif %}>Last 30 Days</option>
+                    <option value="90" {% if period == '90' %}selected{% endif %}>Last 90 Days</option>
+                    <option value="180" {% if period == '180' %}selected{% endif %}>Last 6 Months</option>
+                    <option value="365" {% if period == '365' %}selected{% endif %}>Last Year</option>
+                </select>
+            </div>
+            <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">
+                <i class="fas fa-sync mr-2"></i>Update Analysis
+            </button>
+        </form>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="bg-white shadow rounded-lg p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-building text-purple-600"></i>
+                    </div>
+                </div>
+                <div class="ml-4 flex-1">
+                    <p class="text-sm font-medium text-gray-500">Total Vendors</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ vendor_stats.total_vendors or 0 }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white shadow rounded-lg p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-dollar-sign text-green-600"></i>
+                    </div>
+                </div>
+                <div class="ml-4 flex-1">
+                    <p class="text-sm font-medium text-gray-500">Total Spent</p>
+                    <p class="text-2xl font-bold text-green-600">${{ "%.2f"|format(vendor_stats.total_spent or 0) }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white shadow rounded-lg p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-calculator text-blue-600"></i>
+                    </div>
+                </div>
+                <div class="ml-4 flex-1">
+                    <p class="text-sm font-medium text-gray-500">Avg per Vendor</p>
+                    <p class="text-2xl font-bold text-blue-600">
+                        ${{ "%.2f"|format(vendor_stats.avg_per_vendor or 0) }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white shadow rounded-lg p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-yellow-600"></i>
+                    </div>
+                </div>
+                <div class="ml-4 flex-1">
+                    <p class="text-sm font-medium text-gray-500">Overdue Payments</p>
+                    <p class="text-2xl font-bold text-yellow-600">{{ vendor_stats.overdue_count or 0 }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Vendors Chart -->
+    <div class="bg-white shadow rounded-lg p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Top Vendors by Spending</h2>
+        <div id="vendorChart" style="height: 400px;"></div>
+    </div>
+
+    <!-- Vendor Performance Table -->
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-900">Vendor Performance Analysis</h2>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vendor Name</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Transactions</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Amount</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Avg Transaction</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Payment Score</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Payment</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% if vendor_analysis %}
+                        {% for vendor in vendor_analysis %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-building text-purple-600 text-sm"></i>
+                                    </div>
+                                    <div class="text-sm font-medium text-gray-900">{{ vendor.name }}</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {{ vendor.transaction_count }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                ${{ "%.2f"|format(vendor.total_amount) }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                ${{ "%.2f"|format(vendor.avg_transaction) }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                {% set score = vendor.payment_score %}
+                                <div class="flex items-center">
+                                    <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                        <div class="h-2 rounded-full {% if score >= 80 %}bg-green-500{% elif score >= 60 %}bg-yellow-500{% else %}bg-red-500{% endif %}" 
+                                             style="width: {{ score }}%"></div>
+                                    </div>
+                                    <span class="text-sm font-medium text-gray-900">{{ score }}%</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {{ vendor.last_payment.strftime('%m/%d/%Y') if vendor.last_payment else 'Never' }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full
+                                    {% if vendor.overdue_count == 0 %}bg-green-100 text-green-800
+                                    {% elif vendor.overdue_count <= 2 %}bg-yellow-100 text-yellow-800
+                                    {% else %}bg-red-100 text-red-800{% endif %}">
+                                    {% if vendor.overdue_count == 0 %}
+                                        Good Standing
+                                    {% elif vendor.overdue_count <= 2 %}
+                                        {{ vendor.overdue_count }} Overdue
+                                    {% else %}
+                                        High Risk
+                                    {% endif %}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="7" class="px-6 py-12 text-center text-gray-500">
+                                <i class="fas fa-building text-4xl text-gray-300 mb-4"></i>
+                                <p>No vendor data available for the selected period</p>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Payment Patterns -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Payment Frequency -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Payment Frequency</h2>
+            <div id="frequencyChart" style="height: 300px;"></div>
+        </div>
+
+        <!-- Top Categories -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Spending by Category</h2>
+            <div id="categoryChart" style="height: 300px;"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Top vendors chart
+    const vendorData = {{ vendor_chart_data | tojson | safe if vendor_chart_data else '{}' }};
+    
+    if (vendorData.names && vendorData.names.length > 0) {
+        const trace1 = {
+            x: vendorData.names,
+            y: vendorData.amounts,
+            type: 'bar',
+            marker: {
+                color: '#8b5cf6',
+                opacity: 0.8
+            }
+        };
+
+        const layout1 = {
+            title: '',
+            xaxis: { title: 'Vendors' },
+            yaxis: { title: 'Amount ($)' },
+            responsive: true,
+            margin: { t: 20, b: 60, l: 60, r: 20 }
+        };
+
+        Plotly.newPlot('vendorChart', [trace1], layout1, {displayModeBar: false});
+    } else {
+        document.getElementById('vendorChart').innerHTML = '<div class="text-center text-gray-500 py-8">No vendor data available</div>';
+    }
+
+    // Payment frequency chart
+    const frequencyData = {{ frequency_data | tojson | safe if frequency_data else '{}' }};
+    
+    if (frequencyData.labels && frequencyData.labels.length > 0) {
+        const trace2 = {
+            labels: frequencyData.labels,
+            values: frequencyData.values,
+            type: 'pie',
+            marker: {
+                colors: ['#10b981', '#f59e0b', '#ef4444', '#8b5cf6']
+            }
+        };
+
+        const layout2 = {
+            title: '',
+            responsive: true,
+            margin: { t: 20, b: 20, l: 20, r: 20 }
+        };
+
+        Plotly.newPlot('frequencyChart', [trace2], layout2, {displayModeBar: false});
+    } else {
+        document.getElementById('frequencyChart').innerHTML = '<div class="text-center text-gray-500 py-8">No frequency data available</div>';
+    }
+
+    // Category spending chart
+    const categoryData = {{ category_data | tojson | safe if category_data else '{}' }};
+    
+    if (categoryData.categories && categoryData.categories.length > 0) {
+        const trace3 = {
+            labels: categoryData.categories,
+            values: categoryData.amounts,
+            type: 'pie',
+            marker: {
+                colors: ['#3b82f6', '#06b6d4', '#10b981', '#f59e0b', '#ef4444']
+            }
+        };
+
+        const layout3 = {
+            title: '',
+            responsive: true,
+            margin: { t: 20, b: 20, l: 20, r: 20 }
+        };
+
+        Plotly.newPlot('categoryChart', [trace3], layout3, {displayModeBar: false});
+    } else {
+        document.getElementById('categoryChart').innerHTML = '<div class="text-center text-gray-500 py-8">No category data available</div>';
+    }
+});
+</script>
+{% endblock %}

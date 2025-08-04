@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+
+{% block title %}Aging Report - Cash Flow Management{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Page Header -->
+    <div class="bg-white shadow rounded-lg p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Aging Report</h1>
+                <p class="text-gray-600">Track overdue and aging transactions</p>
+            </div>
+            <div class="flex space-x-3">
+                <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
+                    <i class="fas fa-download mr-2"></i>Export Report
+                </button>
+                <a href="{{ url_for('reports.index') }}" class="text-gray-600 hover:text-gray-800">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to Reports
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Type Selector -->
+    <div class="bg-white shadow rounded-lg p-6">
+        <div class="flex items-center space-x-4">
+            <label class="text-sm font-medium text-gray-700">Report Type:</label>
+            <div class="flex space-x-3">
+                <button class="aging-type-btn active bg-blue-600 text-white px-4 py-2 rounded-lg text-sm" data-type="receivable">
+                    Accounts Receivable
+                </button>
+                <button class="aging-type-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm" data-type="payable">
+                    Accounts Payable
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div class="bg-white shadow rounded-lg p-4">
+            <div class="text-center">
+                <p class="text-sm font-medium text-gray-500">Current</p>
+                <p class="text-lg font-bold text-green-600">${{ "%.0f"|format(aging_summary.current or 0) }}</p>
+                <p class="text-xs text-gray-400">{{ aging_summary.current_count or 0 }} items</p>
+            </div>
+        </div>
+        
+        <div class="bg-white shadow rounded-lg p-4">
+            <div class="text-center">
+                <p class="text-sm font-medium text-gray-500">1-30 Days</p>
+                <p class="text-lg font-bold text-yellow-600">${{ "%.0f"|format(aging_summary.days_1_30 or 0) }}</p>
+                <p class="text-xs text-gray-400">{{ aging_summary.days_1_30_count or 0 }} items</p>
+            </div>
+        </div>
+        
+        <div class="bg-white shadow rounded-lg p-4">
+            <div class="text-center">
+                <p class="text-sm font-medium text-gray-500">31-60 Days</p>
+                <p class="text-lg font-bold text-orange-600">${{ "%.0f"|format(aging_summary.days_31_60 or 0) }}</p>
+                <p class="text-xs text-gray-400">{{ aging_summary.days_31_60_count or 0 }} items</p>
+            </div>
+        </div>
+        
+        <div class="bg-white shadow rounded-lg p-4">
+            <div class="text-center">
+                <p class="text-sm font-medium text-gray-500">61-90 Days</p>
+                <p class="text-lg font-bold text-red-600">${{ "%.0f"|format(aging_summary.days_61_90 or 0) }}</p>
+                <p class="text-xs text-gray-400">{{ aging_summary.days_61_90_count or 0 }} items</p>
+            </div>
+        </div>
+        
+        <div class="bg-white shadow rounded-lg p-4">
+            <div class="text-center">
+                <p class="text-sm font-medium text-gray-500">90+ Days</p>
+                <p class="text-lg font-bold text-red-800">${{ "%.0f"|format(aging_summary.days_90_plus or 0) }}</p>
+                <p class="text-xs text-gray-400">{{ aging_summary.days_90_plus_count or 0 }} items</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Aging Chart -->
+    <div class="bg-white shadow rounded-lg p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Aging Distribution</h2>
+        <div id="agingChart" style="height: 300px;"></div>
+    </div>
+
+    <!-- Detailed Aging Report -->
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-900">Detailed Aging Report</h2>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer/Vendor</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Invoice #</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due Date</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Days Overdue</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% if aging_transactions %}
+                        {% for transaction in aging_transactions %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">{{ transaction.vendor_customer }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {{ transaction.invoice_number or 'N/A' }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                ${{ "%.2f"|format(transaction.amount) }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {{ transaction.due_date.strftime('%m/%d/%Y') }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                {% set days_overdue = (today - transaction.due_date).days %}
+                                <span class="text-sm font-medium
+                                    {% if days_overdue <= 0 %}text-green-600
+                                    {% elif days_overdue <= 30 %}text-yellow-600
+                                    {% elif days_overdue <= 60 %}text-orange-600
+                                    {% else %}text-red-600{% endif %}">
+                                    {% if days_overdue <= 0 %}
+                                        Current
+                                    {% else %}
+                                        {{ days_overdue }} days
+                                    {% endif %}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full
+                                    {% if transaction.status == 'pending' %}bg-yellow-100 text-yellow-800
+                                    {% elif transaction.status == 'paid' %}bg-green-100 text-green-800
+                                    {% else %}bg-red-100 text-red-800{% endif %}">
+                                    {{ transaction.status.title() }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex space-x-2">
+                                    {% if transaction.type == 'receivable' %}
+                                        <a href="{{ url_for('accounts_receivable.edit', id=transaction.id) }}" 
+                                           class="text-blue-600 hover:text-blue-900">Edit</a>
+                                        {% if transaction.status == 'pending' %}
+                                            <form method="POST" action="{{ url_for('accounts_receivable.mark_received', id=transaction.id) }}" class="inline">
+                                                <button type="submit" class="text-green-600 hover:text-green-900">Mark Paid</button>
+                                            </form>
+                                        {% endif %}
+                                    {% else %}
+                                        <a href="{{ url_for('accounts_payable.edit', id=transaction.id) }}" 
+                                           class="text-blue-600 hover:text-blue-900">Edit</a>
+                                        {% if transaction.status == 'pending' %}
+                                            <form method="POST" action="{{ url_for('accounts_payable.mark_paid', id=transaction.id) }}" class="inline">
+                                                <button type="submit" class="text-green-600 hover:text-green-900">Mark Paid</button>
+                                            </form>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="7" class="px-6 py-12 text-center text-gray-500">
+                                <i class="fas fa-calendar-alt text-4xl text-gray-300 mb-4"></i>
+                                <p>No aging transactions found</p>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Aging chart
+    const agingData = {
+        current: {{ aging_summary.current or 0 }},
+        days_1_30: {{ aging_summary.days_1_30 or 0 }},
+        days_31_60: {{ aging_summary.days_31_60 or 0 }},
+        days_61_90: {{ aging_summary.days_61_90 or 0 }},
+        days_90_plus: {{ aging_summary.days_90_plus or 0 }}
+    };
+
+    const trace = {
+        x: ['Current', '1-30 Days', '31-60 Days', '61-90 Days', '90+ Days'],
+        y: [agingData.current, agingData.days_1_30, agingData.days_31_60, agingData.days_61_90, agingData.days_90_plus],
+        type: 'bar',
+        marker: {
+            color: ['#10b981', '#f59e0b', '#f97316', '#ef4444', '#991b1b']
+        }
+    };
+
+    const layout = {
+        title: '',
+        xaxis: { title: 'Aging Period' },
+        yaxis: { title: 'Amount ($)' },
+        responsive: true,
+        margin: { t: 20, b: 40, l: 60, r: 20 }
+    };
+
+    Plotly.newPlot('agingChart', [trace], layout, {displayModeBar: false});
+
+    // Report type switching
+    document.querySelectorAll('.aging-type-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Update active state
+            document.querySelectorAll('.aging-type-btn').forEach(b => {
+                b.classList.remove('active', 'bg-blue-600', 'text-white');
+                b.classList.add('bg-gray-200', 'text-gray-700');
+            });
+            this.classList.add('active', 'bg-blue-600', 'text-white');
+            this.classList.remove('bg-gray-200', 'text-gray-700');
+            
+            // Reload page with new type
+            const type = this.dataset.type;
+            const url = new URL(window.location);
+            url.searchParams.set('type', type);
+            window.location.href = url.toString();
+        });
+    });
+});
+</script>
+{% endblock %}

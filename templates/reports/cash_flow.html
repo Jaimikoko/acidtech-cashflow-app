@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+
+{% block title %}Cash Flow Report - Cash Flow Management{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Page Header -->
+    <div class="bg-white shadow rounded-lg p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Cash Flow Report</h1>
+                <p class="text-gray-600">Analyze your cash inflows and outflows</p>
+            </div>
+            <div class="flex space-x-3">
+                <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
+                    <i class="fas fa-download mr-2"></i>Export PDF
+                </button>
+                <a href="{{ url_for('reports.index') }}" class="text-gray-600 hover:text-gray-800">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to Reports
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Date Range Filter -->
+    <div class="bg-white shadow rounded-lg p-6">
+        <form method="GET" class="flex items-end space-x-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">From Date</label>
+                <input type="date" name="start_date" value="{{ start_date.strftime('%Y-%m-%d') if start_date else '' }}" 
+                       class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">To Date</label>
+                <input type="date" name="end_date" value="{{ end_date.strftime('%Y-%m-%d') if end_date else '' }}" 
+                       class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                <i class="fas fa-search mr-2"></i>Update Report
+            </button>
+        </form>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="bg-white shadow rounded-lg p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-arrow-up text-green-600"></i>
+                    </div>
+                </div>
+                <div class="ml-4 flex-1">
+                    <p class="text-sm font-medium text-gray-500">Total Inflows</p>
+                    <p class="text-2xl font-bold text-green-600">${{ "%.2f"|format(total_inflows or 0) }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white shadow rounded-lg p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-arrow-down text-red-600"></i>
+                    </div>
+                </div>
+                <div class="ml-4 flex-1">
+                    <p class="text-sm font-medium text-gray-500">Total Outflows</p>
+                    <p class="text-2xl font-bold text-red-600">${{ "%.2f"|format(total_outflows or 0) }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white shadow rounded-lg p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-chart-line text-blue-600"></i>
+                    </div>
+                </div>
+                <div class="ml-4 flex-1">
+                    <p class="text-sm font-medium text-gray-500">Net Cash Flow</p>
+                    <p class="text-2xl font-bold {% if (total_inflows or 0) - (total_outflows or 0) >= 0 %}text-green-600{% else %}text-red-600{% endif %}">
+                        ${{ "%.2f"|format((total_inflows or 0) - (total_outflows or 0)) }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white shadow rounded-lg p-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-percentage text-purple-600"></i>
+                    </div>
+                </div>
+                <div class="ml-4 flex-1">
+                    <p class="text-sm font-medium text-gray-500">Cash Flow Ratio</p>
+                    <p class="text-2xl font-bold text-purple-600">
+                        {% if total_outflows and total_outflows > 0 %}
+                            {{ "%.1f"|format(((total_inflows or 0) / total_outflows) * 100) }}%
+                        {% else %}
+                            --
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cash Flow Chart -->
+    <div class="bg-white shadow rounded-lg p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Cash Flow Trend</h2>
+        <div id="cashFlowChart" style="height: 400px;"></div>
+    </div>
+
+    <!-- Detailed Breakdown -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Inflows -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <i class="fas fa-arrow-up text-green-600 mr-2"></i>Cash Inflows
+            </h2>
+            {% if inflow_transactions %}
+                <div class="space-y-3">
+                    {% for transaction in inflow_transactions %}
+                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                        <div>
+                            <p class="font-medium text-gray-900">{{ transaction.vendor_customer }}</p>
+                            <p class="text-sm text-gray-500">{{ transaction.invoice_number }} • {{ transaction.due_date.strftime('%m/%d/%Y') }}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-semibold text-green-600">${{ "%.2f"|format(transaction.amount) }}</p>
+                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                {{ transaction.status.title() }}
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-8">
+                    <i class="fas fa-arrow-up text-gray-300 text-4xl mb-4"></i>
+                    <p class="text-gray-500">No cash inflows in selected period</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Outflows -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <i class="fas fa-arrow-down text-red-600 mr-2"></i>Cash Outflows
+            </h2>
+            {% if outflow_transactions %}
+                <div class="space-y-3">
+                    {% for transaction in outflow_transactions %}
+                    <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                        <div>
+                            <p class="font-medium text-gray-900">{{ transaction.vendor_customer }}</p>
+                            <p class="text-sm text-gray-500">{{ transaction.invoice_number }} • {{ transaction.due_date.strftime('%m/%d/%Y') }}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-semibold text-red-600">${{ "%.2f"|format(transaction.amount) }}</p>
+                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                                {{ transaction.status.title() }}
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-8">
+                    <i class="fas fa-arrow-down text-gray-300 text-4xl mb-4"></i>
+                    <p class="text-gray-500">No cash outflows in selected period</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Cash flow chart data from backend
+    const chartData = {{ chart_data | tojson | safe if chart_data else '{}' }};
+    
+    if (chartData.dates && chartData.dates.length > 0) {
+        const trace1 = {
+            x: chartData.dates,
+            y: chartData.inflows,
+            type: 'scatter',
+            mode: 'lines+markers',
+            name: 'Inflows',
+            line: { color: '#10b981', width: 3 },
+            marker: { size: 6 }
+        };
+
+        const trace2 = {
+            x: chartData.dates,
+            y: chartData.outflows,
+            type: 'scatter',
+            mode: 'lines+markers',
+            name: 'Outflows',
+            line: { color: '#ef4444', width: 3 },
+            marker: { size: 6 }
+        };
+
+        const trace3 = {
+            x: chartData.dates,
+            y: chartData.net_flow,
+            type: 'scatter',
+            mode: 'lines+markers',
+            name: 'Net Flow',
+            line: { color: '#6366f1', width: 2, dash: 'dash' },
+            marker: { size: 4 }
+        };
+
+        const layout = {
+            title: '',
+            xaxis: { 
+                title: 'Date',
+                gridcolor: '#f3f4f6'
+            },
+            yaxis: { 
+                title: 'Amount ($)',
+                gridcolor: '#f3f4f6',
+                zeroline: true,
+                zerolinecolor: '#9ca3af'
+            },
+            hovermode: 'x unified',
+            responsive: true,
+            margin: { t: 20, b: 40, l: 60, r: 20 },
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            paper_bgcolor: 'rgba(0,0,0,0)'
+        };
+
+        Plotly.newPlot('cashFlowChart', [trace1, trace2, trace3], layout, {displayModeBar: false});
+    } else {
+        document.getElementById('cashFlowChart').innerHTML = '<div class="text-center text-gray-500 py-8">No data available for the selected period</div>';
+    }
+});
+</script>
+{% endblock %}

@@ -3,6 +3,13 @@
 # Azure App Service startup script for Linux
 echo "Starting AciTech Cash Flow Application..."
 
+# Verify Python version
+echo "Python version check:"
+python --version
+python3 --version
+which python
+which python3
+
 # Install dependencies
 echo "Installing Python dependencies..."
 python -m pip install --upgrade pip

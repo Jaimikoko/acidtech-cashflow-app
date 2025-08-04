@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}Purchase Order {{ purchase_order.po_number }} - Cash Flow Management{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Page Header -->
+    <div class="bg-white shadow rounded-lg p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Purchase Order {{ purchase_order.po_number }}</h1>
+                <p class="text-gray-600">{{ purchase_order.vendor }}</p>
+            </div>
+            <div class="flex space-x-3">
+                <a href="{{ url_for('purchase_orders.edit', id=purchase_order.id) }}" 
+                   class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                    <i class="fas fa-edit mr-2"></i>Edit
+                </a>
+                <a href="{{ url_for('purchase_orders.index') }}" class="text-gray-600 hover:text-gray-800">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to Purchase Orders
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Purchase Order Details -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Basic Information -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Basic Information</h2>
+            <dl class="space-y-3">
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">PO Number</dt>
+                    <dd class="text-sm text-gray-900">{{ purchase_order.po_number }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Vendor</dt>
+                    <dd class="text-sm text-gray-900">{{ purchase_order.vendor }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Amount</dt>
+                    <dd class="text-sm text-gray-900">${{ "%.2f"|format(purchase_order.total_amount or 0) }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Status</dt>
+                    <dd>
+                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full
+                            {% if purchase_order.status == 'draft' %}bg-gray-100 text-gray-800
+                            {% elif purchase_order.status == 'sent' %}bg-blue-100 text-blue-800
+                            {% elif purchase_order.status == 'approved' %}bg-green-100 text-green-800
+                            {% elif purchase_order.status == 'received' %}bg-purple-100 text-purple-800
+                            {% else %}bg-red-100 text-red-800{% endif %}">
+                            {{ purchase_order.status.title() }}
+                        </span>
+                    </dd>
+                </div>
+            </dl>
+        </div>
+
+        <!-- Dates and Timeline -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Timeline</h2>
+            <dl class="space-y-3">
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Order Date</dt>
+                    <dd class="text-sm text-gray-900">{{ purchase_order.order_date.strftime('%B %d, %Y') if purchase_order.order_date else 'Not set' }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Expected Delivery</dt>
+                    <dd class="text-sm text-gray-900">{{ purchase_order.expected_delivery.strftime('%B %d, %Y') if purchase_order.expected_delivery else 'Not set' }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Created</dt>
+                    <dd class="text-sm text-gray-900">{{ purchase_order.created_at.strftime('%B %d, %Y at %I:%M %p') }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Last Updated</dt>
+                    <dd class="text-sm text-gray-900">{{ purchase_order.updated_at.strftime('%B %d, %Y at %I:%M %p') if purchase_order.updated_at else 'Never' }}</dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+
+    <!-- Description -->
+    {% if purchase_order.description %}
+    <div class="bg-white shadow rounded-lg p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Description</h2>
+        <p class="text-gray-700 whitespace-pre-wrap">{{ purchase_order.description }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Purchase Order Items -->
+    <div class="bg-white shadow rounded-lg p-6">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-semibold text-gray-900">Items</h2>
+            <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
+                <i class="fas fa-plus mr-2"></i>Add Item
+            </button>
+        </div>
+        
+        {% if purchase_order.items %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Unit Price</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for item in purchase_order.items %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.description }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.quantity }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ "%.2f"|format(item.unit_price or 0) }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ "%.2f"|format((item.quantity or 0) * (item.unit_price or 0)) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-8">
+            <i class="fas fa-box-open text-gray-300 text-4xl mb-4"></i>
+            <p class="text-gray-500">No items added to this purchase order</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Status Actions -->
+    <div class="bg-white shadow rounded-lg p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Actions</h2>
+        <div class="flex space-x-3">
+            {% if purchase_order.status == 'draft' %}
+                <form method="POST" action="{{ url_for('purchase_orders.update_status', id=purchase_order.id) }}" class="inline">
+                    <input type="hidden" name="status" value="sent">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        <i class="fas fa-paper-plane mr-2"></i>Send to Vendor
+                    </button>
+                </form>
+            {% elif purchase_order.status == 'sent' %}
+                <form method="POST" action="{{ url_for('purchase_orders.update_status', id=purchase_order.id) }}" class="inline">
+                    <input type="hidden" name="status" value="approved">
+                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        <i class="fas fa-check mr-2"></i>Mark as Approved
+                    </button>
+                </form>
+            {% elif purchase_order.status == 'approved' %}
+                <form method="POST" action="{{ url_for('purchase_orders.update_status', id=purchase_order.id) }}" class="inline">
+                    <input type="hidden" name="status" value="received">
+                    <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        <i class="fas fa-truck mr-2"></i>Mark as Received
+                    </button>
+                </form>
+            {% endif %}
+            
+            <button class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors">
+                <i class="fas fa-download mr-2"></i>Download PDF
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
