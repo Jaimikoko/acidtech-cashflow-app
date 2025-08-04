@@ -4,15 +4,7 @@ from urllib.parse import urlparse
 from datetime import datetime
 from models.user import User
 from database import db
-from flask_login import LoginManager
-
-login_manager = LoginManager()
-
 bp = Blueprint('auth', __name__)
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():

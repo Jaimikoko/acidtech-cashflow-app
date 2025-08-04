@@ -45,6 +45,16 @@ def create_app(config_name=None):
     login_manager.login_view = 'auth.login'
     login_manager.login_message = 'Please log in to access this page.'
     
+    # Configure user_loader for Flask-Login
+    @login_manager.user_loader
+    def load_user(user_id):
+        try:
+            from models.user import User
+            return User.query.get(int(user_id))
+        except Exception as e:
+            logger.error(f"Error loading user {user_id}: {e}")
+            return None
+    
     # Register blueprints with error handling
     try:
         # Main blueprint
