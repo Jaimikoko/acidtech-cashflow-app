@@ -7,11 +7,12 @@ import json
 
 from . import cash_flow_bp
 
-# Account mappings for the three main accounts
+# Account mappings for the four main accounts
 ACCOUNT_MAPPINGS = {
     'Revenue 4717': {'name': 'Revenue 4717', 'type': 'inflow', 'color': '#10b981'},
     'Bill Pay 4091': {'name': 'Bill Pay / Payroll 4091', 'type': 'outflow', 'color': '#ef4444'},
-    'Capital One 4709': {'name': 'Capital One 4709', 'type': 'mixed', 'color': '#3b82f6'}
+    'Capital One 4709': {'name': 'Capital One 4709', 'type': 'mixed', 'color': '#3b82f6'},
+    'Checking 4052': {'name': 'Business Checking 4052', 'type': 'mixed', 'color': '#8b5cf6'}
 }
 
 @cash_flow_bp.route('/')
