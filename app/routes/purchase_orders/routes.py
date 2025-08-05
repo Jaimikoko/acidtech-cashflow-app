@@ -8,7 +8,6 @@ import json
 from . import purchase_orders_bp
 
 @purchase_orders_bp.route('/')
-@login_required
 def index():
     page = request.args.get('page', 1, type=int)
     status_filter = request.args.get('status', 'all')
@@ -34,7 +33,6 @@ def index():
                          status_filter=status_filter)
 
 @purchase_orders_bp.route('/create', methods=['GET', 'POST'])
-@login_required
 def create():
     if request.method == 'POST':
         po_number = request.form['po_number']

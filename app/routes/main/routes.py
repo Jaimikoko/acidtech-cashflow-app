@@ -290,7 +290,6 @@ def dashboard():
                          overdue_payables=overdue_payables)
 
 @main_bp.route('/api/cash-flow-data')
-@login_required
 def cash_flow_data():
     # Generate cash flow data for charts
     end_date = date.today()

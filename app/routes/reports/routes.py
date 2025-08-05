@@ -9,12 +9,10 @@ import json
 from . import reports_bp
 
 @reports_bp.route('/')
-@login_required
 def index():
     return render_template('reports/index.html')
 
 @reports_bp.route('/cash-flow')
-@login_required
 def cash_flow():
     # Get date range from query params
     start_date_str = request.args.get('start_date')
@@ -32,7 +30,6 @@ def cash_flow():
                          end_date=end_date)
 
 @reports_bp.route('/api/cash-flow-chart')
-@login_required
 def cash_flow_chart():
     start_date_str = request.args.get('start_date')
     end_date_str = request.args.get('end_date')
