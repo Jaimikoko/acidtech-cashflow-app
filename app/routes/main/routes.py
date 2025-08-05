@@ -699,5 +699,8 @@ def cash_flow_data():
 
 @main_bp.route('/test-layout')
 def test_layout():
-    """Test route for master layout validation - CORRECTED STRUCTURE"""
-    return render_template('masterlayout.html')
+    """Test route for master layout validation - WITH PROPER CONTEXT"""
+    from flask import request
+    return render_template('masterlayout.html', 
+                         page_title="Master Layout Test",
+                         request=request)
