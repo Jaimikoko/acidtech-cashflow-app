@@ -12,7 +12,7 @@ class Transaction(db.Model):
     amount = db.Column(db.Numeric(15, 2), nullable=False)
     
     # Enhanced date tracking
-    issue_date = db.Column(db.Date, nullable=False)  # When PO/Invoice was created
+    issue_date = db.Column(db.Date)                  # When PO/Invoice was created (optional for backward compatibility)
     due_date = db.Column(db.Date, nullable=False)    # When payment is due
     projected_date = db.Column(db.Date)              # When we expect payment (can differ from due_date)
     

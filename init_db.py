@@ -92,6 +92,7 @@ def init_database():
                 type='payable',
                 vendor_customer=payable_data['vendor_customer'],
                 amount=payable_data['amount'],
+                issue_date=date.today() - timedelta(days=10),  # Set issue_date for new fields
                 due_date=payable_data['due_date'],
                 description=payable_data['description'],
                 invoice_number=payable_data['invoice_number'],
@@ -149,6 +150,7 @@ def init_database():
                 type='receivable',
                 vendor_customer=receivable_data['vendor_customer'],
                 amount=receivable_data['amount'],
+                issue_date=date.today() - timedelta(days=5),   # Set issue_date for new fields
                 due_date=receivable_data['due_date'],
                 description=receivable_data['description'],
                 invoice_number=receivable_data['invoice_number'],
