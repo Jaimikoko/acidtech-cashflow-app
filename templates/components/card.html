@@ -1,0 +1,39 @@
+<!-- Reusable Card Component -->
+<div class="card {{ card_class|default('') }} {{ 'h-100' if full_height else '' }}">
+    {% if card_header %}
+    <div class="card-header {{ header_class|default('') }}">
+        {% if header_icon %}
+            <i class="{{ header_icon }} me-2"></i>
+        {% endif %}
+        {{ card_header }}
+        {% if header_actions %}
+            <div class="float-end">
+                {{ header_actions|safe }}
+            </div>
+        {% endif %}
+    </div>
+    {% endif %}
+    
+    <div class="card-body {{ body_class|default('') }}">
+        {% if card_title %}
+            <h5 class="card-title {{ title_class|default('') }}">
+                {% if title_icon %}
+                    <i class="{{ title_icon }} me-2"></i>
+                {% endif %}
+                {{ card_title }}
+            </h5>
+        {% endif %}
+        
+        {% if card_subtitle %}
+            <h6 class="card-subtitle mb-2 text-muted">{{ card_subtitle }}</h6>
+        {% endif %}
+        
+        {{ card_content|safe }}
+    </div>
+    
+    {% if card_footer %}
+    <div class="card-footer {{ footer_class|default('') }}">
+        {{ card_footer|safe }}
+    </div>
+    {% endif %}
+</div>

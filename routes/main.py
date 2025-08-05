@@ -126,3 +126,9 @@ def cash_flow_data():
         'receivables': receivables,
         'payables': payables
     })
+
+@bp.route('/test-layout')
+@login_required
+def test_layout():
+    """Test route for master layout validation"""
+    return render_template('test_masterlayout.html')

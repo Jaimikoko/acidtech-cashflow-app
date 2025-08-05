@@ -1,0 +1,98 @@
+<!-- Reusable Table Component -->
+<div class="table-responsive">
+    <table class="table {{ table_class|default('table-striped table-hover') }}">
+        {% if table_headers %}
+        <thead class="{{ thead_class|default('table-dark') }}">
+            <tr>
+                {% for header in table_headers %}
+                    <th scope="col" class="{{ header.class|default('') }}">
+                        {% if header.sortable %}
+                            <a href="#" class="text-decoration-none text-white">
+                                {{ header.title }}
+                                <i class="fas fa-sort ms-1"></i>
+                            </a>
+                        {% else %}
+                            {{ header.title }}
+                        {% endif %}
+                    </th>
+                {% endfor %}
+            </tr>
+        </thead>
+        {% endif %}
+        
+        <tbody>
+            {% if table_rows %}
+                {% for row in table_rows %}
+                    <tr class="{{ row.class|default('') }}">
+                        {% for cell in row.cells %}
+                            <td class="{{ cell.class|default('') }}">
+                                {% if cell.type == 'badge' %}
+                                    <span class="badge bg-{{ cell.variant|default('primary') }}">{{ cell.value }}</span>
+                                {% elif cell.type == 'currency' %}
+                                    <span class="fw-bold text-{{ 'success' if cell.value >= 0 else 'danger' }}">
+                                        ${{ "{:,.2f}".format(cell.value) }}
+                                    </span>
+                                {% elif cell.type == 'date' %}
+                                    <span class="text-muted">{{ cell.value.strftime('%Y-%m-%d') if cell.value else 'N/A' }}</span>
+                                {% elif cell.type == 'actions' %}
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        {% for action in cell.actions %}
+                                            <a href="{{ action.url }}" class="btn btn-outline-{{ action.variant|default('primary') }}" title="{{ action.title }}">
+                                                <i class="{{ action.icon }}"></i>
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ cell.value }}
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="{{ table_headers|length if table_headers else 1 }}" class="text-center text-muted py-4">
+                        <i class="fas fa-inbox fa-2x mb-2"></i>
+                        <p class="mb-0">{{ empty_message|default('No data available') }}</p>
+                    </td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+{% if show_pagination and pagination %}
+<nav aria-label="Table pagination">
+    <ul class="pagination justify-content-center">
+        <li class="page-item {{ 'disabled' if not pagination.has_prev else '' }}">
+            <a class="page-link" href="{{ url_for(request.endpoint, page=pagination.prev_num) if pagination.has_prev else '#' }}">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+        </li>
+        
+        {% for page_num in pagination.iter_pages() %}
+            {% if page_num %}
+                {% if page_num != pagination.page %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for(request.endpoint, page=page_num) }}">{{ page_num }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ page_num }}</span>
+                    </li>
+                {% endif %}
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">...</span>
+                </li>
+            {% endif %}
+        {% endfor %}
+        
+        <li class="page-item {{ 'disabled' if not pagination.has_next else '' }}">
+            <a class="page-link" href="{{ url_for(request.endpoint, page=pagination.next_num) if pagination.has_next else '#' }}">
+                <i class="fas fa-chevron-right"></i>
+            </a>
+        </li>
+    </ul>
+</nav>
+{% endif %}

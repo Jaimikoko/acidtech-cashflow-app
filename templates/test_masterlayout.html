@@ -1,0 +1,341 @@
+{% extends "masterlayout.html" %}
+
+{% block title %}Master Layout Test - AciTech{% endblock %}
+{% block page_title %}Master Layout Test{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="h3 mb-1">Master Layout Testing</h2>
+            <p class="text-muted mb-0">Comprehensive test of all master layout components and functionality</p>
+        </div>
+        <div>
+            <button class="btn btn-primary" onclick="AciTech.showAlert('Test alert triggered!', 'success')">
+                <i class="fas fa-test me-2"></i>Test Alert
+            </button>
+        </div>
+    </div>
+
+    <!-- KPI Cards Row -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            {% set kpi_data = {
+                'kpi_title': 'Total Revenue',
+                'kpi_value': 125400.50,
+                'kpi_type': 'currency',
+                'kpi_icon': 'fas fa-dollar-sign',
+                'kpi_color': 'success',
+                'kpi_change': 12.5,
+                'kpi_period': 'last month',
+                'kpi_link': {'url': '#', 'text': 'View Details'}
+            } %}
+            {% include 'components/kpi_card.html' %}
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            {% set kpi_data = {
+                'kpi_title': 'Outstanding Invoices',
+                'kpi_value': 45200.75,
+                'kpi_type': 'currency',
+                'kpi_icon': 'fas fa-file-invoice',
+                'kpi_color': 'warning',
+                'kpi_change': -5.2,
+                'kpi_period': 'last week'
+            } %}
+            {% include 'components/kpi_card.html' %}
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            {% set kpi_data = {
+                'kpi_title': 'Paid Invoices',
+                'kpi_value': 89,
+                'kpi_type': 'number',
+                'kpi_icon': 'fas fa-check-circle',
+                'kpi_color': 'primary',
+                'kpi_change': 8.3,
+                'kpi_period': 'this month'
+            } %}
+            {% include 'components/kpi_card.html' %}
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            {% set kpi_data = {
+                'kpi_title': 'Collection Rate',
+                'kpi_value': 94.5,
+                'kpi_type': 'percentage',
+                'kpi_icon': 'fas fa-percentage',
+                'kpi_color': 'info',
+                'kpi_change': 2.1,
+                'kpi_period': 'last quarter'
+            } %}
+            {% include 'components/kpi_card.html' %}
+        </div>
+    </div>
+
+    <!-- Cards Section -->
+    <div class="row mb-4">
+        <div class="col-lg-8 mb-3">
+            {% set card_data = {
+                'card_header': 'Recent Transactions',
+                'header_icon': 'fas fa-exchange-alt',
+                'header_actions': '<button class="btn btn-sm btn-outline-primary"><i class="fas fa-refresh"></i></button>',
+                'card_content': '',
+                'card_class': 'border-0 shadow-sm'
+            } %}
+            
+            <!-- Sample table data -->
+            {% set table_headers = [
+                {'title': 'Date', 'sortable': true},
+                {'title': 'Description'},
+                {'title': 'Amount', 'sortable': true},
+                {'title': 'Status'},
+                {'title': 'Actions'}
+            ] %}
+            
+            {% set table_rows = [
+                {
+                    'cells': [
+                        {'value': '2025-08-05', 'type': 'date_string'},
+                        {'value': 'Office Supplies - Staples'},
+                        {'value': 250.75, 'type': 'currency'},
+                        {'value': 'Paid', 'type': 'badge', 'variant': 'success'},
+                        {'type': 'actions', 'actions': [
+                            {'url': '#', 'icon': 'fas fa-eye', 'title': 'View', 'variant': 'primary'},
+                            {'url': '#', 'icon': 'fas fa-edit', 'title': 'Edit', 'variant': 'warning'}
+                        ]}
+                    ]
+                },
+                {
+                    'cells': [
+                        {'value': '2025-08-04', 'type': 'date_string'},
+                        {'value': 'Software License - Adobe'},
+                        {'value': 599.99, 'type': 'currency'},
+                        {'value': 'Pending', 'type': 'badge', 'variant': 'warning'},
+                        {'type': 'actions', 'actions': [
+                            {'url': '#', 'icon': 'fas fa-eye', 'title': 'View', 'variant': 'primary'},
+                            {'url': '#', 'icon': 'fas fa-edit', 'title': 'Edit', 'variant': 'warning'}
+                        ]}
+                    ]
+                },
+                {
+                    'cells': [
+                        {'value': '2025-08-03', 'type': 'date_string'},
+                        {'value': 'Client Payment - ABC Corp'},
+                        {'value': 1250.00, 'type': 'currency'},
+                        {'value': 'Received', 'type': 'badge', 'variant': 'success'},
+                        {'type': 'actions', 'actions': [
+                            {'url': '#', 'icon': 'fas fa-eye', 'title': 'View', 'variant': 'primary'}
+                        ]}
+                    ]
+                }
+            ] %}
+            
+            {% set card_data = {
+                'card_header': 'Recent Transactions',
+                'header_icon': 'fas fa-exchange-alt',
+                'header_actions': '<button class="btn btn-sm btn-outline-primary"><i class="fas fa-refresh"></i></button>',
+                'card_content': '
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2025-08-05</td>
+                                    <td>Office Supplies - Staples</td>
+                                    <td><span class="fw-bold text-success">$250.75</span></td>
+                                    <td><span class="badge bg-success">Paid</span></td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="#" class="btn btn-outline-primary" title="View"><i class="fas fa-eye"></i></a>
+                                            <a href="#" class="btn btn-outline-warning" title="Edit"><i class="fas fa-edit"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2025-08-04</td>
+                                    <td>Software License - Adobe</td>
+                                    <td><span class="fw-bold text-success">$599.99</span></td>
+                                    <td><span class="badge bg-warning">Pending</span></td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="#" class="btn btn-outline-primary" title="View"><i class="fas fa-eye"></i></a>
+                                            <a href="#" class="btn btn-outline-warning" title="Edit"><i class="fas fa-edit"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2025-08-03</td>
+                                    <td>Client Payment - ABC Corp</td>
+                                    <td><span class="fw-bold text-success">$1,250.00</span></td>
+                                    <td><span class="badge bg-success">Received</span></td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="#" class="btn btn-outline-primary" title="View"><i class="fas fa-eye"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                ',
+                'card_class': 'border-0 shadow-sm'
+            } %}
+            {% include 'components/card.html' %}
+        </div>
+        
+        <div class="col-lg-4 mb-3">
+            {% set card_data = {
+                'card_header': 'Quick Actions',
+                'header_icon': 'fas fa-bolt',
+                'card_content': '
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" onclick="AciTech.setPageTitle(\'Title Updated!\')">
+                            <i class="fas fa-plus me-2"></i>New Invoice
+                        </button>
+                        <button class="btn btn-success" onclick="AciTech.updateNotificationBadge(Math.floor(Math.random() * 10))">
+                            <i class="fas fa-upload me-2"></i>Import Data
+                        </button>
+                        <button class="btn btn-info">
+                            <i class="fas fa-chart-bar me-2"></i>Generate Report
+                        </button>
+                        <button class="btn btn-warning">
+                            <i class="fas fa-cog me-2"></i>Settings
+                        </button>
+                    </div>
+                ',
+                'card_class': 'border-0 shadow-sm'
+            } %}
+            {% include 'components/card.html' %}
+        </div>
+    </div>
+
+    <!-- Layout Features Test -->
+    <div class="row mb-4">
+        <div class="col-12">
+            {% set card_data = {
+                'card_header': 'Master Layout Features Test',
+                'header_icon': 'fas fa-check-circle',
+                'card_content': '
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-primary mb-3">✅ Implemented Features</h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Responsive sidebar with collapse/expand</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Professional header with user menu</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Active navigation highlighting</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Mobile-responsive design</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Reusable components (cards, tables, KPIs)</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Alert system with auto-dismiss</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> JavaScript utilities (AciTech object)</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Consistent AciTech branding</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-info mb-3">🔧 Interactive Tests</h6>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary btn-sm" onclick="document.getElementById(\'sidebar\').classList.toggle(\'collapsed\')">
+                                    Toggle Sidebar Collapse
+                                </button>
+                                <button class="btn btn-outline-success btn-sm" onclick="AciTech.showAlert(\'Success message test!\', \'success\')">
+                                    Test Success Alert
+                                </button>
+                                <button class="btn btn-outline-warning btn-sm" onclick="AciTech.showAlert(\'Warning message test!\', \'warning\')">
+                                    Test Warning Alert
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm" onclick="AciTech.showAlert(\'Error message test!\', \'danger\')">
+                                    Test Error Alert
+                                </button>
+                                <button class="btn btn-outline-info btn-sm" onclick="AciTech.setPageTitle(\'Dynamic Title: \' + new Date().toLocaleTimeString())">
+                                    Update Page Title
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                ',
+                'card_class': 'border-0 shadow-sm'
+            } %}
+            {% include 'components/card.html' %}
+        </div>
+    </div>
+
+    <!-- Responsive Test Grid -->
+    <div class="row">
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-3">
+            {% set card_data = {
+                'card_title': 'Responsive Test 1',
+                'title_icon': 'fas fa-mobile-alt',
+                'card_content': 'This card tests responsive behavior across different screen sizes.',
+                'card_class': 'border-0 shadow-sm text-center',
+                'full_height': true
+            } %}
+            {% include 'components/card.html' %}
+        </div>
+        
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-3">
+            {% set card_data = {
+                'card_title': 'Responsive Test 2',
+                'title_icon': 'fas fa-tablet-alt',
+                'card_content': 'Cards should stack properly on mobile and arrange in grid on desktop.',
+                'card_class': 'border-0 shadow-sm text-center',
+                'full_height': true
+            } %}
+            {% include 'components/card.html' %}
+        </div>
+        
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-3">
+            {% set card_data = {
+                'card_title': 'Responsive Test 3',
+                'title_icon': 'fas fa-desktop',
+                'card_content': 'Sidebar should collapse on mobile and show overlay when toggled.',
+                'card_class': 'border-0 shadow-sm text-center',
+                'full_height': true
+            } %}
+            {% include 'components/card.html' %}
+        </div>
+        
+        <div class="col-xl-3 col-lg-4 col-md-6 mb-3">
+            {% set card_data = {
+                'card_title': 'Responsive Test 4',
+                'title_icon': 'fas fa-expand-arrows-alt',
+                'card_content': 'All components should maintain proper spacing and alignment.',
+                'card_class': 'border-0 shadow-sm text-center',
+                'full_height': true
+            } %}
+            {% include 'components/card.html' %}
+        </div>
+    </div>
+</div>
+
+<!-- Custom JavaScript for test page -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Show welcome message
+    setTimeout(() => {
+        AciTech.showAlert('Master Layout Test loaded successfully! All components are working correctly.', 'info');
+    }, 1000);
+    
+    // Test notification badge update
+    setTimeout(() => {
+        AciTech.updateNotificationBadge(5);
+    }, 2000);
+});
+</script>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Test page specific JavaScript -->
+<script>
+console.log('Master Layout Test page loaded');
+console.log('Available AciTech utilities:', Object.keys(window.AciTech));
+</script>
+{% endblock %}

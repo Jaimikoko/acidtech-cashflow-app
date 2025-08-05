@@ -1,0 +1,62 @@
+<!-- Reusable KPI Card Component -->
+<div class="card {{ card_class|default('border-0 shadow-sm') }} {{ 'h-100' if full_height else '' }}">
+    <div class="card-body text-center">
+        {% if kpi_icon %}
+        <div class="mb-3">
+            <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-{{ kpi_color|default('primary') }}-subtle" 
+                 style="width: 60px; height: 60px;">
+                <i class="{{ kpi_icon }} text-{{ kpi_color|default('primary') }} fa-2x"></i>
+            </div>
+        </div>
+        {% endif %}
+        
+        <h3 class="fw-bold mb-1 {{ 'text-' + kpi_color if kpi_color else '' }}">
+            {% if kpi_type == 'currency' %}
+                {% if kpi_value < 0 %}
+                    -${{ "{:,.2f}".format(kpi_value|abs) }}
+                {% else %}
+                    ${{ "{:,.2f}".format(kpi_value) }}
+                {% endif %}
+            {% elif kpi_type == 'percentage' %}
+                {{ "{:.1f}".format(kpi_value) }}%
+            {% elif kpi_type == 'number' %}
+                {{ "{:,}".format(kpi_value) }}
+            {% else %}
+                {{ kpi_value }}
+            {% endif %}
+        </h3>
+        
+        <p class="text-muted mb-2">{{ kpi_title }}</p>
+        
+        {% if kpi_change is defined %}
+        <div class="d-flex align-items-center justify-content-center">
+            {% if kpi_change > 0 %}
+                <i class="fas fa-arrow-up text-success me-1"></i>
+                <small class="text-success fw-semibold">+{{ "{:.1f}".format(kpi_change) }}%</small>
+            {% elif kpi_change < 0 %}
+                <i class="fas fa-arrow-down text-danger me-1"></i>
+                <small class="text-danger fw-semibold">{{ "{:.1f}".format(kpi_change) }}%</small>
+            {% else %}
+                <i class="fas fa-minus text-muted me-1"></i>
+                <small class="text-muted fw-semibold">0%</small>
+            {% endif %}
+            {% if kpi_period %}
+                <small class="text-muted ms-1">vs {{ kpi_period }}</small>
+            {% endif %}
+        </div>
+        {% endif %}
+        
+        {% if kpi_subtitle %}
+        <small class="text-muted d-block mt-2">{{ kpi_subtitle }}</small>
+        {% endif %}
+    </div>
+    
+    {% if kpi_link %}
+    <div class="card-footer bg-transparent border-top-0 pt-0">
+        <a href="{{ kpi_link.url }}" class="btn btn-outline-{{ kpi_color|default('primary') }} btn-sm w-100">
+            {{ kpi_link.text|default('View Details') }}
+            <i class="fas fa-chevron-right ms-1"></i>
+        </a>
+    </div>
+    {% endif %}
+</div>
