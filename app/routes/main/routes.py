@@ -1,4 +1,4 @@
-from flask import render_template, request, jsonify, send_from_directory
+from flask import render_template, render_template_string, request, jsonify, send_from_directory
 from flask_login import login_required, current_user
 from datetime import datetime, date, timedelta
 from models.transaction import Transaction
@@ -751,7 +751,136 @@ def test_layout():
             'current_user': None,
         }
         
-        return render_template('test_dashboard.html', **template_context)
+        # Use masterlayout.html directly with content block
+        return render_template_string('''
+{% extends "masterlayout.html" %}
+{% set page_title = "Master Layout Test Dashboard" %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Status Banner -->
+    <div class="alert alert-success mb-4" role="alert">
+        <h4 class="alert-heading">✅ Master Layout Working!</h4>
+        <p>This is a test dashboard using masterlayout.html with simulated data.</p>
+        <hr>
+        <p class="mb-0">Template loaded successfully from Azure deployment.</p>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-success bg-opacity-10 p-3">
+                            <i class="fas fa-dollar-sign text-success fa-2x"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold mb-1 text-success">${{ "%.2f"|format(cash_available) }}</h3>
+                    <p class="text-muted mb-2">Cash Available</p>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <i class="fas fa-arrow-up text-success me-1"></i>
+                        <small class="text-success fw-semibold">+12.5%</small>
+                        <small class="text-muted ms-1">vs last month</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10 p-3">
+                            <i class="fas fa-arrow-down text-primary fa-2x"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold mb-1 text-primary">${{ "%.2f"|format(total_receivables) }}</h3>
+                    <p class="text-muted mb-2">Receivables</p>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <span class="badge bg-warning">{{ overdue_receivables }} overdue</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-danger bg-opacity-10 p-3">
+                            <i class="fas fa-arrow-up text-danger fa-2x"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold mb-1 text-danger">${{ "%.2f"|format(total_payables) }}</h3>
+                    <p class="text-muted mb-2">Payables</p>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <span class="badge bg-info">{{ overdue_payables }} due soon</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-info bg-opacity-10 p-3">
+                            <i class="fas fa-chart-line text-info fa-2x"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold mb-1 text-info">{{ recent_transactions|length }}</h3>
+                    <p class="text-muted mb-2">Recent Transactions</p>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <small class="text-muted">Test Data</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Recent Transactions (Test Data)</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Description</th>
+                            <th>Customer/Vendor</th>
+                            <th>Amount</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for transaction in recent_transactions %}
+                        <tr>
+                            <td>{{ transaction.description }}</td>
+                            <td>{{ transaction.vendor_customer }}</td>
+                            <td class="fw-semibold {% if transaction.type == 'receivable' %}text-success{% else %}text-danger{% endif %}">
+                                ${{ "%.2f"|format(transaction.amount) }}
+                            </td>
+                            <td>
+                                <span class="badge {% if transaction.type == 'receivable' %}bg-success{% else %}bg-danger{% endif %}">
+                                    {{ transaction.type|title }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer bg-light">
+            <small class="text-muted">✅ Master layout with sidebar, navigation, and responsive design working correctly!</small>
+        </div>
+    </div>
+</div>
+{% endblock %}
+        ''', **template_context)
         
     except Exception as e:
         # Fallback en caso de cualquier error
