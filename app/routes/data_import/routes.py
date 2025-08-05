@@ -1,4 +1,4 @@
-from flask import render_template, request, flash, redirect, url_for, jsonify
+from flask import request, jsonify
 from datetime import datetime, date
 import csv
 import io
@@ -11,7 +11,8 @@ from . import data_import_bp
 @data_import_bp.route('/')
 def index():
     """Data Import main page - Admin only"""
-    return f'''
+    try:
+        return f'''
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -318,6 +319,46 @@ def index():
     </body>
     </html>
     '''
+    except Exception as e:
+        # Fallback simple HTML if there's any error
+        return f'''
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Data Import - AciTech</title>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <script src="https://cdn.tailwindcss.com"></script>
+        </head>
+        <body class="bg-gray-50 min-h-screen p-8">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h1 class="text-2xl font-bold text-gray-900 mb-4">Data Import Center</h1>
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                        <p class="text-red-800">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            Template Error: {str(e)}
+                        </p>
+                        <p class="text-red-600 text-sm mt-2">
+                            Data Import module is being configured. Please check back soon.
+                        </p>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <h3 class="text-blue-900 font-semibold mb-2">Expected CSV Format:</h3>
+                        <pre class="text-xs text-blue-800">Date,Description,Amount,Type,Category,Accounting_Class,Reference
+2024-01-15,"CLIENT PAYMENT - ACME CORP",8500.00,CREDIT,INCOME,Revenue,INV-001
+2024-01-16,"OFFICE RENT PAYMENT",-2800.00,DEBIT,RENT,Facilities,RENT-JAN24</pre>
+                    </div>
+                    <div class="mt-6">
+                        <a href="/dashboard" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html>
+        '''
 
 @data_import_bp.route('/upload', methods=['POST'])
 def upload_csv():
