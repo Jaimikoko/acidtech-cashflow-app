@@ -1,78 +1,92 @@
-{% extends "base.html" %}
+{% extends "masterlayout.html" %}
 
-{% block title %}Accounts Payable - Cash Flow Management{% endblock %}
+{% block title %}Accounts Payable - AciTech Cash Flow{% endblock %}
+{% block page_title %}Accounts Payable{% endblock %}
 
 {% block content %}
-<div class="space-y-6">
+<div class="container-fluid">
     <!-- Page Header -->
-    <div class="bg-white shadow rounded-lg p-6">
-        <div class="flex items-center justify-between">
-            <div>
-                <h1 class="text-2xl font-bold text-gray-900 flex items-center">
-                    <i class="fas fa-credit-card text-red-600 mr-3"></i>
-                    Accounts Payable
-                </h1>
-                <p class="text-gray-600">Manage vendor payments and outstanding bills</p>
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="h4 mb-1 d-flex align-items-center">
+                        <i class="fas fa-credit-card text-danger me-3"></i>
+                        Accounts Payable
+                    </h2>
+                    <p class="text-muted mb-0">Manage vendor payments and outstanding bills</p>
+                </div>
+                <a href="{{ url_for('accounts_payable.create') }}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Add New Payable
+                </a>
             </div>
-            <a href="{{ url_for('accounts_payable.create') }}" class="btn-primary">
-                <i class="fas fa-plus mr-2"></i>Add New Payable
-            </a>
         </div>
     </div>
 
     <!-- Summary Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white shadow rounded-lg p-6">
-            <div class="flex items-center">
-                <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
-                    <i class="fas fa-dollar-sign text-red-600"></i>
-                </div>
-                <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-500">Total Pending</p>
-                    <p class="text-2xl font-bold text-red-600">${{ "%.2f"|format(total_pending) }}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-white shadow rounded-lg p-6">
-            <div class="flex items-center">
-                <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
-                    <i class="fas fa-exclamation-triangle text-yellow-600"></i>
-                </div>
-                <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-500">Overdue</p>
-                    <p class="text-2xl font-bold text-yellow-600">${{ "%.2f"|format(total_overdue) }}</p>
+    <div class="row mb-4">
+        <div class="col-lg-4 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-danger-subtle" 
+                             style="width: 60px; height: 60px;">
+                            <i class="fas fa-dollar-sign text-danger fa-2x"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold mb-1 text-danger">${{ "%.2f"|format(total_pending) }}</h3>
+                    <p class="text-muted mb-0">Total Pending</p>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white shadow rounded-lg p-6">
-            <div class="flex items-center">
-                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <i class="fas fa-list text-blue-600"></i>
+        <div class="col-lg-4 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-warning-subtle" 
+                             style="width: 60px; height: 60px;">
+                            <i class="fas fa-exclamation-triangle text-warning fa-2x"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold mb-1 text-warning">${{ "%.2f"|format(total_overdue) }}</h3>
+                    <p class="text-muted mb-0">Overdue</p>
                 </div>
-                <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-500">Total Items</p>
-                    <p class="text-2xl font-bold text-blue-600">{{ transactions.total }}</p>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-primary-subtle" 
+                             style="width: 60px; height: 60px;">
+                            <i class="fas fa-list text-primary fa-2x"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold mb-1 text-primary">{{ transactions.total }}</h3>
+                    <p class="text-muted mb-0">Total Items</p>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Filters -->
-    <div class="bg-white shadow rounded-lg p-6">
-        <form method="GET" class="flex flex-wrap gap-4 items-end">
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Status Filter</label>
-                <select name="status" class="form-input">
-                    <option value="all" {% if status_filter == 'all' %}selected{% endif %}>All</option>
-                    <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
-                    <option value="paid" {% if status_filter == 'paid' %}selected{% endif %}>Paid</option>
-                    <option value="overdue" {% if status_filter == 'overdue' %}selected{% endif %}>Overdue</option>
-                </select>
-            </div>
-            <button type="submit" class="btn-primary">Filter</button>
-        </form>
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <form method="GET" class="d-flex gap-3 align-items-end">
+                <div>
+                    <label class="form-label">Status Filter</label>
+                    <select name="status" class="form-select">
+                        <option value="all" {% if status_filter == 'all' %}selected{% endif %}>All</option>
+                        <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
+                        <option value="paid" {% if status_filter == 'paid' %}selected{% endif %}>Paid</option>
+                        <option value="overdue" {% if status_filter == 'overdue' %}selected{% endif %}>Overdue</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </form>
+        </div>
     </div>
 
     <!-- Transactions Table -->

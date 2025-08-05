@@ -13,7 +13,10 @@
       "Bash(git push:*)",
       "Bash(git commit:*)",
       "Bash(grep:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(rg:*)",
+      "Bash(del:*)",
+      "Bash(timeout:*)"
     ],
     "deny": []
   }

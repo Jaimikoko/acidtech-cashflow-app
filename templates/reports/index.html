@@ -1,123 +1,147 @@
-{% extends "base.html" %}
+{% extends "masterlayout.html" %}
 
-{% block title %}Reports - Cash Flow Management{% endblock %}
+{% block title %}Reports - AciTech Cash Flow{% endblock %}
+{% block page_title %}Reports & Analytics{% endblock %}
 
 {% block content %}
-<div class="space-y-6">
-    <!-- Page Header -->
-    <div class="bg-white shadow rounded-lg p-6">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-900">Reports & Analytics</h1>
-            <p class="text-gray-600">Comprehensive financial reports and insights</p>
+<div class="container-fluid">
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-chart-bar text-primary me-3 fs-2"></i>
+                <div>
+                    <h1 class="h3 mb-1">Reports & Analytics</h1>
+                    <p class="text-muted mb-0">Comprehensive financial reports and insights</p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Report Categories -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Cash Flow Report -->
-        <div class="bg-white shadow rounded-lg p-6 hover:shadow-lg transition-shadow">
-            <div class="flex items-center mb-4">
-                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-chart-line text-blue-600 text-xl"></i>
-                </div>
-                <div class="ml-4">
-                    <h3 class="text-lg font-semibold text-gray-900">Cash Flow Report</h3>
-                    <p class="text-sm text-gray-600">Analyze cash inflows and outflows</p>
+    <div class="row g-4 mb-4">
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded p-3 bg-primary bg-opacity-10 me-3">
+                            <i class="fas fa-chart-line text-primary fs-4"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title mb-1">Cash Flow Report</h5>
+                            <p class="text-muted small mb-0">Analyze cash inflows and outflows</p>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('reports.cash_flow') }}" class="btn btn-outline-primary w-100">
+                        Generate Report
+                    </a>
                 </div>
             </div>
-            <button class="w-full bg-blue-50 text-blue-700 py-2 px-4 rounded-lg hover:bg-blue-100 transition-colors">
-                Generate Report
-            </button>
         </div>
 
-        <!-- Aging Report -->
-        <div class="bg-white shadow rounded-lg p-6 hover:shadow-lg transition-shadow">
-            <div class="flex items-center mb-4">
-                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-calendar-alt text-green-600 text-xl"></i>
-                </div>
-                <div class="ml-4">
-                    <h3 class="text-lg font-semibold text-gray-900">Aging Report</h3>
-                    <p class="text-sm text-gray-600">Track overdue payments</p>
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded p-3 bg-success bg-opacity-10 me-3">
+                            <i class="fas fa-calendar-alt text-success fs-4"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title mb-1">Aging Report</h5>
+                            <p class="text-muted small mb-0">Track overdue payments</p>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('reports.aging') }}" class="btn btn-outline-success w-100">
+                        Generate Report
+                    </a>
                 </div>
             </div>
-            <button class="w-full bg-green-50 text-green-700 py-2 px-4 rounded-lg hover:bg-green-100 transition-colors">
-                Generate Report
-            </button>
         </div>
 
-        <!-- Vendor Report -->
-        <div class="bg-white shadow rounded-lg p-6 hover:shadow-lg transition-shadow">
-            <div class="flex items-center mb-4">
-                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-building text-purple-600 text-xl"></i>
-                </div>
-                <div class="ml-4">
-                    <h3 class="text-lg font-semibold text-gray-900">Vendor Report</h3>
-                    <p class="text-sm text-gray-600">Vendor payment analysis</p>
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded p-3 bg-info bg-opacity-10 me-3">
+                            <i class="fas fa-building text-info fs-4"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title mb-1">Vendor Analysis</h5>
+                            <p class="text-muted small mb-0">Vendor payment analysis</p>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('reports.vendor_analysis') }}" class="btn btn-outline-info w-100">
+                        Generate Report
+                    </a>
                 </div>
             </div>
-            <button class="w-full bg-purple-50 text-purple-700 py-2 px-4 rounded-lg hover:bg-purple-100 transition-colors">
-                Generate Report
-            </button>
         </div>
 
-        <!-- Monthly Summary -->
-        <div class="bg-white shadow rounded-lg p-6 hover:shadow-lg transition-shadow">
-            <div class="flex items-center mb-4">
-                <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-chart-pie text-orange-600 text-xl"></i>
-                </div>
-                <div class="ml-4">
-                    <h3 class="text-lg font-semibold text-gray-900">Monthly Summary</h3>
-                    <p class="text-sm text-gray-600">Monthly financial overview</p>
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded p-3 bg-warning bg-opacity-10 me-3">
+                            <i class="fas fa-robot text-warning fs-4"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title mb-1">AI Insights</h5>
+                            <p class="text-muted small mb-0">AI-powered analysis</p>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('reports.ai_insights') }}" class="btn btn-outline-warning w-100">
+                        Generate Report
+                    </a>
                 </div>
             </div>
-            <button class="w-full bg-orange-50 text-orange-700 py-2 px-4 rounded-lg hover:bg-orange-100 transition-colors">
-                Generate Report
-            </button>
         </div>
 
-        <!-- Tax Report -->
-        <div class="bg-white shadow rounded-lg p-6 hover:shadow-lg transition-shadow">
-            <div class="flex items-center mb-4">
-                <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-file-invoice-dollar text-red-600 text-xl"></i>
-                </div>
-                <div class="ml-4">
-                    <h3 class="text-lg font-semibold text-gray-900">Tax Report</h3>
-                    <p class="text-sm text-gray-600">Tax preparation assistance</p>
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded p-3 bg-danger bg-opacity-10 me-3">
+                            <i class="fas fa-file-invoice-dollar text-danger fs-4"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title mb-1">Tax Report</h5>
+                            <p class="text-muted small mb-0">Tax preparation assistance</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline-danger w-100" disabled>
+                        Coming Soon
+                    </button>
                 </div>
             </div>
-            <button class="w-full bg-red-50 text-red-700 py-2 px-4 rounded-lg hover:bg-red-100 transition-colors">
-                Generate Report
-            </button>
         </div>
 
-        <!-- Custom Report -->
-        <div class="bg-white shadow rounded-lg p-6 hover:shadow-lg transition-shadow">
-            <div class="flex items-center mb-4">
-                <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-cog text-gray-600 text-xl"></i>
-                </div>
-                <div class="ml-4">
-                    <h3 class="text-lg font-semibold text-gray-900">Custom Report</h3>
-                    <p class="text-sm text-gray-600">Build your own report</p>
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded p-3 bg-secondary bg-opacity-10 me-3">
+                            <i class="fas fa-cog text-secondary fs-4"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title mb-1">Custom Report</h5>
+                            <p class="text-muted small mb-0">Build your own report</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline-secondary w-100" disabled>
+                        Coming Soon
+                    </button>
                 </div>
             </div>
-            <button class="w-full bg-gray-50 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-100 transition-colors">
-                Create Custom
-            </button>
         </div>
     </div>
 
-    <!-- Recent Reports -->
-    <div class="bg-white shadow rounded-lg p-6">
-        <h2 class="text-lg font-semibold text-gray-900 mb-4">Recent Reports</h2>
-        <div class="text-center py-8">
-            <i class="fas fa-chart-bar text-gray-300 text-4xl mb-4"></i>
-            <p class="text-gray-500">No recent reports</p>
-            <p class="text-sm text-gray-400">Generate your first report to see it here</p>
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Quick Stats</h5>
+        </div>
+        <div class="card-body text-center py-5">
+            <i class="fas fa-chart-bar text-muted display-1 mb-4"></i>
+            <h5 class="mb-2">Reports Dashboard</h5>
+            <p class="text-muted mb-4">Generate comprehensive financial reports and analytics above.</p>
+            <small class="text-muted">Select any report type to get started with your financial analysis.</small>
         </div>
     </div>
 </div>

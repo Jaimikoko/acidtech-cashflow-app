@@ -39,16 +39,7 @@ except Exception as e:
     logger.error(f"Failed to load Flask application: {e}")
     logger.error(f"Current working directory: {os.getcwd()}")
     logger.error(f"Files in directory: {os.listdir('.')}")
-    
-    # Fallback to original structure if new one fails
-    try:
-        logger.warning("Attempting fallback to original app structure...")
-        from app import application
-        app = application
-        logger.info("Fallback successful - using original app structure")
-    except Exception as fallback_error:
-        logger.error(f"Fallback also failed: {fallback_error}")
-        raise
+    raise
 
 if __name__ == "__main__":
     # Azure uses PORT environment variable, defaulting to 8000 for local dev
