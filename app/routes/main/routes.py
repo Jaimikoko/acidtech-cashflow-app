@@ -751,7 +751,29 @@ def test_layout():
             'current_user': None,
         }
         
-        # STANDALONE HTML - NO DEPENDENCIES
+        # PASO 1: DIAGNÓSTICO - Probar masterlayout.html con contexto mínimo
+        try:
+            minimal_context = {
+                'request': request,
+                'user': None,
+                'current_user': None,
+            }
+            return render_template('masterlayout.html', **minimal_context)
+        except Exception as masterlayout_error:
+            # FALLBACK TEMPORAL - capturar error específico para debugging
+            import traceback
+            error_trace = traceback.format_exc()
+            
+            # Agregar error info al HTML para debugging
+            debug_info = f"""
+            <div class="alert alert-warning mt-4">
+                <h5>🔍 PASO 1 DIAGNÓSTICO - masterlayout.html Error:</h5>
+                <pre style="font-size: 12px; max-height: 300px; overflow-y: auto;">{error_trace}</pre>
+                <p><strong>Contexto usado:</strong> {minimal_context}</p>
+            </div>
+            """
+            
+        # STANDALONE HTML - FALLBACK MIENTRAS DEBUGGEAMOS
         return f"""
 <!DOCTYPE html>
 <html lang="en">
@@ -909,6 +931,8 @@ def test_layout():
                 </div>
             </div>
         </div>
+        
+        {debug_info if 'debug_info' in locals() else ''}
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
