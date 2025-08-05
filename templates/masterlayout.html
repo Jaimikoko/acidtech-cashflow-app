@@ -360,56 +360,56 @@
         
         <nav class="sidebar-nav">
             <div class="nav-item">
-                <a href="/dashboard" class="nav-link {% if request.endpoint == 'main.dashboard' %}active{% endif %}">
+                <a href="/dashboard" class="nav-link {% if (request.endpoint|default('')) == 'main.dashboard' %}active{% endif %}">
                     <i class="fas fa-tachometer-alt"></i>
                     <span class="nav-text">Dashboard</span>
                 </a>
             </div>
             
             <div class="nav-item">
-                <a href="/accounts-payable" class="nav-link {% if 'accounts_payable' in request.endpoint %}active{% endif %}">
+                <a href="/accounts-payable" class="nav-link {% if 'accounts_payable' in (request.endpoint|default('')) %}active{% endif %}">
                     <i class="fas fa-credit-card"></i>
                     <span class="nav-text">Accounts Payable</span>
                 </a>
             </div>
             
             <div class="nav-item">
-                <a href="/accounts-receivable" class="nav-link {% if 'accounts_receivable' in request.endpoint %}active{% endif %}">
+                <a href="/accounts-receivable" class="nav-link {% if 'accounts_receivable' in (request.endpoint|default('')) %}active{% endif %}">
                     <i class="fas fa-receipt"></i>
                     <span class="nav-text">Accounts Receivable</span>
                 </a>
             </div>
             
             <div class="nav-item">
-                <a href="/purchase-orders" class="nav-link {% if 'purchase_orders' in request.endpoint %}active{% endif %}">
+                <a href="/purchase-orders" class="nav-link {% if 'purchase_orders' in (request.endpoint|default('')) %}active{% endif %}">
                     <i class="fas fa-shopping-cart"></i>
                     <span class="nav-text">Purchase Orders</span>
                 </a>
             </div>
             
             <div class="nav-item">
-                <a href="/reports" class="nav-link {% if 'reports' in request.endpoint %}active{% endif %}">
+                <a href="/reports" class="nav-link {% if 'reports' in (request.endpoint|default('')) %}active{% endif %}">
                     <i class="fas fa-chart-bar"></i>
                     <span class="nav-text">Reports</span>
                 </a>
             </div>
             
             <div class="nav-item">
-                <a href="/reports/ai-insights" class="nav-link {% if request.endpoint == 'reports.ai_insights' %}active{% endif %}">
+                <a href="/reports/ai-insights" class="nav-link {% if (request.endpoint|default('')) == 'reports.ai_insights' %}active{% endif %}">
                     <i class="fas fa-brain"></i>
                     <span class="nav-text">AI Insights</span>
                 </a>
             </div>
             
             <div class="nav-item">
-                <a href="/data-import" class="nav-link {% if request.endpoint == 'data_import.index' %}active{% endif %}">
+                <a href="/data-import" class="nav-link {% if (request.endpoint|default('')) == 'data_import.index' %}active{% endif %}">
                     <i class="fas fa-upload"></i>
                     <span class="nav-text">Data Import</span>
                 </a>
             </div>
             
             <div class="nav-item">
-                <a href="/settings" class="nav-link {% if request.endpoint == 'main.settings' %}active{% endif %}">
+                <a href="/settings" class="nav-link {% if (request.endpoint|default('')) == 'main.settings' %}active{% endif %}">
                     <i class="fas fa-cog"></i>
                     <span class="nav-text">Settings</span>
                 </a>
@@ -462,8 +462,8 @@
             {% if messages %}
                 <div class="alert-container mb-4">
                     {% for category, message in messages %}
-                        <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
-                            {{ message }}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else category|default('info') }} alert-dismissible fade show" role="alert">
+                            {{ message|default('') }}
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
                     {% endfor %}

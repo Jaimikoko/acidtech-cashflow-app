@@ -1,0 +1,166 @@
+{% extends "masterlayout.html" %}
+
+{% block title %}Test Dashboard - AciTech Cash Flow{% endblock %}
+{% block page_title %}Master Layout Test Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Status Banner -->
+    <div class="alert alert-success mb-4" role="alert">
+        <h4 class="alert-heading">✅ Master Layout Working!</h4>
+        <p>This is a test dashboard using <code>masterlayout.html</code> with simulated data.</p>
+        <hr>
+        <p class="mb-0">All navigation, sidebar, and layout components are functioning correctly.</p>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-success-subtle" 
+                             style="width: 60px; height: 60px;">
+                            <i class="fas fa-dollar-sign text-success fa-2x"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold mb-1 text-success">${{ "%.2f"|format(cash_available|default(0)) }}</h3>
+                    <p class="text-muted mb-2">Cash Available</p>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <i class="fas fa-arrow-up text-success me-1"></i>
+                        <small class="text-success fw-semibold">+12.5%</small>
+                        <small class="text-muted ms-1">vs last month</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-primary-subtle" 
+                             style="width: 60px; height: 60px;">
+                            <i class="fas fa-arrow-down text-primary fa-2x"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold mb-1 text-primary">${{ "%.2f"|format(total_receivables|default(0)) }}</h3>
+                    <p class="text-muted mb-2">Receivables</p>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <span class="badge bg-warning">{{ overdue_receivables|default(0) }} overdue</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-danger-subtle" 
+                             style="width: 60px; height: 60px;">
+                            <i class="fas fa-arrow-up text-danger fa-2x"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold mb-1 text-danger">${{ "%.2f"|format(total_payables|default(0)) }}</h3>
+                    <p class="text-muted mb-2">Payables</p>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <span class="badge bg-info">{{ overdue_payables|default(0) }} due soon</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-info-subtle" 
+                             style="width: 60px; height: 60px;">
+                            <i class="fas fa-chart-line text-info fa-2x"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold mb-1 text-info">{{ (recent_transactions|default([])|length) }}</h3>
+                    <p class="text-muted mb-2">Recent Transactions</p>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <small class="text-muted">Last 30 days</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Recent Transactions (Test Data)</h5>
+        </div>
+        <div class="card-body">
+            {% if recent_transactions %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Description</th>
+                            <th>Customer/Vendor</th>
+                            <th>Amount</th>
+                            <th>Type</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for transaction in recent_transactions %}
+                        <tr>
+                            <td>{{ transaction.description|default('N/A') }}</td>
+                            <td>{{ transaction.vendor_customer|default('N/A') }}</td>
+                            <td class="fw-semibold {% if transaction.type == 'receivable' %}text-success{% else %}text-danger{% endif %}">
+                                ${{ "%.2f"|format(transaction.amount|default(0)) }}
+                            </td>
+                            <td>
+                                <span class="badge {% if transaction.type == 'receivable' %}bg-success{% else %}bg-danger{% endif %}">
+                                    {{ transaction.type|default('unknown')|title }}
+                                </span>
+                            </td>
+                            <td>{{ transaction.created_at.strftime('%m/%d/%Y') if transaction.created_at else 'N/A' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-4">
+                <i class="fas fa-inbox text-muted fa-3x mb-3"></i>
+                <p class="text-muted">No transactions available</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Test Information -->
+    <div class="card mt-4">
+        <div class="card-header bg-light">
+            <h6 class="card-title mb-0">🧪 Test Information</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <ul class="list-unstyled">
+                        <li><strong>Template:</strong> masterlayout.html</li>
+                        <li><strong>Route:</strong> /test-layout</li>
+                        <li><strong>Blueprint:</strong> main_bp</li>
+                        <li><strong>Data:</strong> Simulated/Test</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <ul class="list-unstyled">
+                        <li><strong>Sidebar:</strong> ✅ Responsive</li>
+                        <li><strong>Navigation:</strong> ✅ Active states</li>
+                        <li><strong>Bootstrap:</strong> ✅ v5.3.0</li>
+                        <li><strong>Status:</strong> <span class="badge bg-success">Working</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

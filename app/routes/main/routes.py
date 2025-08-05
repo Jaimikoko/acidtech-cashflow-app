@@ -699,16 +699,77 @@ def cash_flow_data():
 
 @main_bp.route('/test-layout')
 def test_layout():
-    """Test route - ULTRA SIMPLE VERSION"""
-    return '''
-    <!DOCTYPE html>
-    <html>
-    <head><title>Test Layout - Working</title></head>
-    <body>
-        <h1>✅ NEW ARCHITECTURE WORKING!</h1>
-        <p>This route is working from: app/routes/main/routes.py</p>
-        <p>Timestamp: ''' + str(datetime.now()) + '''</p>
-        <p>If you see this, the modular structure is deployed correctly.</p>
-    </body>
-    </html>
-    '''.strip()
+    """Test route with full masterlayout and simulated data"""
+    try:
+        from flask import request
+        
+        # Datos de prueba completos para el dashboard
+        total_receivables = 45750.00
+        total_payables = 13200.75
+        cash_available = 32549.25
+        recent_transactions = [
+            {
+                "id": 1,
+                "description": "Payment from Acme Corp",
+                "amount": 1500.00,
+                "type": "receivable",
+                "vendor_customer": "Acme Corporation",
+                "created_at": datetime.now() - timedelta(days=1)
+            },
+            {
+                "id": 2,
+                "description": "Office Supplies Payment",
+                "amount": 800.50,
+                "type": "payable", 
+                "vendor_customer": "Office Depot",
+                "created_at": datetime.now() - timedelta(days=2)
+            },
+            {
+                "id": 3,
+                "description": "Consulting Invoice",
+                "amount": 2500.00,
+                "type": "receivable",
+                "vendor_customer": "Tech Solutions Inc",
+                "created_at": datetime.now() - timedelta(days=3)
+            }
+        ]
+        overdue_receivables = 2
+        overdue_payables = 1
+        
+        # Context completo para evitar errores de template
+        template_context = {
+            'page_title': 'Master Layout Test Dashboard',
+            'total_receivables': total_receivables,
+            'total_payables': total_payables, 
+            'cash_available': cash_available,
+            'recent_transactions': recent_transactions,
+            'overdue_receivables': overdue_receivables,
+            'overdue_payables': overdue_payables,
+            'request': request,
+            # Variables adicionales que el template podría necesitar
+            'user': None,
+            'current_user': None,
+        }
+        
+        return render_template('test_dashboard.html', **template_context)
+        
+    except Exception as e:
+        # Fallback en caso de cualquier error
+        import traceback
+        error_details = traceback.format_exc()
+        return f"""
+        <html>
+        <head><title>Debug - Test Layout Error</title></head>
+        <body style="font-family: monospace; padding: 20px;">
+            <h1 style="color: red;">❌ Error en masterlayout</h1>
+            <h3>Error: {str(e)}</h3>
+            <hr>
+            <h4>Stack Trace:</h4>
+            <pre style="background: #f5f5f5; padding: 10px; overflow: auto;">{error_details}</pre>
+            <hr>
+            <p><strong>Timestamp:</strong> {datetime.now()}</p>
+            <p><strong>Route:</strong> /test-layout</p>
+            <p><strong>File:</strong> app/routes/main/routes.py</p>
+        </body>
+        </html>
+        """, 500
