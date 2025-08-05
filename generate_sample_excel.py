@@ -119,10 +119,90 @@ def generate_sample_excel():
         {'id': 3, 'username': 'jane_smith', 'email': 'jane@acidtech.com', 'first_name': 'Jane', 'last_name': 'Smith'}
     ]
     
+    # Sample Cash Flow Data with Account Information
+    cash_flow_data = [
+        # Revenue 4717 - Inflows
+        {
+            'id': 1, 'date': (date.today() - timedelta(days=14)).strftime('%Y-%m-%d'),
+            'description': 'Client Payment - Acme Corporation', 'amount': 15000.00,
+            'type': 'inflow', 'account': 'Revenue 4717', 'status': 'completed'
+        },
+        {
+            'id': 2, 'date': (date.today() - timedelta(days=10)).strftime('%Y-%m-%d'),
+            'description': 'Tech Solutions Invoice Payment', 'amount': 12000.00,
+            'type': 'inflow', 'account': 'Revenue 4717', 'status': 'completed'
+        },
+        {
+            'id': 3, 'date': (date.today() - timedelta(days=7)).strftime('%Y-%m-%d'),
+            'description': 'Global Systems Contract Payment', 'amount': 18500.00,
+            'type': 'inflow', 'account': 'Revenue 4717', 'status': 'completed'
+        },
+        {
+            'id': 4, 'date': (date.today() + timedelta(days=5)).strftime('%Y-%m-%d'),
+            'description': 'Expected Payment - DataFlow Corp', 'amount': 8200.00,
+            'type': 'inflow', 'account': 'Revenue 4717', 'status': 'pending'
+        },
+        
+        # Bill Pay 4091 - Major Outflows (Payroll, Large Vendors)
+        {
+            'id': 5, 'date': (date.today() - timedelta(days=12)).strftime('%Y-%m-%d'),
+            'description': 'Monthly Payroll - December', 'amount': 8500.00,
+            'type': 'outflow', 'account': 'Bill Pay 4091', 'status': 'completed'
+        },
+        {
+            'id': 6, 'date': (date.today() - timedelta(days=8)).strftime('%Y-%m-%d'),
+            'description': 'IT Equipment Purchase', 'amount': 5600.00,
+            'type': 'outflow', 'account': 'Bill Pay 4091', 'status': 'completed'
+        },
+        {
+            'id': 7, 'date': (date.today() - timedelta(days=4)).strftime('%Y-%m-%d'),
+            'description': 'Marketing Agency Payment', 'amount': 3200.00,
+            'type': 'outflow', 'account': 'Bill Pay 4091', 'status': 'completed'
+        },
+        {
+            'id': 8, 'date': (date.today() + timedelta(days=10)).strftime('%Y-%m-%d'),
+            'description': 'Scheduled Payroll - January', 'amount': 8500.00,
+            'type': 'outflow', 'account': 'Bill Pay 4091', 'status': 'pending'
+        },
+        
+        # Capital One 4709 - Mixed (Credit Card, Small Expenses)
+        {
+            'id': 9, 'date': (date.today() - timedelta(days=9)).strftime('%Y-%m-%d'),
+            'description': 'Office Supplies Purchase', 'amount': 1200.00,
+            'type': 'outflow', 'account': 'Capital One 4709', 'status': 'completed'
+        },
+        {
+            'id': 10, 'date': (date.today() - timedelta(days=6)).strftime('%Y-%m-%d'),
+            'description': 'Utilities Payment', 'amount': 850.00,
+            'type': 'outflow', 'account': 'Capital One 4709', 'status': 'completed'
+        },
+        {
+            'id': 11, 'date': (date.today() - timedelta(days=3)).strftime('%Y-%m-%d'),
+            'description': 'Business Travel Expenses', 'amount': 1800.00,
+            'type': 'outflow', 'account': 'Capital One 4709', 'status': 'completed'
+        },
+        {
+            'id': 12, 'date': (date.today() - timedelta(days=2)).strftime('%Y-%m-%d'),
+            'description': 'Credit Card Payment Received', 'amount': 2500.00,
+            'type': 'inflow', 'account': 'Capital One 4709', 'status': 'completed'
+        },
+        {
+            'id': 13, 'date': (date.today() + timedelta(days=3)).strftime('%Y-%m-%d'),
+            'description': 'Legal Services Payment', 'amount': 1800.00,
+            'type': 'outflow', 'account': 'Capital One 4709', 'status': 'pending'
+        },
+        {
+            'id': 14, 'date': (date.today() + timedelta(days=7)).strftime('%Y-%m-%d'),
+            'description': 'Monthly Internet/Phone', 'amount': 450.00,
+            'type': 'outflow', 'account': 'Capital One 4709', 'status': 'pending'
+        }
+    ]
+    
     # Create DataFrames
     transactions_df = pd.DataFrame(transactions_data)
     purchase_orders_df = pd.DataFrame(purchase_orders_data)
     users_df = pd.DataFrame(users_data)
+    cash_flow_df = pd.DataFrame(cash_flow_data)
     
     # Create Excel writer object
     with pd.ExcelWriter(output_path, engine='openpyxl') as writer:
@@ -130,6 +210,7 @@ def generate_sample_excel():
         transactions_df.to_excel(writer, sheet_name='Transactions', index=False)
         purchase_orders_df.to_excel(writer, sheet_name='PurchaseOrders', index=False)
         users_df.to_excel(writer, sheet_name='Users', index=False)
+        cash_flow_df.to_excel(writer, sheet_name='CashFlow', index=False)
         
         # Format the sheets
         workbook = writer.book
@@ -163,21 +244,49 @@ def generate_sample_excel():
         users_sheet.column_dimensions['C'].width = 30  # Email
         users_sheet.column_dimensions['D'].width = 20  # First Name
         users_sheet.column_dimensions['E'].width = 20  # Last Name
+        
+        # Format Cash Flow sheet
+        cash_flow_sheet = writer.sheets['CashFlow']
+        cash_flow_sheet.column_dimensions['A'].width = 10  # ID
+        cash_flow_sheet.column_dimensions['B'].width = 15  # Date
+        cash_flow_sheet.column_dimensions['C'].width = 40  # Description
+        cash_flow_sheet.column_dimensions['D'].width = 15  # Amount
+        cash_flow_sheet.column_dimensions['E'].width = 12  # Type
+        cash_flow_sheet.column_dimensions['F'].width = 20  # Account
+        cash_flow_sheet.column_dimensions['G'].width = 15  # Status
     
     # Calculate and print summary
     total_receivables = sum(t['amount'] for t in transactions_data if t['type'] == 'receivable')
     total_payables = sum(t['amount'] for t in transactions_data if t['type'] == 'payable')
     total_po_amount = sum(po['total_amount'] for po in purchase_orders_data)
     
+    # Cash flow summary
+    total_inflows = sum(cf['amount'] for cf in cash_flow_data if cf['type'] == 'inflow')
+    total_outflows = sum(cf['amount'] for cf in cash_flow_data if cf['type'] == 'outflow')
+    
+    # Account breakdown
+    revenue_total = sum(cf['amount'] for cf in cash_flow_data if cf['account'] == 'Revenue 4717' and cf['type'] == 'inflow')
+    billpay_total = sum(cf['amount'] for cf in cash_flow_data if cf['account'] == 'Bill Pay 4091' and cf['type'] == 'outflow')
+    capital_inflows = sum(cf['amount'] for cf in cash_flow_data if cf['account'] == 'Capital One 4709' and cf['type'] == 'inflow')
+    capital_outflows = sum(cf['amount'] for cf in cash_flow_data if cf['account'] == 'Capital One 4709' and cf['type'] == 'outflow')
+    
     print(f"*** Sample Excel file generated: {output_path}")
     print(f"*** Data Summary:")
     print(f"   • Transactions: {len(transactions_data)} ({len([t for t in transactions_data if t['type'] == 'receivable'])} receivables, {len([t for t in transactions_data if t['type'] == 'payable'])} payables)")
     print(f"   • Total Receivables: ${total_receivables:,.2f}")
     print(f"   • Total Payables: ${total_payables:,.2f}")
-    print(f"   • Net Cash Flow: ${total_receivables - total_payables:,.2f}")
+    print(f"   • Net A/R-A/P Flow: ${total_receivables - total_payables:,.2f}")
     print(f"   • Purchase Orders: {len(purchase_orders_data)} (Total: ${total_po_amount:,.2f})")
+    print(f"   • Cash Flow Transactions: {len(cash_flow_data)}")
+    print(f"   • Total Cash Inflows: ${total_inflows:,.2f}")
+    print(f"   • Total Cash Outflows: ${total_outflows:,.2f}")
+    print(f"   • Net Cash Flow: ${total_inflows - total_outflows:,.2f}")
+    print(f"   • Account Breakdown:")
+    print(f"     - Revenue 4717: ${revenue_total:,.2f} inflows")
+    print(f"     - Bill Pay 4091: ${billpay_total:,.2f} outflows")
+    print(f"     - Capital One 4709: ${capital_inflows:,.2f} inflows, ${capital_outflows:,.2f} outflows")
     print(f"   • Users: {len(users_data)}")
-    print(f"   • Sheets: Transactions, PurchaseOrders, Users")
+    print(f"   • Sheets: Transactions, PurchaseOrders, Users, CashFlow")
     
     return output_path
 

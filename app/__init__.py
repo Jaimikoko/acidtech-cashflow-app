@@ -96,6 +96,11 @@ def create_app(config_name=None):
         app.register_blueprint(data_import_bp, url_prefix='/data-import')
         logger.info("Data Import blueprint registered")
         
+        # Cash Flow blueprint
+        from app.routes.cash_flow import cash_flow_bp
+        app.register_blueprint(cash_flow_bp, url_prefix='/cash-flow')
+        logger.info("Cash Flow blueprint registered")
+        
     except Exception as e:
         logger.error(f"Failed to register blueprints: {e}")
         # Don't raise here, let the app try to start with available blueprints

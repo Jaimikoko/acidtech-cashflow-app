@@ -388,6 +388,13 @@
             </div>
             
             <div class="nav-item">
+                <a href="/cash-flow" class="nav-link {% if 'cash_flow' in (request.endpoint|default('')) %}active{% endif %}">
+                    <i class="fas fa-coins"></i>
+                    <span class="nav-text">Cash Flow</span>
+                </a>
+            </div>
+            
+            <div class="nav-item">
                 <a href="/reports" class="nav-link {% if 'reports' in (request.endpoint|default('')) %}active{% endif %}">
                     <i class="fas fa-chart-bar"></i>
                     <span class="nav-text">Reports</span>

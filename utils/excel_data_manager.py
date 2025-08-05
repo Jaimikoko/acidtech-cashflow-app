@@ -57,6 +57,7 @@ class ExcelDataManager:
                 'transactions': self._process_transactions(excel_data.get('Transactions', pd.DataFrame())),
                 'purchase_orders': self._process_purchase_orders(excel_data.get('PurchaseOrders', pd.DataFrame())),
                 'users': self._process_users(excel_data.get('Users', pd.DataFrame())),
+                'cash_flow': self._process_cash_flow_transactions(excel_data.get('CashFlow', pd.DataFrame())),
                 'metadata': {
                     'loaded_at': datetime.now(),
                     'file_path': excel_path,
@@ -262,6 +263,121 @@ class ExcelDataManager:
             'overdue_receivables': overdue_receivables,
             'overdue_payables': overdue_payables
         }
+    
+    def get_cash_flow_transactions(self):
+        """Get cash flow transactions from Excel with account information"""
+        data = self.load_excel_data()
+        if not data:
+            return self._get_default_cash_flow_transactions()
+        
+        # Try to get CashFlow sheet first, then fall back to Transactions
+        cash_flow_data = data.get('CashFlow', data.get('Transactions', []))
+        
+        if isinstance(cash_flow_data, list) and cash_flow_data:
+            return cash_flow_data
+        
+        # If no cash flow data, convert transactions to cash flow format
+        transactions = data.get('transactions', [])
+        cash_flow_transactions = []
+        
+        for t in transactions:
+            # Map transaction type to cash flow type
+            cf_type = 'inflow' if t['type'] == 'receivable' else 'outflow'
+            
+            # Assign account based on transaction type and amount
+            account = self._assign_account_to_transaction(t)
+            
+            cash_flow_transactions.append({
+                'id': t['id'],
+                'date': t['due_date'],
+                'description': t['description'],
+                'amount': t['amount'],
+                'type': cf_type,
+                'account': account,
+                'status': t.get('status', 'pending')
+            })
+        
+        return cash_flow_transactions
+    
+    def _assign_account_to_transaction(self, transaction):
+        """Assign account based on transaction characteristics"""
+        # Simple logic to assign accounts - can be made more sophisticated
+        if transaction['type'] == 'receivable':
+            return 'Revenue 4717'
+        elif transaction['type'] == 'payable':
+            # Assign based on amount or description
+            if transaction['amount'] > 5000:
+                return 'Bill Pay 4091'  # Large payments go to Bill Pay
+            else:
+                return 'Capital One 4709'  # Smaller payments go to Capital One
+        
+        return 'Capital One 4709'  # Default
+    
+    def _process_cash_flow_transactions(self, df):
+        """Process cash flow transactions DataFrame"""
+        if df.empty:
+            return self._get_default_cash_flow_transactions()
+        
+        transactions = []
+        for _, row in df.iterrows():
+            try:
+                # Parse date
+                trans_date = row.get('date', date.today())
+                if isinstance(trans_date, str):
+                    trans_date = datetime.strptime(trans_date, '%Y-%m-%d').date()
+                elif pd.isna(trans_date):
+                    trans_date = date.today()
+                
+                transaction = {
+                    'id': int(row.get('id', 0)),
+                    'date': trans_date,
+                    'description': str(row.get('description', '')),
+                    'amount': float(row.get('amount', 0)),
+                    'type': str(row.get('type', 'outflow')).lower(),
+                    'account': str(row.get('account', 'Capital One 4709')),
+                    'status': str(row.get('status', 'completed'))
+                }
+                transactions.append(transaction)
+            except Exception as e:
+                logger.warning(f"Error processing cash flow row: {e}")
+                continue
+        
+        return transactions
+    
+    def _get_default_cash_flow_transactions(self):
+        """Default cash flow transaction data"""
+        return [
+            {
+                'id': 1, 'date': date.today() - timedelta(days=7),
+                'description': 'Client Payment - Acme Corporation',
+                'amount': 15000.00, 'type': 'inflow', 'account': 'Revenue 4717', 'status': 'completed'
+            },
+            {
+                'id': 2, 'date': date.today() - timedelta(days=5),
+                'description': 'Monthly Payroll',
+                'amount': 8500.00, 'type': 'outflow', 'account': 'Bill Pay 4091', 'status': 'completed'
+            },
+            {
+                'id': 3, 'date': date.today() - timedelta(days=3),
+                'description': 'Office Supplies Purchase',
+                'amount': 1200.00, 'type': 'outflow', 'account': 'Capital One 4709', 'status': 'completed'
+            },
+            {
+                'id': 4, 'date': date.today() - timedelta(days=2),
+                'description': 'Tech Solutions Invoice Payment',
+                'amount': 12000.00, 'type': 'inflow', 'account': 'Revenue 4717', 'status': 'completed'
+            },
+            {
+                'id': 5, 'date': date.today() - timedelta(days=1),
+                'description': 'Utilities Payment',
+                'amount': 850.00, 'type': 'outflow', 'account': 'Capital One 4709', 'status': 'completed'
+            },
+            {
+                'id': 6, 'date': date.today(),
+                'description': 'Equipment Purchase',
+                'amount': 3500.00, 'type': 'outflow', 'account': 'Bill Pay 4091', 'status': 'pending'
+            }
+        ]
 
 # Global instance
 excel_manager = ExcelDataManager()
