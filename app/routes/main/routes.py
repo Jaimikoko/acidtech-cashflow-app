@@ -377,3 +377,89 @@ def test_layout():
     except Exception as e:
         # Final fallback si algo falla
         return f"<h1>Error 500: {str(e)}</h1><p>Timestamp: {datetime.now()}</p>"
+
+@main_bp.route('/init-sample-data')
+def init_sample_data():
+    """Initialize database with sample data - for Azure deployment"""
+    try:
+        from models.user import User
+        
+        # Drop and recreate all tables
+        db.drop_all()
+        db.create_all()
+        
+        # Create test user
+        test_user = User(
+            username='demo_user',
+            email='demo@acidtech.com',
+            first_name='Demo',
+            last_name='User'
+        )
+        test_user.set_password('demo123')
+        db.session.add(test_user)
+        db.session.commit()
+        
+        user = User.query.first()
+        
+        # Sample receivables
+        receivables_data = [
+            {'vendor_customer': 'Acme Corporation', 'amount': 15000.00, 'due_date': date.today() + timedelta(days=30), 'description': 'Consulting Services', 'invoice_number': 'INV-001', 'status': 'pending'},
+            {'vendor_customer': 'Tech Solutions Inc', 'amount': 8500.00, 'due_date': date.today() + timedelta(days=15), 'description': 'Software Development', 'invoice_number': 'INV-002', 'status': 'pending'},
+            {'vendor_customer': 'Global Systems Ltd', 'amount': 12250.00, 'due_date': date.today() + timedelta(days=45), 'description': 'System Integration', 'invoice_number': 'INV-003', 'status': 'pending'},
+        ]
+        
+        for data in receivables_data:
+            transaction = Transaction(
+                type='receivable',
+                vendor_customer=data['vendor_customer'],
+                amount=data['amount'],
+                due_date=data['due_date'],
+                description=data['description'],
+                invoice_number=data['invoice_number'],
+                status=data['status'],
+                created_by=user.id
+            )
+            db.session.add(transaction)
+        
+        # Sample payables
+        payables_data = [
+            {'vendor_customer': 'Office Supplies Co', 'amount': 2400.00, 'due_date': date.today() + timedelta(days=20), 'description': 'Office Supplies', 'invoice_number': 'BILL-001', 'status': 'pending'},
+            {'vendor_customer': 'IT Equipment Ltd', 'amount': 5600.00, 'due_date': date.today() + timedelta(days=10), 'description': 'Hardware Purchase', 'invoice_number': 'BILL-002', 'status': 'pending'},
+        ]
+        
+        for data in payables_data:
+            transaction = Transaction(
+                type='payable',
+                vendor_customer=data['vendor_customer'],
+                amount=data['amount'],
+                due_date=data['due_date'],
+                description=data['description'],
+                invoice_number=data['invoice_number'],
+                status=data['status'],
+                created_by=user.id
+            )
+            db.session.add(transaction)
+        
+        db.session.commit()
+        
+        # Calculate totals
+        total_receivables = db.session.query(db.func.sum(Transaction.amount)).filter_by(type='receivable', status='pending').scalar() or 0
+        total_payables = db.session.query(db.func.sum(Transaction.amount)).filter_by(type='payable', status='pending').scalar() or 0
+        total_transactions = Transaction.query.count()
+        
+        return f"""
+        <h1>✅ Sample Data Initialized Successfully!</h1>
+        <p><strong>Database populated with:</strong></p>
+        <ul>
+            <li>Total transactions: {total_transactions}</li>
+            <li>Accounts receivable: ${total_receivables:,.2f}</li>
+            <li>Accounts payable: ${total_payables:,.2f}</li>
+            <li>Net cash flow: ${total_receivables - total_payables:,.2f}</li>
+            <li>Demo user: demo_user / demo123</li>
+        </ul>
+        <p><a href="/dashboard">Go to Dashboard</a> | <a href="/">Home</a></p>
+        """
+        
+    except Exception as e:
+        db.session.rollback()
+        return f"<h1>❌ Error initializing data:</h1><p>{str(e)}</p>"
