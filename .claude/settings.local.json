@@ -25,7 +25,9 @@
       "Bash(BASE_URL=https://app.acidtech.fintraqx.com pytest -v \"tests/test_routes_qa.py::TestMainRoutes::test_landing_page\" --tb=line)",
       "Bash(set PYTHONIOENCODING=utf-8)",
       "Bash(set USE_FILE_MODE=true)",
-      "Bash(BASE_URL=https://app.acidtech.fintraqx.com pytest -v \"tests/test_routes_qa.py::TestMainRoutes::test_dashboard_route\" --tb=line)"
+      "Bash(BASE_URL=https://app.acidtech.fintraqx.com pytest -v \"tests/test_routes_qa.py::TestMainRoutes::test_dashboard_route\" --tb=line)",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)"
     ],
     "deny": []
   }

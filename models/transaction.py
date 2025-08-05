@@ -47,7 +47,7 @@ class Transaction(db.Model):
     # Payment tracking
     paid_date = db.Column(db.Date)  # When actually paid
     paid_amount = db.Column(db.Numeric(15, 2))  # Actual amount paid (may differ from original)
-    bank_transaction_id = db.Column(db.Integer, db.ForeignKey('bank_transactions.id'))  # Link to bank transaction
+    # bank_transaction_id = db.Column(db.Integer, db.ForeignKey('bank_transactions.id'))  # Link to bank transaction - Disabled for QA testing
     
     creator = db.relationship('User', backref=db.backref('transactions', lazy=True))
     
