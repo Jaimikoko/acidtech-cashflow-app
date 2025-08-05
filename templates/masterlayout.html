@@ -437,20 +437,10 @@
             
             <div class="user-menu" data-bs-toggle="dropdown">
                 <div class="user-avatar">
-                    {% if current_user.is_authenticated %}
-                        {{ current_user.username[0].upper() }}
-                    {% else %}
-                        <i class="fas fa-user"></i>
-                    {% endif %}
+                    <i class="fas fa-user"></i>
                 </div>
                 <div class="user-info d-none d-md-block">
-                    <h6>
-                        {% if current_user.is_authenticated %}
-                            {{ current_user.username }}
-                        {% else %}
-                            Guest User
-                        {% endif %}
-                    </h6>
+                    <h6>Demo User</h6>
                     <small>Administrator</small>
                 </div>
                 <i class="fas fa-chevron-down ms-2"></i>
