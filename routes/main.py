@@ -130,4 +130,4 @@ def cash_flow_data():
 @bp.route('/test-layout')
 def test_layout():
     """Test route for master layout validation"""
-    return render_template('test_masterlayout.html')
+    return render_template('test_masterlayout_simple.html')
