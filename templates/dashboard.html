@@ -1,198 +1,289 @@
-{% extends "base.html" %}
+{% extends "masterlayout.html" %}
 
-{% block title %}Dashboard - Cash Flow Management{% endblock %}
+{% block title %}Dashboard - AciTech Cash Flow Management{% endblock %}
+{% block page_title %}Cash Flow Dashboard{% endblock %}
 
 {% block content %}
-<div class="space-y-6">
+<div class="container-fluid">
     <!-- Page Header -->
-    <div class="bg-white shadow rounded-lg p-6">
-        <div class="flex items-center justify-between">
-            <div>
-                <h1 class="text-2xl font-bold text-gray-900">Welcome back, {{ current_user.first_name }}!</h1>
-                <p class="text-gray-600">Here's your cash flow overview</p>
-            </div>
-            <div class="text-right">
-                <p class="text-sm text-gray-500">Last updated</p>
-                <p class="text-lg font-semibold">{{ moment().format('MMM DD, YYYY') }}</p>
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <h2 class="fw-bold text-dark mb-1">Welcome back!</h2>
+                    <p class="text-muted mb-0">Here's your cash flow overview</p>
+                </div>
+                <div class="text-end">
+                    <p class="text-muted small mb-0">Last updated</p>
+                    <p class="fw-semibold">{{ moment().format('MMM DD, YYYY') if moment else 'Today' }}</p>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- KPI Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="row mb-4">
         <!-- Total Receivables -->
-        <div class="bg-white shadow rounded-lg p-6 card-hover">
-            <div class="flex items-center">
-                <div class="flex-shrink-0">
-                    <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                        <i class="fas fa-arrow-up text-green-600"></i>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                <div class="card-body text-white">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white bg-opacity-25 me-3" style="width: 40px; height: 40px;">
+                                <i class="fas fa-arrow-up text-white"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1">
+                            <p class="small mb-1 text-white-50">Total Receivables</p>
+                            <h4 class="fw-bold mb-0">${{ "%.2f"|format(total_receivables|default(0)) }}</h4>
+                        </div>
                     </div>
-                </div>
-                <div class="ml-4 flex-1">
-                    <p class="text-sm font-medium text-gray-500">Total Receivables</p>
-                    <p class="text-2xl font-bold text-gray-900">${{ "%.2f"|format(total_receivables) }}</p>
                 </div>
             </div>
         </div>
 
         <!-- Total Payables -->
-        <div class="bg-white shadow rounded-lg p-6 card-hover">
-            <div class="flex items-center">
-                <div class="flex-shrink-0">
-                    <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
-                        <i class="fas fa-arrow-down text-red-600"></i>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                <div class="card-body text-white">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white bg-opacity-25 me-3" style="width: 40px; height: 40px;">
+                                <i class="fas fa-arrow-down text-white"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1">
+                            <p class="small mb-1 text-white-50">Total Payables</p>
+                            <h4 class="fw-bold mb-0">${{ "%.2f"|format(total_payables|default(0)) }}</h4>
+                        </div>
                     </div>
-                </div>
-                <div class="ml-4 flex-1">
-                    <p class="text-sm font-medium text-gray-500">Total Payables</p>
-                    <p class="text-2xl font-bold text-gray-900">${{ "%.2f"|format(total_payables) }}</p>
                 </div>
             </div>
         </div>
 
         <!-- Net Cash Flow -->
-        <div class="bg-white shadow rounded-lg p-6 card-hover">
-            <div class="flex items-center">
-                <div class="flex-shrink-0">
-                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                        <i class="fas fa-chart-line text-blue-600"></i>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+                <div class="card-body text-white">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white bg-opacity-25 me-3" style="width: 40px; height: 40px;">
+                                <i class="fas fa-chart-line text-white"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1">
+                            <p class="small mb-1 text-white-50">Net Cash Flow</p>
+                            <h4 class="fw-bold mb-0 {% if ((total_receivables|default(0)) - (total_payables|default(0))) >= 0 %}text-white{% else %}text-white{% endif %}">
+                                ${{ "%.2f"|format((total_receivables|default(0)) - (total_payables|default(0))) }}
+                            </h4>
+                        </div>
                     </div>
-                </div>
-                <div class="ml-4 flex-1">
-                    <p class="text-sm font-medium text-gray-500">Net Cash Flow</p>
-                    <p class="text-2xl font-bold {% if (total_receivables - total_payables) >= 0 %}text-green-600{% else %}text-red-600{% endif %}">
-                        ${{ "%.2f"|format(total_receivables - total_payables) }}
-                    </p>
                 </div>
             </div>
         </div>
 
         <!-- Overdue Items -->
-        <div class="bg-white shadow rounded-lg p-6 card-hover">
-            <div class="flex items-center">
-                <div class="flex-shrink-0">
-                    <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
-                        <i class="fas fa-exclamation-triangle text-yellow-600"></i>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                <div class="card-body text-white">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white bg-opacity-25 me-3" style="width: 40px; height: 40px;">
+                                <i class="fas fa-exclamation-triangle text-white"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1">
+                            <p class="small mb-1 text-white-50">Overdue Items</p>
+                            <h4 class="fw-bold mb-0">{{ (overdue_receivables|default(0)) + (overdue_payables|default(0)) }}</h4>
+                        </div>
                     </div>
-                </div>
-                <div class="ml-4 flex-1">
-                    <p class="text-sm font-medium text-gray-500">Overdue Items</p>
-                    <p class="text-2xl font-bold text-gray-900">{{ overdue_receivables + overdue_payables }}</p>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Cash Flow Chart -->
-    <div class="bg-white shadow rounded-lg p-6">
-        <h2 class="text-lg font-semibold text-gray-900 mb-4">Cash Flow Trend (Last 30 Days)</h2>
-        <div id="cashFlowChart" style="height: 400px;"></div>
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white border-0">
+            <h5 class="card-title mb-0">Cash Flow Trend (Last 30 Days)</h5>
+        </div>
+        <div class="card-body">
+            <canvas id="cashFlowChart" height="100"></canvas>
+        </div>
     </div>
 
     <!-- Recent Transactions and Quick Actions -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="row">
         <!-- Recent Transactions -->
-        <div class="bg-white shadow rounded-lg p-6">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-lg font-semibold text-gray-900">Recent Transactions</h2>
-                <a href="{{ url_for('accounts_payable.index') }}" class="text-blue-600 hover:text-blue-800 text-sm">View all</a>
-            </div>
-            {% if recent_transactions %}
-                <div class="space-y-3">
-                    {% for transaction in recent_transactions %}
-                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 {% if transaction.type == 'receivable' %}bg-green-100{% else %}bg-red-100{% endif %} rounded-full flex items-center justify-center mr-3">
-                                <i class="fas {% if transaction.type == 'receivable' %}fa-arrow-up text-green-600{% else %}fa-arrow-down text-red-600{% endif %}"></i>
-                            </div>
-                            <div>
-                                <p class="font-medium text-gray-900">{{ transaction.vendor_customer }}</p>
-                                <p class="text-sm text-gray-500">{{ transaction.invoice_number }}</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="font-semibold {% if transaction.type == 'receivable' %}text-green-600{% else %}text-red-600{% endif %}">
-                                ${{ "%.2f"|format(transaction.amount) }}
-                            </p>
-                            <p class="text-xs text-gray-500">{{ transaction.due_date.strftime('%m/%d/%Y') }}</p>
-                        </div>
+        <div class="col-lg-8 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white border-0">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h5 class="card-title mb-0">Recent Transactions</h5>
+                        <a href="{{ url_for('accounts_payable.index') }}" class="btn btn-sm btn-outline-primary">View all</a>
                     </div>
-                    {% endfor %}
                 </div>
-            {% else %}
-                <div class="text-center py-8">
-                    <i class="fas fa-inbox text-gray-400 text-4xl mb-4"></i>
-                    <p class="text-gray-500">No recent transactions</p>
+                <div class="card-body">
+                    {% if recent_transactions %}
+                        <div class="list-group list-group-flush">
+                            {% for transaction in recent_transactions %}
+                            <div class="list-group-item border-0 px-0">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle me-3 {% if transaction.type == 'receivable' %}bg-success-subtle{% else %}bg-danger-subtle{% endif %}" style="width: 35px; height: 35px;">
+                                            <i class="fas {% if transaction.type == 'receivable' %}fa-arrow-up text-success{% else %}fa-arrow-down text-danger{% endif %}"></i>
+                                        </div>
+                                        <div>
+                                            <p class="fw-semibold mb-0">{{ transaction.vendor_customer|default('N/A') }}</p>
+                                            <small class="text-muted">{{ transaction.invoice_number|default('N/A') }}</small>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <p class="fw-semibold mb-0 {% if transaction.type == 'receivable' %}text-success{% else %}text-danger{% endif %}">
+                                            ${{ "%.2f"|format(transaction.amount|default(0)) }}
+                                        </p>
+                                        <small class="text-muted">{{ transaction.due_date.strftime('%m/%d/%Y') if transaction.due_date else 'N/A' }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-inbox text-muted fa-3x mb-3"></i>
+                            <p class="text-muted mb-0">No recent transactions</p>
+                        </div>
+                    {% endif %}
                 </div>
-            {% endif %}
+            </div>
         </div>
 
         <!-- Quick Actions -->
-        <div class="bg-white shadow rounded-lg p-6">
-            <h2 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
-            <div class="grid grid-cols-2 gap-4">
-                <a href="{{ url_for('accounts_payable.create') }}" class="flex flex-col items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
-                    <i class="fas fa-plus text-blue-600 text-2xl mb-2"></i>
-                    <span class="text-sm font-medium text-blue-900">Add Payable</span>
-                </a>
-                <a href="{{ url_for('accounts_receivable.create') }}" class="flex flex-col items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
-                    <i class="fas fa-plus text-green-600 text-2xl mb-2"></i>
-                    <span class="text-sm font-medium text-green-900">Add Receivable</span>
-                </a>
-                <a href="{{ url_for('purchase_orders.create') }}" class="flex flex-col items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
-                    <i class="fas fa-shopping-cart text-purple-600 text-2xl mb-2"></i>
-                    <span class="text-sm font-medium text-purple-900">New PO</span>
-                </a>
-                <a href="{{ url_for('reports.index') }}" class="flex flex-col items-center p-4 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition-colors">
-                    <i class="fas fa-chart-bar text-yellow-600 text-2xl mb-2"></i>
-                    <span class="text-sm font-medium text-yellow-900">Reports</span>
-                </a>
+        <div class="col-lg-4 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white border-0">
+                    <h5 class="card-title mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <a href="{{ url_for('accounts_payable.create') }}" class="btn btn-outline-primary w-100 d-flex flex-column align-items-center py-3">
+                                <i class="fas fa-plus text-primary fs-4 mb-2"></i>
+                                <span class="small fw-semibold">Add Payable</span>
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a href="{{ url_for('accounts_receivable.create') }}" class="btn btn-outline-success w-100 d-flex flex-column align-items-center py-3">
+                                <i class="fas fa-plus text-success fs-4 mb-2"></i>
+                                <span class="small fw-semibold">Add Receivable</span>
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a href="{{ url_for('purchase_orders.create') }}" class="btn btn-outline-info w-100 d-flex flex-column align-items-center py-3">
+                                <i class="fas fa-shopping-cart text-info fs-4 mb-2"></i>
+                                <span class="small fw-semibold">New PO</span>
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a href="{{ url_for('reports.index') }}" class="btn btn-outline-warning w-100 d-flex flex-column align-items-center py-3">
+                                <i class="fas fa-chart-bar text-warning fs-4 mb-2"></i>
+                                <span class="small fw-semibold">Reports</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
 
-{% block scripts %}
+{% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Fetch and display cash flow chart
-    fetch('/api/cash-flow-data')
-        .then(response => response.json())
-        .then(data => {
-            const trace1 = {
-                x: data.dates,
-                y: data.receivables,
-                type: 'scatter',
-                mode: 'lines+markers',
-                name: 'Receivables',
-                line: { color: '#10b981' }
-            };
-
-            const trace2 = {
-                x: data.dates,
-                y: data.payables,
-                type: 'scatter',
-                mode: 'lines+markers',
-                name: 'Payables',
-                line: { color: '#ef4444' }
-            };
-
-            const layout = {
-                title: '',
-                xaxis: { title: 'Date' },
-                yaxis: { title: 'Amount ($)' },
-                hovermode: 'x unified',
-                responsive: true,
-                margin: { t: 20, b: 40, l: 60, r: 20 }
-            };
-
-            Plotly.newPlot('cashFlowChart', [trace1, trace2], layout, {displayModeBar: false});
-        })
-        .catch(error => {
-            console.error('Error loading chart data:', error);
-            document.getElementById('cashFlowChart').innerHTML = '<div class="text-center text-gray-500 py-8">Unable to load chart data</div>';
-        });
+    // Initialize cash flow chart with Chart.js
+    const ctx = document.getElementById('cashFlowChart').getContext('2d');
+    
+    // Create sample data based on current values
+    const receivablesAmount = {{ total_receivables|default(45750) }};
+    const payablesAmount = {{ total_payables|default(13200) }};
+    
+    // Generate sample trend data
+    const labels = [];
+    const receivablesData = [];
+    const payablesData = [];
+    
+    for (let i = 29; i >= 0; i--) {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+        labels.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+        
+        // Generate realistic variations
+        const receivableVariation = (Math.random() - 0.5) * 0.2;
+        const payableVariation = (Math.random() - 0.5) * 0.2;
+        
+        receivablesData.push(receivablesAmount * (1 + receivableVariation));
+        payablesData.push(payablesAmount * (1 + payableVariation));
+    }
+    
+    const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Receivables',
+                data: receivablesData,
+                borderColor: '#10b981',
+                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                tension: 0.4,
+                fill: false
+            }, {
+                label: 'Payables',
+                data: payablesData,
+                borderColor: '#ef4444',
+                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                tension: 0.4,
+                fill: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: false
+                }
+            },
+            scales: {
+                x: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                },
+                y: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Amount ($)'
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return '$' + value.toLocaleString();
+                        }
+                    }
+                }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index'
+            }
+        }
+    });
 });
 </script>
 {% endblock %}

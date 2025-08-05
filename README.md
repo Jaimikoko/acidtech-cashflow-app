@@ -14,19 +14,20 @@ A comprehensive, professional Flask web application for managing cash flow, acco
 ### Advanced Features
 - **AI-Powered Predictions**: Machine learning-based cash flow forecasting
 - **Risk Analysis**: Automated risk assessment and recommendations
-- **Responsive Design**: Mobile-friendly interface using Tailwind CSS
+- **Professional UI**: Modern responsive design with Bootstrap 5 and master layout system
 - **Azure Integration**: Cloud storage and key vault integration
-- **OCR Processing**: Extract data from uploaded documents
-- **Interactive Charts**: Real-time data visualization with Plotly
+- **Data Import**: CSV upload functionality for bank transactions
+- **Interactive Charts**: Real-time data visualization with Chart.js
 
 ## 🛠 Technology Stack
 
-- **Backend**: Flask 3.0, SQLAlchemy, Flask-Login
-- **Frontend**: HTML5, Tailwind CSS, JavaScript
+- **Backend**: Flask 3.0, SQLAlchemy, Flask-Login, Modular Blueprint Architecture
+- **Frontend**: HTML5, Bootstrap 5, JavaScript, Master Layout System
 - **Database**: SQLite (development) / Azure SQL (production)
 - **Cloud**: Microsoft Azure integration
-- **Charts**: Plotly.js for interactive visualizations
-- **Icons**: Font Awesome
+- **Charts**: Chart.js for interactive visualizations
+- **Icons**: Font Awesome 6.4
+- **Data Processing**: CSV import/export functionality
 
 ## 📦 Installation
 
@@ -57,7 +58,7 @@ A comprehensive, professional Flask web application for managing cash flow, acco
    pip install -r requirements.txt
    ```
 
-4. **Install Node.js dependencies (for Tailwind CSS)**
+4. **Optional: Install Node.js dependencies (for development)**
    ```bash
    npm install
    ```
@@ -143,19 +144,21 @@ The AI predictor analyzes:
 ## 📱 User Interface
 
 ### Design Features
-- **Responsive Design**: Works on desktop, tablet, and mobile
-- **Color Scheme**: Green, blue, and white theme
-- **Modern UI**: Clean, professional interface
-- **Interactive Elements**: Hover effects, smooth transitions
-- **Accessibility**: WCAG 2.1 compliant
+- **Master Layout System**: Consistent responsive sidebar navigation across all modules
+- **Bootstrap 5**: Professional component library with clean aesthetics
+- **Responsive Design**: Collapsible sidebar for mobile, works on all screen sizes
+- **Color Scheme**: Professional blue and green theme with gradient cards
+- **Modern UI**: Clean interface with shadow effects and smooth animations
+- **Interactive Elements**: Hover effects, loading states, and real-time feedback
 
 ### Key Pages
-- **Dashboard**: Overview with KPIs and charts
-- **Accounts Payable**: Vendor payment management
-- **Accounts Receivable**: Customer payment tracking
-- **Purchase Orders**: Order management system
-- **Reports**: Analytics and insights
-- **AI Insights**: Predictive analytics dashboard
+- **Dashboard**: Executive overview with KPI cards and Chart.js visualizations
+- **Accounts Payable**: Vendor payment management with transaction tracking
+- **Accounts Receivable**: Customer payment tracking and aging reports
+- **Purchase Orders**: Complete order management from creation to fulfillment
+- **Reports**: Comprehensive analytics and financial insights
+- **AI Insights**: Predictive analytics and risk assessment dashboard
+- **Data Import**: CSV upload interface for bank transaction imports
 
 ## 🔒 Security Features
 
@@ -168,6 +171,8 @@ The AI predictor analyzes:
 
 ## 🧪 Testing
 
+### Manual Testing Workflows
+
 Run the application locally and test the following workflows:
 
 1. **User Registration/Login**
@@ -176,6 +181,39 @@ Run the application locally and test the following workflows:
 4. **Create Purchase Order** with multiple line items
 5. **View Reports** and cash flow charts
 6. **AI Insights** page for predictions
+
+### Automated QA Testing
+
+The project includes comprehensive automated QA testing to validate the master layout migration and ensure all routes function correctly.
+
+#### Local Testing
+```bash
+# Install test dependencies
+pip install -r tests/requirements-test.txt
+
+# Run QA tests locally (requires app to be running)
+pytest -v tests/test_routes_qa.py
+```
+
+#### Azure Production Testing
+```bash
+# Test against Azure production environment
+BASE_URL=https://app.acidtech.fintraqx.com pytest -v tests/test_routes_qa.py
+
+# Generate detailed HTML report
+BASE_URL=https://app.acidtech.fintraqx.com pytest -v tests/test_routes_qa.py --html=qa_report.html
+```
+
+#### QA Test Coverage
+The automated tests validate:
+- ✅ All major routes respond correctly (/, /dashboard, /data-import, etc.)
+- ✅ Bootstrap 5 integration and master layout inheritance
+- ✅ Complete removal of Tailwind CSS dependencies
+- ✅ Performance benchmarks and response times
+- ✅ API endpoint functionality and JSON responses
+- ✅ Mobile responsiveness and cross-browser compatibility
+
+**Note**: QA tests are read-only and will not modify application data.
 
 ## 🤝 Contributing
 
@@ -196,6 +234,15 @@ For support and questions:
 - Email: admin@acidtech.com
 
 ## 🔄 Version History
+
+- **v1.1.0** - Master Layout System Migration ✅
+  - Migrated entire UI from Tailwind CSS to Bootstrap 5
+  - Implemented professional master layout system with responsive sidebar
+  - All modules now use consistent template inheritance
+  - Added Chart.js integration for interactive dashboards
+  - Created comprehensive Data Import module with CSV processing
+  - Cleaned codebase: removed 917 lines of legacy HTML from route files
+  - Enhanced user experience with modern Bootstrap components
 
 - **v1.0.2** - Modular Architecture and Flask-Login ✅
   - Implemented modular Flask architecture with organized blueprints
