@@ -9,21 +9,60 @@ from . import purchase_orders_bp
 
 @purchase_orders_bp.route('/')
 def index():
-    page = request.args.get('page', 1, type=int)
+    # QA MODE: Using hardcoded data for design testing (DB disconnected)
+    
+    # Mock pagination object
+    class MockPagination:
+        def __init__(self, items):
+            self.items = items
+            self.page = 1
+            self.per_page = 20
+            self.total = len(items)
+            self.pages = 1
+            self.has_prev = False
+            self.has_next = False
+            self.prev_num = None
+            self.next_num = None
+    
+    # Mock purchase orders for display
+    mock_pos = [
+        {
+            'id': 1,
+            'po_number': 'PO-2024-001',
+            'vendor': 'Tech Hardware Solutions',
+            'total_amount': 4500.00,
+            'status': 'approved',
+            'order_date': date.today() - timedelta(days=15),
+            'expected_delivery': date.today() + timedelta(days=30),
+            'description': 'New Workstation Setup'
+        },
+        {
+            'id': 2,
+            'po_number': 'PO-2024-002',
+            'vendor': 'Office Furniture Plus',
+            'total_amount': 2800.00,
+            'status': 'sent',
+            'order_date': date.today() - timedelta(days=10),
+            'expected_delivery': date.today() + timedelta(days=25),
+            'description': 'Office Furniture Upgrade'
+        },
+        {
+            'id': 3,
+            'po_number': 'PO-2024-003',
+            'vendor': 'Software Licensing Co',
+            'total_amount': 3600.00,
+            'status': 'draft',
+            'order_date': date.today() - timedelta(days=5),
+            'expected_delivery': date.today() + timedelta(days=20),
+            'description': 'Annual Software Licenses'
+        }
+    ]
+    
+    purchase_orders = MockPagination(mock_pos)
+    total_draft = 1
+    total_sent = 1
+    total_approved = 1
     status_filter = request.args.get('status', 'all')
-    
-    query = PurchaseOrder.query
-    
-    if status_filter != 'all':
-        query = query.filter_by(status=status_filter)
-    
-    purchase_orders = query.order_by(PurchaseOrder.order_date.desc()).paginate(
-        page=page, per_page=20, error_out=False)
-    
-    # Calculate totals
-    total_draft = PurchaseOrder.query.filter_by(status='draft').count()
-    total_sent = PurchaseOrder.query.filter_by(status='sent').count()
-    total_approved = PurchaseOrder.query.filter_by(status='approved').count()
     
     return render_template('purchase_orders/index.html',
                          purchase_orders=purchase_orders,

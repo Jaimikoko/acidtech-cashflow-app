@@ -10,25 +10,56 @@ from . import accounts_receivable_bp
 
 @accounts_receivable_bp.route('/')
 def index():
-    page = request.args.get('page', 1, type=int)
+    # QA MODE: Using hardcoded data for design testing (DB disconnected)
+    
+    # Mock pagination object
+    class MockPagination:
+        def __init__(self, items):
+            self.items = items
+            self.page = 1
+            self.per_page = 20
+            self.total = len(items)
+            self.pages = 1
+            self.has_prev = False
+            self.has_next = False
+            self.prev_num = None
+            self.next_num = None
+    
+    # Mock transactions for display
+    mock_transactions = [
+        {
+            'id': 1,
+            'vendor_customer': 'Acme Corporation',
+            'amount': 15000.00,
+            'due_date': date.today() + timedelta(days=30),
+            'description': 'Consulting Services Q4',
+            'invoice_number': 'INV-2024-001',
+            'status': 'pending'
+        },
+        {
+            'id': 2,
+            'vendor_customer': 'Tech Solutions Inc',
+            'amount': 8500.00,
+            'due_date': date.today() + timedelta(days=15),
+            'description': 'Software Development Project',
+            'invoice_number': 'INV-2024-002',
+            'status': 'pending'
+        },
+        {
+            'id': 3,
+            'vendor_customer': 'Global Systems Ltd',
+            'amount': 12250.00,
+            'due_date': date.today() + timedelta(days=45),
+            'description': 'System Integration Services',
+            'invoice_number': 'INV-2024-003',
+            'status': 'pending'
+        }
+    ]
+    
+    transactions = MockPagination(mock_transactions)
+    total_pending = 45750.00
+    total_overdue = 6800.00
     status_filter = request.args.get('status', 'all')
-    
-    query = Transaction.query.filter_by(type='receivable')
-    
-    if status_filter != 'all':
-        query = query.filter_by(status=status_filter)
-    
-    transactions = query.order_by(Transaction.due_date.asc()).paginate(
-        page=page, per_page=20, error_out=False)
-    
-    # Calculate totals
-    total_pending = db.session.query(db.func.sum(Transaction.amount)).filter_by(
-        type='receivable', status='pending').scalar() or 0
-    total_overdue = db.session.query(db.func.sum(Transaction.amount)).filter(
-        Transaction.type == 'receivable',
-        Transaction.status == 'pending',
-        Transaction.due_date < date.today()
-    ).scalar() or 0
     
     return render_template('accounts_receivable/index.html',
                          transactions=transactions,

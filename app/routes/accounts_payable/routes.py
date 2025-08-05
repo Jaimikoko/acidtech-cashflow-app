@@ -10,25 +10,56 @@ from . import accounts_payable_bp
 
 @accounts_payable_bp.route('/')
 def index():
-    page = request.args.get('page', 1, type=int)
+    # QA MODE: Using hardcoded data for design testing (DB disconnected)
+    
+    # Mock pagination object
+    class MockPagination:
+        def __init__(self, items):
+            self.items = items
+            self.page = 1
+            self.per_page = 20
+            self.total = len(items)
+            self.pages = 1
+            self.has_prev = False
+            self.has_next = False
+            self.prev_num = None
+            self.next_num = None
+    
+    # Mock transactions for display
+    mock_transactions = [
+        {
+            'id': 1,
+            'vendor_customer': 'Office Supplies Co',
+            'amount': 2400.00,
+            'due_date': date.today() + timedelta(days=20),
+            'description': 'Monthly Office Supplies',
+            'invoice_number': 'BILL-2024-001',
+            'status': 'pending'
+        },
+        {
+            'id': 2,
+            'vendor_customer': 'IT Equipment Ltd',
+            'amount': 5600.00,
+            'due_date': date.today() + timedelta(days=10),
+            'description': 'Hardware Purchase',
+            'invoice_number': 'BILL-2024-002',
+            'status': 'pending'
+        },
+        {
+            'id': 3,
+            'vendor_customer': 'Utility Services Inc',
+            'amount': 850.00,
+            'due_date': date.today() + timedelta(days=7),
+            'description': 'Monthly Utilities',
+            'invoice_number': 'BILL-2024-003',
+            'status': 'pending'
+        }
+    ]
+    
+    transactions = MockPagination(mock_transactions)
+    total_pending = 13200.75
+    total_overdue = 3200.00
     status_filter = request.args.get('status', 'all')
-    
-    query = Transaction.query.filter_by(type='payable')
-    
-    if status_filter != 'all':
-        query = query.filter_by(status=status_filter)
-    
-    transactions = query.order_by(Transaction.due_date.asc()).paginate(
-        page=page, per_page=20, error_out=False)
-    
-    # Calculate totals
-    total_pending = db.session.query(db.func.sum(Transaction.amount)).filter_by(
-        type='payable', status='pending').scalar() or 0
-    total_overdue = db.session.query(db.func.sum(Transaction.amount)).filter(
-        Transaction.type == 'payable',
-        Transaction.status == 'pending',
-        Transaction.due_date < date.today()
-    ).scalar() or 0
     
     return render_template('accounts_payable/index.html',
                          transactions=transactions,

@@ -10,6 +10,7 @@ from . import reports_bp
 
 @reports_bp.route('/')
 def index():
+    # QA MODE: Using hardcoded data for design testing (DB disconnected)
     return render_template('reports/index.html')
 
 @reports_bp.route('/cash-flow')

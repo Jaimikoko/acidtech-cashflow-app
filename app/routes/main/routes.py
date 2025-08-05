@@ -246,39 +246,63 @@ def index():
 
 @main_bp.route('/dashboard')
 def dashboard():
-    # Remove login_required for now to focus on design
-    # Calculate KPIs and summary data
-    try:
-        total_receivables = db.session.query(db.func.sum(Transaction.amount)).filter_by(type='receivable', status='pending').scalar() or 0
-        total_payables = db.session.query(db.func.sum(Transaction.amount)).filter_by(type='payable', status='pending').scalar() or 0
-        
-        # Calculate cash available (simplified)
-        cash_available = total_receivables - total_payables
-        
-        # Recent transactions
-        recent_transactions = Transaction.query.order_by(Transaction.created_at.desc()).limit(5).all()
-        
-        # Overdue items
-        overdue_receivables = Transaction.query.filter(
-            Transaction.type == 'receivable',
-            Transaction.status == 'pending',
-            Transaction.due_date < date.today()
-        ).count()
-        
-        overdue_payables = Transaction.query.filter(
-            Transaction.type == 'payable',
-            Transaction.status == 'pending',
-            Transaction.due_date < date.today()
-        ).count()
-        
-    except Exception as e:
-        # Fallback with sample data if database issues
-        total_receivables = 45750.00
-        total_payables = 13200.75
-        cash_available = 32549.25
-        recent_transactions = []
-        overdue_receivables = 2
-        overdue_payables = 1
+    # QA MODE: Using hardcoded data for design testing (DB disconnected)
+    
+    # Hardcoded sample data for QA testing
+    total_receivables = 45750.00
+    total_payables = 13200.75
+    cash_available = 32549.25
+    overdue_receivables = 2
+    overdue_payables = 1
+    
+    # Mock recent transactions for display
+    recent_transactions = [
+        {
+            'id': 1,
+            'vendor_customer': 'Acme Corporation',
+            'amount': 15000.00,
+            'type': 'receivable',
+            'due_date': date.today() + timedelta(days=30),
+            'invoice_number': 'INV-2024-001',
+            'description': 'Consulting Services Q4'
+        },
+        {
+            'id': 2,
+            'vendor_customer': 'Office Supplies Co',
+            'amount': 2400.00,
+            'type': 'payable',
+            'due_date': date.today() + timedelta(days=15),
+            'invoice_number': 'BILL-2024-001',
+            'description': 'Monthly Office Supplies'
+        },
+        {
+            'id': 3,
+            'vendor_customer': 'Tech Solutions Inc',
+            'amount': 8500.00,
+            'type': 'receivable',
+            'due_date': date.today() + timedelta(days=45),
+            'invoice_number': 'INV-2024-002',
+            'description': 'Software Development Project'
+        },
+        {
+            'id': 4,
+            'vendor_customer': 'IT Equipment Ltd',
+            'amount': 5600.00,
+            'type': 'payable',
+            'due_date': date.today() + timedelta(days=10),
+            'invoice_number': 'BILL-2024-002',
+            'description': 'Hardware Purchase'
+        },
+        {
+            'id': 5,
+            'vendor_customer': 'Global Systems Ltd',
+            'amount': 12250.00,
+            'type': 'receivable',
+            'due_date': date.today() + timedelta(days=60),
+            'invoice_number': 'INV-2024-003',
+            'description': 'System Integration Services'
+        }
+    ]
     
     # Use the new masterlayout.html template
     return render_template('dashboard.html', 
