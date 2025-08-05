@@ -699,8 +699,16 @@ def cash_flow_data():
 
 @main_bp.route('/test-layout')
 def test_layout():
-    """Test route for master layout validation - WITH PROPER CONTEXT"""
-    from flask import request
-    return render_template('masterlayout.html', 
-                         page_title="Master Layout Test",
-                         request=request)
+    """Test route - ULTRA SIMPLE VERSION"""
+    return '''
+    <!DOCTYPE html>
+    <html>
+    <head><title>Test Layout - Working</title></head>
+    <body>
+        <h1>✅ NEW ARCHITECTURE WORKING!</h1>
+        <p>This route is working from: app/routes/main/routes.py</p>
+        <p>Timestamp: ''' + str(datetime.now()) + '''</p>
+        <p>If you see this, the modular structure is deployed correctly.</p>
+    </body>
+    </html>
+    '''.strip()

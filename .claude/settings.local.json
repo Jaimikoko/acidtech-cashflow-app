@@ -16,7 +16,9 @@
       "Bash(mkdir:*)",
       "Bash(rg:*)",
       "Bash(del:*)",
-      "Bash(timeout:*)"
+      "Bash(timeout:*)",
+      "Bash(git reset:*)",
+      "WebFetch(domain:app.acidtech.fintraqx.com)"
     ],
     "deny": []
   }
