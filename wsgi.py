@@ -24,32 +24,30 @@ try:
     logger.info(f"Application directory: {app_dir}")
     logger.info(f"Python path: {sys.path[:3]}")
     
-    # Try fallback first due to startup issues
-    logger.warning("Using fallback to original app structure for stability...")
-    from app import application
+    logger.info("Importing Flask application with new modular structure...")
+    from app import create_app
+    
+    # Create the Flask app using the factory pattern
+    application = create_app(os.getenv('FLASK_CONFIG') or 'default')
+    
+    # Azure App Service expects a variable named 'app'
     app = application
-    logger.info("Fallback successful - using original app structure")
+    logger.info("Flask application loaded successfully with modular architecture")
+    logger.info(f"App routes: {[rule.rule for rule in app.url_map.iter_rules()][:10]}")
     
-except Exception as fallback_error:
-    logger.error(f"Original app structure failed: {fallback_error}")
+except Exception as e:
+    logger.error(f"Failed to load Flask application: {e}")
+    logger.error(f"Current working directory: {os.getcwd()}")
+    logger.error(f"Files in directory: {os.listdir('.')}")
     
-    # Try new modular structure as backup
+    # Fallback to original structure if new one fails
     try:
-        logger.info("Attempting new modular structure as backup...")
-        from app import create_app
-        
-        # Create the Flask app using the factory pattern
-        application = create_app(os.getenv('FLASK_CONFIG') or 'default')
-        
-        # Azure App Service expects a variable named 'app'
+        logger.warning("Attempting fallback to original app structure...")
+        from app import application
         app = application
-        logger.info("Flask application loaded successfully with modular architecture")
-        logger.info(f"App routes: {[rule.rule for rule in app.url_map.iter_rules()][:10]}")
-        
-    except Exception as e:
-        logger.error(f"Both structures failed: {e}")
-        logger.error(f"Current working directory: {os.getcwd()}")
-        logger.error(f"Files in directory: {os.listdir('.')}")
+        logger.info("Fallback successful - using original app structure")
+    except Exception as fallback_error:
+        logger.error(f"Fallback also failed: {fallback_error}")
         raise
 
 if __name__ == "__main__":

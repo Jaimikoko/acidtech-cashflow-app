@@ -87,6 +87,11 @@ def create_app(config_name=None):
         app.register_blueprint(reports_bp, url_prefix='/reports')
         logger.info("Reports blueprint registered")
         
+        # Data Import blueprint
+        from app.routes.data_import import data_import_bp
+        app.register_blueprint(data_import_bp, url_prefix='/data-import')
+        logger.info("Data Import blueprint registered")
+        
     except Exception as e:
         logger.error(f"Failed to register blueprints: {e}")
         # Don't raise here, let the app try to start with available blueprints
