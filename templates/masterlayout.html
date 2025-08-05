@@ -367,21 +367,21 @@
             </div>
             
             <div class="nav-item">
-                <a href="/accounts-payable" class="nav-link {% if 'accounts_payable' in (request.endpoint|default('')) %}active{% endif %}">
+                <a href="/ap" class="nav-link {% if 'accounts_payable' in (request.endpoint|default('')) %}active{% endif %}">
                     <i class="fas fa-credit-card"></i>
                     <span class="nav-text">Accounts Payable</span>
                 </a>
             </div>
             
             <div class="nav-item">
-                <a href="/accounts-receivable" class="nav-link {% if 'accounts_receivable' in (request.endpoint|default('')) %}active{% endif %}">
+                <a href="/ar" class="nav-link {% if 'accounts_receivable' in (request.endpoint|default('')) %}active{% endif %}">
                     <i class="fas fa-receipt"></i>
                     <span class="nav-text">Accounts Receivable</span>
                 </a>
             </div>
             
             <div class="nav-item">
-                <a href="/purchase-orders" class="nav-link {% if 'purchase_orders' in (request.endpoint|default('')) %}active{% endif %}">
+                <a href="/po" class="nav-link {% if 'purchase_orders' in (request.endpoint|default('')) %}active{% endif %}">
                     <i class="fas fa-shopping-cart"></i>
                     <span class="nav-text">Purchase Orders</span>
                 </a>
