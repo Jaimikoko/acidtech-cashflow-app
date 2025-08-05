@@ -12,6 +12,11 @@ class Config:
     UPLOAD_FOLDER = os.path.join(basedir, 'static', 'uploads')
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB max file size
     
+    # File Mode Configuration for QA Testing
+    USE_FILE_MODE = os.environ.get('USE_FILE_MODE', 'false').lower() == 'true'
+    EXCEL_DATA_PATH = os.path.join(basedir, 'static', 'uploads', 'qa_data.xlsx')
+    TEMP_UPLOAD_PATH = os.environ.get('TEMP_UPLOAD_PATH', '/tmp' if os.name != 'nt' else os.path.join(basedir, 'temp'))
+    
     # Azure Configuration
     AZURE_STORAGE_CONNECTION_STRING = os.environ.get('AZURE_STORAGE_CONNECTION_STRING')
     AZURE_KEY_VAULT_URL = os.environ.get('AZURE_KEY_VAULT_URL')

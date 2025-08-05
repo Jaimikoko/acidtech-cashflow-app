@@ -29,7 +29,11 @@ def create_app(config_name=None):
     logger.info(f"Creating Flask app with config: {config_name}")
     logger.info(f"Current working directory: {os.getcwd()}")
     
-    app = Flask(__name__)
+    # Set correct template and static folders (they're in the parent directory)
+    template_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'templates')
+    static_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static')
+    
+    app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
     
     # Load configuration
     from config import config
