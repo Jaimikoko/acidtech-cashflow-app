@@ -1,0 +1,288 @@
+{% extends "masterlayout.html" %}
+
+{% block title %}{{ account_info.name }} - Cash Flow Analysis{% endblock %}
+{% block page_title %}{{ account_info.name }} Detail{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle me-3" style="width: 40px; height: 40px; background-color: {{ account_info.color }};"></div>
+                        <div>
+                            <h2 class="fw-bold text-dark mb-1">{{ account_info.name }}</h2>
+                            <p class="text-muted mb-0">Detailed analysis for {{ year }} - {{ account_data.transaction_count }} transactions</p>
+                            {% if file_mode %}
+                                <span class="badge bg-info mt-1">
+                                    <i class="fas fa-file-excel"></i> File Mode Active
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 text-end">
+                    <a href="{{ url_for('cash_flow.index') }}" class="btn btn-outline-secondary me-2">
+                        <i class="fas fa-arrow-left"></i> Back to Overview
+                    </a>
+                    <a href="{{ url_for('cash_flow.export_account_data', account_name=account_data.account, year=year) }}" class="btn btn-success">
+                        <i class="fas fa-download"></i> Export Excel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account KPIs -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, {{ account_info.color }}dd 0%, {{ account_info.color }}aa 100%);">
+                <div class="card-body text-white">
+                    <h6 class="text-white-50 mb-2">Total Amount</h6>
+                    <h3 class="fw-bold mb-1">${{ "%.0f"|format(account_data.total_amount) }}</h3>
+                    <small class="text-white-75">{{ account_data.transaction_count }} transactions</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted mb-2">Monthly Average</h6>
+                    <h3 class="fw-bold mb-1">${{ "%.0f"|format(account_data.average_monthly) }}</h3>
+                    <small class="text-muted">Per month in {{ year }}</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted mb-2">Peak Month</h6>
+                    <h3 class="fw-bold mb-1 text-success">{{ ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][account_data.peak_month-1] }}</h3>
+                    <small class="text-muted">${{ "%.0f"|format(account_data.monthly_data[account_data.peak_month].amount) }}</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted mb-2">Growth Trend</h6>
+                    <h3 class="fw-bold mb-1 text-success">+5.2%</h3>
+                    <small class="text-muted">Month over month avg</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Monthly Breakdown Chart -->
+        <div class="col-lg-8 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-chart-area text-primary"></i> Monthly Breakdown {{ year }}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="monthlyBreakdownChart" width="100%" height="60"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Entities -->
+        <div class="col-lg-4 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-users text-success"></i> Top {{ 'Customers' if account_data.account == 'Revenue 4717' else 'Entities' }}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% for entity, amount in account_data.top_entities[:10] %}
+                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 {% if not loop.last %}border-bottom{% endif %}">
+                            <div>
+                                <h6 class="mb-0 fw-semibold">{{ entity }}</h6>
+                                <small class="text-muted">{{ ((amount / account_data.total_amount) * 100)|round(1) }}% of total</small>
+                            </div>
+                            <div class="text-end">
+                                <span class="fw-bold">${{ "%.0f"|format(amount) }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% if not account_data.top_entities %}
+                        <p class="text-muted mb-0">No entity data available</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-list text-info"></i> Recent Transactions
+                        </h5>
+                        <span class="badge bg-light text-dark">{{ account_data.transaction_count }} total</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    {% if account_data.account == 'Revenue 4717' %}
+                                        <th>Customer</th>
+                                    {% endif %}
+                                    <th class="text-end">Amount</th>
+                                    <th class="text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for transaction in account_data.recent_transactions[:20] %}
+                                    <tr>
+                                        <td>
+                                            <small class="text-muted">{{ transaction.date.strftime('%m/%d/%Y') if transaction.date else 'N/A' }}</small>
+                                        </td>
+                                        <td>
+                                            <div class="fw-semibold">{{ transaction.description }}</div>
+                                            {% if transaction.get('service_category') %}
+                                                <small class="text-muted">{{ transaction.service_category }}</small>
+                                            {% endif %}
+                                        </td>
+                                        {% if account_data.account == 'Revenue 4717' %}
+                                            <td>
+                                                <span class="badge bg-light text-dark">{{ transaction.get('customer', 'Unknown') }}</span>
+                                            </td>
+                                        {% endif %}
+                                        <td class="text-end fw-semibold">
+                                            <span class="{% if transaction.type == 'inflow' %}text-success{% else %}text-danger{% endif %}">
+                                                ${{ "%.2f"|format(transaction.amount) }}
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            {% if transaction.status == 'completed' %}
+                                                <span class="badge bg-success">Completed</span>
+                                            {% elif transaction.status == 'pending' %}
+                                                <span class="badge bg-warning">Pending</span>
+                                            {% elif transaction.status == 'scheduled' %}
+                                                <span class="badge bg-info">Scheduled</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">{{ transaction.status|title }}</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                {% if not account_data.recent_transactions %}
+                                    <tr>
+                                        <td colspan="{% if account_data.account == 'Revenue 4717' %}5{% else %}4{% endif %}" class="text-center text-muted">
+                                            No transactions available
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Monthly Breakdown Chart
+    const ctx = document.getElementById('monthlyBreakdownChart').getContext('2d');
+    
+    // Prepare monthly data
+    const monthlyData = {{ account_data.monthly_data|tojson }};
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const amounts = months.map((month, index) => monthlyData[index + 1]?.amount || 0);
+    const counts = months.map((month, index) => monthlyData[index + 1]?.count || 0);
+    
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: months,
+            datasets: [
+                {
+                    label: 'Amount ($)',
+                    data: amounts,
+                    backgroundColor: 'rgba({{ account_info.color[1:] | int(base=16) }}, 0.1)',
+                    borderColor: '{{ account_info.color }}',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Transaction Count',
+                    data: counts,
+                    backgroundColor: 'rgba(156, 163, 175, 0.8)',
+                    borderColor: 'rgb(107, 114, 128)',
+                    borderWidth: 2,
+                    type: 'bar',
+                    yAxisID: 'y1'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: '{{ account_data.account }} - Monthly Analysis {{ year }}'
+                },
+                legend: {
+                    position: 'top'
+                }
+            },
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    title: {
+                        display: true,
+                        text: 'Amount ($)'
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return '$' + (value/1000).toFixed(0) + 'K';
+                        }
+                    }
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    title: {
+                        display: true,
+                        text: 'Transaction Count'
+                    },
+                    grid: {
+                        drawOnChartArea: false,
+                    }
+                }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index'
+            }
+        }
+    });
+});
+</script>
+{% endblock %}
