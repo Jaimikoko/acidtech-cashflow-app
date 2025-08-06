@@ -567,6 +567,19 @@ document.addEventListener('DOMContentLoaded', function() {
     color: #fd7e14 !important;
 }
 
+/* Específico para Top 5 Transactions - cambio de color a negro */
+/* Selector directo para las tabs de cuenta individual donde están los Top 5 */
+#accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card .card-body .d-flex .small,
+#accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card .card-body .d-flex .fw-semibold {
+    color: #000 !important;
+}
+
+/* Específico para la sección Overview - Monthly Cash Flow Trend */
+#overview .card-header .card-title,
+#overview .card-header h6 {
+    color: #000 !important;
+}
+
 /* Compatibilidad con modo oscuro futuro */
 @media (prefers-color-scheme: dark) {
     #accountTabs .nav-link,
@@ -589,6 +602,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     #accountTabsContent .text-muted {
         color: #adb5bd !important;
+    }
+    
+    /* Mantener Top 5 Transactions y Overview en negro incluso en modo oscuro */
+    #accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card .card-body .d-flex .small,
+    #accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card .card-body .d-flex .fw-semibold,
+    #overview .card-header .card-title,
+    #overview .card-header h6 {
+        color: #000 !important;
     }
 }
 </style>
