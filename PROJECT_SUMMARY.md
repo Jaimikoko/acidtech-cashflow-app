@@ -2,9 +2,9 @@
 
 ## 🚀 **ESTADO ACTUAL DEL PROYECTO**
 
-**Última Actualización**: 2025-01-06  
-**Versión Actual**: v2.1.1 - UI Text Visibility Fix Applied  
-**Estado**: ✅ Production Ready + Planning Phase (PO Module)
+**Última Actualización**: 2025-08-06  
+**Versión Actual**: v2.2.0 - Dark/Light Mode + Data Import System  
+**Estado**: ✅ Production Ready + Real Data Loaded
 
 ---
 
@@ -26,11 +26,16 @@
 #### **UI/UX Enhancements**:
 - ✅ Titles cambiados a "Account Detail"
 - ✅ Contraste y visibilidad de texto mejorados
-- ✅ **NUEVO v2.1.1**: Text visibility fix en account tabs card (white-on-white issue resolved)
+- ✅ Text visibility fix en account tabs card (white-on-white issue resolved)
+- ✅ **NUEVO v2.2.0**: Complete Dark/Light Mode Toggle System
+- ✅ **NUEVO v2.2.0**: Smart text color adaptation (black in light mode, white in dark)
+- ✅ **NUEVO v2.2.0**: Persistent theme preference with localStorage
+- ✅ **NUEVO v2.2.0**: Responsive dark mode button (top-right corner)
+- ✅ **NUEVO v2.2.0**: Universal text visibility fix for all Cash Flow sections
 - ✅ Formateo de números con separadores de comas
 - ✅ Tablas completamente legibles
 - ✅ Loading indicators y transiciones suaves
-- ✅ Professional dark gray (#2c3e50) para textos principales
+- ✅ Professional styling para textos principales
 - ✅ Subtle border separations en headers para mejor UX
 
 #### **Testing Status**:
@@ -38,13 +43,31 @@
 - ✅ Multi-account functionality validated
 - ✅ Filter system tested across all accounts
 - ✅ UI elements and responsive design verified
+- ✅ **NEW**: Dark/Light mode functionality tested
+- ✅ **NEW**: Real data import validated (594 records loaded successfully)
+- ✅ **NEW**: Data replacement workflow verified
 
-### **2. 📥 Data Import Module**
-**Status**: ✅ **FUNCTIONAL**
-- CSV import para transacciones bancarias
-- Support para múltiples tipos de cuenta
-- Batch processing con IDs únicos
-- Error handling y reporting
+### **2. 📥 Data Import Module - v2.2.0**
+**Status**: ✅ **PRODUCTION READY + REAL DATA LOADED**
+
+#### **Complete Import System**:
+- ✅ **NEW**: `upload_and_replace_transactions()` function - Standard import workflow
+- ✅ **NEW**: CSV/XLSX support with pandas processing
+- ✅ **NEW**: Acid Tech format parser (DATE, DESCRIPTION, AMOUNT, MERCHANT, TYPE, ACCOUNT)
+- ✅ **NEW**: Smart data cleaning (parentheses = negative, comma removal)
+- ✅ **NEW**: Year/Account filtering with automatic data replacement
+- ✅ **NEW**: Zero-duplicate system (cleans before inserting)
+- ✅ **NEW**: Web endpoint `/replace-data` for UI integration
+- ✅ **NEW**: Manual execution script `load_revenue_data.py`
+- ✅ Batch processing con IDs únicos
+- ✅ Comprehensive error handling y statistics reporting
+
+#### **Real Data Successfully Loaded**:
+- ✅ **Revenue 4717**: 594 transacciones reales (2025)
+- ✅ **Date Range**: 1/1/2025 - 8/5/2025  
+- ✅ **Amount Range**: -$197,000 to +$208,376
+- ✅ **Format Established**: Standard para futuras cargas (Bill Pay, Payroll, Capital One)
+- ✅ **Database Integration**: Datos reflejados automáticamente en Cash Flow dashboard
 
 ### **3. 🏗️ Core Architecture**
 **Status**: ✅ **SOLID FOUNDATION**
