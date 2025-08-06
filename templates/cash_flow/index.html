@@ -514,4 +514,82 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
+<!-- Cash Flow Account Tabs - Text Visibility Fix -->
+<style>
+/* =================================================================
+   CASH FLOW DASHBOARD - ACCOUNT TABS CARD - TEXT VISIBILITY FIX
+   Selector específico para evitar afectar otros módulos
+   ================================================================= */
+
+/* Selector específico para la card de pestañas de cuentas en Cash Flow */
+#accountTabs .nav-link,
+#accountTabs .nav-link .d-flex {
+    color: #2c3e50 !important;
+}
+
+/* Texto dentro del contenido de las pestañas */
+#accountTabsContent .card-header h6,
+#accountTabsContent .card-body span,
+#accountTabsContent .card-body .small,
+#accountTabsContent .card-body .text-muted {
+    color: #2c3e50 !important;
+}
+
+/* Títulos de las cards internas */
+#accountTabsContent .card-header {
+    border-bottom: 1px solid #eaeaea;
+    color: #2c3e50;
+}
+
+/* Headers de las pestañas - separación visual */
+.card-header.bg-white.border-0 {
+    border-bottom: 1px solid #eaeaea !important;
+}
+
+/* Asegurar que los valores monetarios sean legibles */
+#accountTabsContent .fw-semibold,
+#accountTabsContent .fw-bold {
+    color: #2c3e50 !important;
+}
+
+/* Específico para Monthly Variation text */
+#accountTabsContent .text-muted {
+    color: #6c757d !important;
+}
+
+/* Específico para success/warning colors que deben mantenerse */
+#accountTabsContent .text-success {
+    color: #198754 !important;
+}
+
+#accountTabsContent .text-warning {
+    color: #fd7e14 !important;
+}
+
+/* Compatibilidad con modo oscuro futuro */
+@media (prefers-color-scheme: dark) {
+    #accountTabs .nav-link,
+    #accountTabs .nav-link .d-flex,
+    #accountTabsContent .card-header h6,
+    #accountTabsContent .card-body span,
+    #accountTabsContent .card-body .small,
+    #accountTabsContent .fw-semibold,
+    #accountTabsContent .fw-bold {
+        color: #ecf0f1 !important;
+    }
+    
+    #accountTabsContent .card-header {
+        border-bottom-color: #34495e;
+    }
+    
+    .card-header.bg-white.border-0 {
+        border-bottom-color: #34495e !important;
+    }
+    
+    #accountTabsContent .text-muted {
+        color: #adb5bd !important;
+    }
+}
+</style>
 {% endblock %}
