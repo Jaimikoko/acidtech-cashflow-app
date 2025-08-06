@@ -1,0 +1,595 @@
+DATE,DESCRIPTION, AMOUNT ,MERCHANT, TYPE ,ACCOUNT
+8/5/2025,Memo Credit : ENVIRONMENTAL DI    ACH          ACH Entry Memo Posted Today,"27,646.15",Environmental DI, Income ,Other Income
+8/5/2025,Transfer to DDA : Transfer CH x4717 to CH x5285 TMID:76287b41-a66f-4,"-150,000.00",Internal Transfer, Expense ,Bank Fees & Charges
+8/5/2025,Memo Credit : NORTHERN & CO LL    ACH Pmt      ACH Entry Memo Posted Today,"10,520.00",Northern & Co LLC, Income ,Revenue - Oil and Gas Extraction Services
+8/5/2025,Memo Credit : XTO ENERGY INC.     ACH PAYMNT   ACH Entry Memo Posted Today,"208,376.36",XTO Energy Inc., Income ,Revenue from Oil and Gas Sales
+8/4/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:f412271c-bdc6-4, Bill Pay Acct# 08-04-2025","-50,000.00",Internal Transfer, Expense ,Accounts Payable
+8/4/2025,"ACH Credit 002080     PNR USA INC AP, CTX","23,077.11",PNR USA INC, Income ,Revenue - Oil and Gas Extraction Services
+8/4/2025,RD Checking Deposit,"13,047.90",Unknown, Income ,Revenue
+8/1/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:55822629-bae7-4, Bill Pay Account 08/01/25","-10,000.00",Internal Transfer, Expense ,Accounts Payable
+8/1/2025,"ACH Credit PAYMENTS   ConocoPhillips C, CCD  100022000641745","158,920.06",ConocoPhillips, Income ,Revenue from Oil and Gas Sales
+8/1/2025,,"63,580.10",Not determined, Not determined ,Not determined
+8/1/2025,"ACH Credit PAYMNT     OVINTIV 0896, CCD  00516656","12,591.40",Ovintiv, Income ,Revenue - Oil and Gas Sales
+8/1/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD  0000701657","18,484.03",Diamondback E&P, Income ,Revenue from Oil and Gas Extraction
+8/1/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX","9,766.47",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+7/31/2025,"ACH Debit TRD PMNT   TAX_REV_WDT_ECKS, CCD  1734198656", (968.81),Texas Comptroller of Public Accounts, Expense ,Taxes & Licenses
+7/31/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:9a74b63c-cd37-4, Bill Pay 07-31-2025"," (10,000.00)",Internal Transfer, Expense ,Accounts Payable
+7/31/2025,RD Checking Deposit," 79,883.41 ",Unknown, Income ,Revenue
+7/31/2025,"ACH Credit ACHOUT     VTX ENERGY OPERA, CCD  BA10144"," 35,899.82 ",VTX Energy Opera, Expense ,Professional Services
+7/31/2025,"ACH Credit 002073     PNR USA INC AP, CTX"," 15,962.46 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+7/30/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:8c2273f6-4736-4, Hourly Payroll 07-31-2025"," (197,000.00)",Internal Transfer, Expense ,Payroll Expenses
+7/30/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:f2d7f02d-4679-4, Bill Pay Account 07-30-2025"," (20,000.00)",Internal Transfer, Expense ,Accounts Payable
+7/30/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:73651ee3-9271-4, Salary & Safety Bonus 07-31-25"," (140,000.00)",Internal Transfer, Expense ,Salaries and Wages
+7/30/2025,"ACH Debit DD         WEBFILE TAX PYMT, CCD  902/79968038", (66.62),Texas Comptroller, Expense ,Taxes & Licenses
+7/30/2025,"ACH Credit AP PAYMENT KINDER MORGAN, CCD  CO2A-100176985"," 35,955.85 ",Kinder Morgan, Income ,Revenue - Oil and Gas Services
+7/30/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 114,587.81 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+7/29/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:1eb03c87-c6ce-4, Bill Pay Account (07/29/2025)"," (230,000.00)",Internal Transfer, Expense ,Bank Fees & Charges
+7/29/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 82,335.04 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+7/29/2025,"ACH Credit 002072     PNR USA INC AP, CTX"," 7,662.39 ",PNR USA INC, Income ,Revenue - Oil and Gas Extraction Services
+7/28/2025,RD Checking Deposit," 112,825.24 ",Unknown, Income ,Revenue
+7/28/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:ade97ff4-9b50-4, Bill Pay Account 07/28/25"," (50,000.00)",Internal Transfer, Expense ,Bank Fees & Charges
+7/28/2025,"ACH Credit PAYMENTS   LE136 WaterBridg, CTX"," 14,909.00 ",WaterBridge, Expense ,Utilities
+7/25/2025,"ACH Credit ACHOUT     VTX ENERGY OPERA, CCD  BA10144"," 59,415.67 ",VTX Energy Opera, Expense ,Professional Services
+7/28/2025,"ACH Credit KFOC A/P   KAISER FRANCIS, PPD"," 38,837.98 ",Kaiser Francis, Income ,Revenue - Oil and Gas Sales
+7/25/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD  0000701657"," 29,051.41 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+7/25/2025,"ACH Credit PAYMENTS   ConocoPhillips C, CCD  100022000616585"," 25,639.40 ",ConocoPhillips, Income ,Revenue from Oil and Gas Sales
+7/24/2025,Check (On Us)," (7,000.00)",Unknown Vendor, Expense ,Operating Expenses
+7/24/2025,RD Checking Deposit," 6,248.64 ",Unknown, Income ,Revenue
+7/24/2025,"ACH Credit PAYMNT     OVINTIV 0896, CCD  00515824"," 12,254.52 ",Ovintiv, Income ,Revenue - Oil and Gas Sales
+7/23/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:6654ce70-0e21-4, Bill Pay Account 07/23/25"," (100,000.00)",Internal Transfer, Expense ,Accounts Payable
+7/23/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 104,144.95 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+7/23/2025,"ACH Credit EDI PYMNTS SM ENERGY COMPAN, PPD"," 17,756.92 ",SM Energy Company, Income ,Revenue - Oil and Gas Extraction
+7/22/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:b5b7e966-f0f8-4, Bill Pay Account 07/22/25"," (140,000.00)",Internal Transfer, Expense ,Accounts Payable
+7/21/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:ab7da2cb-7102-4, Bill Pay Account 07/21/25"," (30,000.00)",Internal Transfer, Expense ,Accounts Payable
+7/21/2025,"ACH Debit DD         WEBFILE TAX PYMT, CCD  902/79822640"," (13,836.10)",Texas Comptroller, Expense ,Taxes & Licenses
+7/18/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:7de5d599-9cd6-4, Payroll Account 07/18/25"," (10,000.00)",Internal Transfer, Expense ,Payroll & Benefits
+7/21/2025,"ACH Debit DD         WEBFILE TAX PYMT, CCD  902/79834477"," (8,975.12)",Texas Comptroller, Expense ,Taxes & Licenses
+7/18/2025,"ACH Credit ACHOUT     VTX ENERGY OPERA, CCD  BA10144"," 83,840.01 ",VTX Energy Opera, Expense ,Operating Expenses
+7/18/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:226c3dff-be4e-4, 401k Hourly & Salary Payroll"," (6,000.00)",401k Hourly & Salary Payroll, Expense ,Employee Benefits & Retirement Contributions
+7/18/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD  0000701657"," 44,584.99 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+7/18/2025,"ACH Credit PAYMNT     OVINTIV 0896, CCD  00507929"," 31,136.91 ",Ovintiv, Income ,Revenue - Oil and Gas Sales
+7/17/2025,"Transfer to Loan Transfer from Acid Tech, Revenue to Acid Tech loan 429"," (103,280.09)",Acid Tech, Expense ,Loan Repayment
+7/17/2025,"Transfer to Loan Transfer from Acid Tech, Revenue to Acid Tech loan 430"," (90,278.33)",Acid Tech, Expense ,Loan Payments
+7/17/2025,"Transfer to Loan Transfer from Acid Tech, Revenue to C   I           ."," (6,659.73)",Acid Tech, Expense ,Loan Payments
+7/17/2025,"ACH Debit ONLINE FEE TxIRP FleetPlus, CCD  608AR585099"," (41,124.20)",TxIRP FleetPlus, Expense ,Licenses & Permits
+7/17/2025,RD Checking Deposit," 68,555.43 ",Unknown, Income ,Revenue
+7/16/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:c53b9247-bc3c-4, Hourly Payroll 07/17/25"," (199,000.00)",Internal Transfer, Expense ,Payroll Expenses
+7/16/2025,POD - Credit/Deposit," 450,000.00 ",Customer Payment, Income ,Revenue - Oil and Gas Sales
+7/16/2025,"ACH Credit AP PAYMENT KINDER MORGAN, CCD  CO2A-100176985"," 33,598.68 ",Kinder Morgan, Income ,Revenue - Oil and Gas Sales
+7/16/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 32,599.93 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+7/15/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:edec8922-d780-4, Transfer Bill Pay 07/15/2025"," (200,000.00)",Internal Transfer, Expense ,Bank Fees & Charges
+7/15/2025,POD - Credit/Deposit," 200,000.00 ",Customer Payment, Income ,Revenue - Oil and Gas Sales
+7/14/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:6ace52bb-da7d-4, Salary & Bonuses 07/15/25"," (213,000.00)",Internal Transfer, Expense ,Salaries & Wages
+7/14/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:a3235656-a7f7-4, Bill Pay Account 07/14/25"," (90,000.00)",Internal Transfer, Expense ,Accounts Payable
+7/14/2025,POD - Credit/Deposit," 14,857.71 ",Customer Payment, Income ,Revenue - Oil and Gas Extraction
+7/14/2025,"ACH Debit ONLINE PMT CAPITAL ONE, CCD  CA00BED7BE59AD6"," (152,353.07)",Capital One, Expense ,Bank Fees & Charges
+7/14/2025,"ACH Credit 002071     PNR USA INC AP, CTX"," 23,104.40 ",PNR USA INC, Income ,Revenue - Oil and Gas Extraction
+7/14/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD  2000029601"," 20,252.14 ",Apache Corporation, Income ,Revenue
+7/14/2025,"ACH Credit ACCTVERIFY EPIC Chemistry L, CCD  015GYJFFYQKJ7DD", 0.01 ,EPIC Chemistry L, Expense ,Supplies & Materials
+7/11/2025,POD - Credit/Deposit," 29,715.50 ",Customer Payment, Income ,Revenue - Oil and Gas Sales
+7/11/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD  0000701657"," 28,070.91 ",Diamondback E&P, Income ,Revenue from Oil and Gas Sales
+7/14/2025,"Transfer from DDA Transfer CH x5285 to, CH x4717 TMID:ff8c81ca-27aa-4, Transfer Revenue 07/14/25"," 9,249.64 ",Internal Transfer, Income ,Revenue
+7/11/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD  2000029600"," 20,335.43 ",Apache Corporation, Income ,Revenue
+7/11/2025,"ACH Credit ACHOUT     VTX ENERGY OPERA, CCD  BA10144"," 14,629.45 ",VTX Energy Opera, Expense ,Professional Services
+7/11/2025,"ACH Credit AP         ESTANCIA O&G LLC, PPD"," 8,821.61 ",Estancia O&G LLC, Income ,Revenue - Oil and Gas Sales
+7/11/2025,"ACH Credit PAYMENTS   ConocoPhillips C, CCD  100022000553045"," 7,014.36 ",ConocoPhillips, Income ,Revenue from Oil and Gas Sales
+7/10/2025,Check (Regular Inclearings)," (200,000.00)",Unknown Vendor, Expense ,Operating Expenses
+7/10/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:a8e6df2e-f039-4, Bill Pay Account 07/10/25"," (50,000.00)",Internal Transfer, Expense ,Accounts Payable
+7/9/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:2bbba865-8a10-4, Bill Pay Account 07/09/25"," (50,000.00)",Internal Transfer, Expense ,Accounts Payable
+7/9/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 179,826.72 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+7/8/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 32,814.43 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+7/7/2025,RD Checking Deposit," 15,604.93 ",Unknown, Income ,Revenue
+7/7/2025,"ACH Debit USATAXPYMT IRS, CCD  XXXXX8831310062"," (25,850.00)",IRS, Expense ,Taxes & Licenses
+7/7/2025,"ACH Credit PAYMENTS   LE136 WaterBridg, CTX"," 96,902.15 ",WaterBridge, Expense ,Utilities & Water Management
+7/7/2025,"ACH Credit PAYMNT     OVINTIV 0896, CCD  00506744"," 41,307.92 ",OVINTIV, Income ,Revenue from Oil and Gas Sales
+7/7/2025,"ACH Credit ACH 7/2    MATADOR881359374, CCD  032586"," 12,109.51 ",Matador, Income ,Revenue - Oil and Gas Extraction
+7/7/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD  2000028709"," 29,880.38 ",Apache Corporation, Income ,Revenue
+7/3/2025,Check (On Us)," (12,000.00)",Unknown Vendor, Expense ,Operating Expenses
+7/3/2025,Check (On Us)," (7,000.00)",Unknown Vendor, Expense ,Operating Expenses
+7/3/2025,RD Checking Deposit," 33,254.56 ",Unknown, Income ,Revenue
+7/3/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:0d0dc628-c1d3-4, Bill Pay Account (07/03/25)"," (50,000.00)",Internal Transfer, Expense ,Accounts Payable
+7/3/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD  0000701657"," 33,866.46 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+7/3/2025,"ACH Credit 002070     PNR USA INC AP, CTX"," 22,903.92 ",PNR USA INC, Income ,Revenue - Oil and Gas Extraction Services
+7/3/2025,"ACH Credit PO/REMIT   CHEVRON 0966, CTX"," 7,878.52 ",Chevron, Income ,Revenue - Oil and Gas Sales
+7/2/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:c86a0109-d1fd-4, Hourly Payroll 07/03/25"," (220,000.00)",Internal Transfer, Expense ,Payroll Expenses
+7/2/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 173,685.23 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+7/1/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:cfbeafe3-90ce-4, Bill Pay Account 07/01/25"," (120,000.00)",Internal Transfer, Expense ,Accounts Payable
+7/1/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD  0000701657"," 134,195.03 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+7/1/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD  0000701657"," 7,503.53 ",Diamondback E&P, Income ,Revenue from Oil and Gas Sales
+7/1/2025,"ACH Credit AP         ESTANCIA O&G LLC, PPD"," 11,878.64 ",Estancia O&G LLC, Income ,Revenue - Oil and Gas Sales
+6/30/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:2dec8f72-1c3b-4, Bill Pay Account 06/30/25"," (100,000.00)",Internal Transfer, Expense ,Accounts Payable
+6/30/2025,"ACH Debit EPAY       CHASE CREDIT CRD, WEB, 8507268813"," (8,321.44)",Chase Credit Card, Expense ,Bank Fees & Charges
+6/30/2025,"ACH Debit NMMTP      New Mexico MTP, CCD  800-255-2414"," (2,023.60)",New Mexico MTP, Expense ,Taxes & Licenses
+6/30/2025,RD Checking Deposit," 13,767.44 ",Unknown, Income ,Revenue
+6/30/2025,"ACH Debit NMMTP      New Mexico MTP, CCD  800-255-2414"," (2,529.50)",New Mexico MTP, Expense ,Taxes & Licenses
+6/30/2025,"ACH Credit PAYMENTS   LE136 WaterBridg, CTX"," 20,327.96 ",WaterBridge, Expense ,Utilities & Water Management
+6/27/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:0a100226-c6d8-4, Salary & Bonuses 06/30/25"," (140,000.00)",Internal Transfer, Expense ,Salaries & Wages
+6/27/2025,"ACH Credit ACHOUT     VTX ENERGY OPERA, CCD  BA10144"," 117,587.18 ",VTX Energy Opera, Expense ,Contract Services
+6/27/2025,"ACH Credit PAYMNT     OVINTIV 0896, CCD  00506061"," 12,524.02 ",Ovintiv, Income ,Revenue from Oil and Gas Extraction
+6/26/2025,"ACH Credit 002062     PNR USA INC AP, CTX"," 31,297.52 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+6/25/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:463bdd13-fdea-4, Bill Pay Account 06/25/25"," (50,000.00)",Internal Transfer, Expense ,Bank Fees & Charges
+6/25/2025,POD - Credit/Deposit," 52,441.97 ",Customer Payment, Income ,Revenue - Oil and Gas Sales
+6/25/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 119,600.93 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+6/24/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:dd19964c-173b-4, Bill Pay Account 06/24/25"," (60,000.00)",Internal Transfer, Expense ,Accounts Payable
+6/24/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 21,915.06 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+6/24/2025,"ACH Debit PAYMENT    HEALTH CARE SERV, PPD", (1.00),Health Care Services, Expense ,Employee Benefits
+6/24/2025,"ACH Credit PAYMENTS   LE136 WaterBridg, CTX"," 5,709.87 ",WaterBridge, Expense ,Utilities & Water Management
+6/23/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (100,000.00)",Acid Tech, Expense ,Professional Services
+6/23/2025,"ACH Debit DD         WEBFILE TAX PYMT, CCD  902/79565125"," (9,242.37)",Texas Comptroller, Expense ,Taxes & Licenses
+6/23/2025,"ACH Debit DD         WEBFILE TAX PYMT, CCD  902/79566257"," (69,000.00)",Texas Comptroller, Expense ,Taxes & Licenses
+6/23/2025,"ACH Credit 002062     PNR USA INC AP, CTX"," 34,348.23 ",PNR USA INC, Income ,Revenue
+6/23/2025,"ACH Debit DD         WEBFILE TAX PYMT, CCD  902/79558900", (458.14),Texas Comptroller, Expense ,Taxes & Licenses
+6/23/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD  2000026647"," 18,499.51 ",Apache Corporation, Income ,Revenue
+6/23/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD  0000701657"," 16,416.80 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+6/23/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 13,634.41 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+6/20/2025,"Transfer to Loan Transfer from Acid Tech, Revenue to C   I           ."," (4,159.16)",Acid Tech, Expense ,Loan Payments
+6/20/2025,"ACH Debit PAYMENT    HEALTH CARE SERV, PPD", (100.00),Health Care Services, Expense ,Employee Benefits
+6/20/2025,"ACH Credit ACHOUT     VTX ENERGY OPERA, CCD  BA10144"," 179,731.42 ",VTX Energy Opera, Expense ,Contract Services
+6/20/2025,"ACH Credit PAYMNT     OVINTIV 0896, CCD  00498373"," 12,962.10 ",Ovintiv, Income ,Revenue from Oil and Gas Sales
+6/20/2025,"ACH Credit 002061     PNR USA INC AP, CTX"," 14,015.57 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+6/18/2025,"Transfer to Loan Transfer from Acid Tech, Revenue to Acid Tech loan 429"," (104,414.35)",Acid Tech, Expense ,Loan Repayment
+6/20/2025,"Transfer from DDA Transfer CH x5285 to, CH x4717 TMID:15d0e097-97c1-4, Revenue Account  062025"," 30,000.00 ",Internal Transfer, Income ,Revenue
+6/18/2025,"Transfer to Loan Transfer from Acid Tech, Revenue to Acid Tech loan 430"," (90,979.20)",Acid Tech, Expense ,Loan Repayment
+6/18/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 176,662.08 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+6/18/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:fa7d3fe0-d240-4, Bill Pay Account 06/18/25"," (10,000.00)",Internal Transfer, Expense ,Accounts Payable
+6/18/2025,"ACH Credit PAYMENTS   ConocoPhillips C, CCD  100022000470615"," 10,171.86 ",ConocoPhillips, Income ,Revenue from Oil and Gas Sales
+6/18/2025,"ACH Credit PAYMENTS   ConocoPhillips C, CCD  100022000470625"," 10,130.83 ",ConocoPhillips, Income ,Revenue from Oil and Gas Sales
+6/17/2025,Check (On Us)," (7,000.00)",Unknown Vendor, Expense ,Operating Expenses
+6/17/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:614ea533-735b-4, Hourly 06/18/25"," (210,000.00)",Internal Transfer, Expense ,Bank Fees & Charges
+6/17/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:e19b883c-f41a-4, Bill Pay Account 06/17/25"," (70,000.00)",Internal Transfer, Expense ,Bank Fees & Charges
+6/17/2025,RD Checking Deposit," 28,118.70 ",Unknown, Income ,Revenue
+6/17/2025,"ACH Credit PO/REMIT   CHEVRON 0966, CTX"," 16,210.45 ",Chevron, Income ,Revenue - Oil and Gas Sales
+6/16/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:abb64edb-018f-4, Bill Pay Account 06/16/25"," (50,000.00)",Internal Transfer, Expense ,Accounts Payable
+6/16/2025,"ACH Credit PAYMENTS   LE136 WaterBridg, CTX"," 67,128.64 ",WaterBridge, Expense ,Utilities & Water Management
+6/16/2025,"ACH Credit 002061     PNR USA INC AP, CTX"," 39,265.64 ",PNR USA INC, Income ,Revenue - Oil and Gas Extraction Services
+6/13/2025,RD Checking Deposit," 8,424.93 ",Unknown, Income ,Revenue
+6/13/2025,"ACH Debit ONLINE PMT CAPITAL ONE, CCD  43IHP287QZ2ID4Y"," (122,947.55)",Capital One, Expense ,Interest Expense
+6/13/2025,"ACH Credit PAYMNT     OVINTIV 0896, CCD  00497898"," 20,779.21 ",Ovintiv, Income ,Revenue from Oil and Gas Sales
+6/13/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD  2000025876"," 47,203.90 ",Apache Corporation, Income ,Revenue
+6/13/2025,"ACH Credit EDI PYMNTS SM ENERGY COMPAN, PPD"," 12,404.68 ",SM Energy Company, Income ,Revenue from Oil and Gas Extraction
+6/13/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD  0000701657"," 9,320.80 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+6/12/2025,POD - Credit/Deposit," 310,000.00 ",Customer Payment, Income ,Revenue - Oil and Gas Extraction
+6/12/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:857268ae-2d5f-4, Salary & Bonuses 06/13/25"," (215,000.00)",Internal Transfer, Expense ,Salaries & Wages
+6/12/2025,"ACH Credit ACHOUT     VTX ENERGY OPERA, CCD  BA10144"," 42,997.24 ",VTX Energy Opera, Expense ,Contract Services
+6/12/2025,"ACH Credit PAYMENTS   OCCIDENTAL, CTX"," 22,727.57 ",Occidental Petroleum, Income ,Revenue - Oil and Gas Services
+6/11/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:57743f03-d149-4, Bill Pay Account 06/11/25"," (80,000.00)",Internal Transfer, Expense ,Accounts Payable
+6/11/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 45,949.21 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+6/10/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:9ae0f7e7-07f3-4, Bill Pay Account 06/10/25"," (30,000.00)",Internal Transfer, Expense ,Accounts Payable
+6/9/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:781b4889-8017-4, Bill Pay Account 06/09/25"," (120,000.00)",Internal Transfer, Expense ,Accounts Payable
+6/9/2025,RD Checking Deposit," 50,231.96 ",Unknown, Income ,Revenue
+6/9/2025,"ACH Credit PAYMENTS   LE136 WaterBridg, CTX"," 35,270.28 ",WaterBridge, Expense ,Utilities & Water Management
+6/9/2025,"ACH Credit 002060     PNR USA INC AP, CTX"," 31,996.76 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+6/9/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 14,891.78 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+6/9/2025,"ACH Credit PAYMENT    KAISER FRANCIS, PPD"," 13,267.40 ",Kaiser Francis, Income ,Revenue - Oil and Gas Sales
+6/6/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:884a2fbf-e2b5-4, Bill Pay Account 06/06/25"," (50,000.00)",Internal Transfer, Expense ,Accounts Payable
+6/6/2025,"ACH Credit ACHOUT     VTX ENERGY OPERA, CCD  BA10144"," 35,702.92 ",VTX Energy Opera, Expense ,Professional Services
+6/6/2025,"ACH Credit 002060     PNR USA INC AP, CTX"," 66,383.96 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+6/6/2025,"ACH Credit PAYMENTS   OCCIDENTAL, CTX"," 20,921.39 ",Occidental, Income ,Revenue - Oil and Gas Sales
+6/6/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD  2000024905"," 18,985.10 ",Apache Corporation, Income ,Revenue
+6/5/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:38570417-4011-4, Bill Pay Account 06/05/25"," (50,000.00)",Internal Transfer, Expense ,Accounts Payable
+6/6/2025,"ACH Credit EDI PYMNTS SM ENERGY COMPAN, PPD"," 8,750.58 ",SM Energy Company, Income ,Revenue - Oil and Gas Extraction
+6/5/2025,"ACH Debit EPAY       CHASE CREDIT CRD, WEB, 8438374877"," (15,115.70)",Chase Credit Card, Expense ,Bank Fees & Charges
+6/5/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD  2000024555"," 70,364.60 ",Apache Corporation, Income ,Revenue
+6/4/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:dd08b205-09e8-4, Hourly Payroll 06/05/25"," (212,000.00)",Internal Transfer, Expense ,Payroll Expenses
+6/4/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:2a12391f-7fa8-4, Bill Pay Account 06/04/25"," (33,000.00)",Internal Transfer, Expense ,Accounts Payable
+6/4/2025,RD Checking Deposit," 15,279.90 ",Unknown, Income ,Revenue
+6/4/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 20,063.52 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+6/3/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:97ee2c14-d100-4, Bill Pay Account 06/03/25"," (75,000.00)",Internal Transfer, Expense ,Accounts Payable
+6/3/2025,"ACH Credit PAYMENTS   LE136 WaterBridg, CTX"," 25,030.88 ",WaterBridge, Expense ,Utilities & Water Management
+6/2/2025,RD Checking Deposit," 26,512.89 ",Unknown, Income ,Revenue
+6/2/2025,"ACH Credit PO/REMIT   CHEVRON 0966, CTX"," 14,799.20 ",Chevron, Income ,Revenue - Oil and Gas Sales
+6/2/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 8,199.82 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+6/2/2025,"ACH Credit PO/REMIT   CHEVRON 0966, CTX"," 6,470.00 ",Chevron, Income ,Revenue - Oil and Gas Sales
+5/30/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:942b4263-df19-4, Bill Pay Account 05/30/25"," (50,000.00)",Internal Transfer, Expense ,Accounts Payable
+5/30/2025,RD Checking Deposit," 11,242.70 ",Unknown, Income ,Revenue
+5/30/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD  0000701657"," 81,214.03 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+5/30/2025,"ACH Credit PAYMNT     OVINTIV 0896, CCD  00496596"," 85,572.92 ",Ovintiv, Income ,Revenue from Oil and Gas Extraction
+5/30/2025,"ACH Credit PAYMENTS   ConocoPhillips C, CCD  100022000406425"," 13,174.70 ",ConocoPhillips, Income ,Revenue - Oil and Gas Sales
+5/30/2025,"ACH Credit PAYMENTS   ConocoPhillips C, CCD  100022000406435"," 9,880.98 ",ConocoPhillips, Income ,Revenue from Oil and Gas Sales
+5/30/2025,"ACH Credit PO/REMIT   CHEVRON 0966, CTX"," 8,516.22 ",Chevron, Income ,Revenue - Oil and Gas Sales
+5/30/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD  0000701657"," 6,883.84 ",Diamondback E&P, Income ,Revenue from Oil and Gas Sales
+5/29/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:0b6fcea7-5291-4, 05/31/25 Salary&SafetyBonus"," (140,000.00)",Internal Transfer, Expense ,Payroll & Benefits
+5/29/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:1b84964e-dd43-4, BillPay 05/29/25"," (120,000.00)",Internal Transfer, Expense ,Accounts Payable
+5/29/2025,RD Checking Deposit," 15,310.28 ",Unknown, Income ,Revenue
+5/29/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 63,803.01 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+5/29/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD  2000023505"," 18,134.54 ",Apache Corporation, Income ,Revenue
+5/28/2025,RD Checking Deposit," 16,557.59 ",Unknown, Income ,Revenue
+5/28/2025,"ACH Credit 002052     PNR USA INC AP, CTX"," 75,734.07 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+5/27/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:f34a5e96-8433-4, Bill Pay Account 05/27/25"," (150,000.00)",Internal Transfer, Expense ,Accounts Payable
+5/27/2025,RD Checking Deposit," 33,075.77 ",Unknown, Income ,Revenue
+5/27/2025,"ACH Credit PAYMENTS   LE136 WaterBridg, CTX"," 70,433.54 ",WaterBridge, Expense ,Utilities & Water Management
+5/27/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD  2000023042"," 8,804.36 ",Apache Corporation, Income ,Revenue
+5/23/2025,"ACH Credit 002052     PNR USA INC AP, CTX"," 64,587.81 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+5/23/2025,"ACH Credit PAYMENTS   ConocoPhillips C, CCD  100022000381605"," 19,142.90 ",ConocoPhillips, Income ,Revenue from Oil and Gas Sales
+5/23/2025,"ACH Credit ACHOUT     VTX ENERGY OPERA, CCD  BA10144"," 15,102.45 ",VTX Energy Opera, Expense ,Professional Services
+5/23/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD  0000701657"," 14,385.89 ",Diamondback E&P, Income ,Revenue from Oil and Gas Sales
+5/22/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:f117406c-c42a-4, Bill Pay Account 05/22/25"," (100,000.00)",Internal Transfer, Expense ,Accounts Payable
+5/23/2025,"ACH Credit PAYMNT     OVINTIV 0896, CCD  00495897"," 4,987.72 ",Ovintiv, Income ,Revenue from Oil and Gas Sales
+5/22/2025,RD Checking Deposit," 25,154.12 ",Unknown, Income ,Revenue
+5/22/2025,"ACH Credit CORP PAY   BERYL OIL, CCD  5091"," 18,184.55 ",Beryl Oil, Income ,Revenue - Oil and Gas Sales
+5/21/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:8f574a04-0a96-4, Bill Pay 05/21/25"," (30,000.00)",Internal Transfer, Expense ,Accounts Payable
+5/21/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:c20fc1a3-5f51-4, Hourly Payroll 05/22/25"," (210,000.00)",Internal Payroll, Expense ,Payroll Expenses
+5/21/2025,"ACH Debit DD         WEBFILE TAX PYMT, CCD  902/79319241"," (9,274.29)",Texas Comptroller, Expense ,Taxes & Licenses
+5/21/2025,"ACH Credit 002052     PNR USA INC AP, CTX"," 23,673.65 ",PNR USA INC, Income ,Revenue - Oil and Gas Extraction Services
+5/21/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 4,099.91 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+5/20/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:6f4e5180-5415-4, Bill Pay Account 05/20/25"," (100,000.00)",Internal Transfer, Expense ,Accounts Payable
+5/20/2025,RD Checking Deposit," 24,957.22 ",Unknown, Income ,Revenue
+5/19/2025,Check (Regular Inclearings), (54.00),Unknown Vendor, Expense ,Operating Expenses
+5/19/2025,Check (Regular Inclearings), (54.00),Unknown Vendor, Expense ,Operating Expenses
+5/19/2025,Check (On Us)," (12,000.00)",Unknown Vendor, Expense ,Operating Expenses
+5/19/2025,Check (On Us)," (12,000.00)",Unknown Vendor, Expense ,Operating Expenses
+5/19/2025,Check (On Us)," (7,000.00)",Unknown Vendor, Expense ,Operating Expenses
+5/19/2025,Check (On Us)," (7,000.00)",Unknown Vendor, Expense ,Operating Expenses
+5/19/2025,"ACH Debit ONLINE PMT CAPITAL ONE, CCD  43CZUPBPY6EAI9U"," (87,517.45)",Capital One, Expense ,Bank Fees & Charges
+5/19/2025,"ACH Credit PAYMENTS   LE136 WaterBridg, CTX"," 10,732.68 ",WaterBridge, Expense ,Utilities & Water Management
+5/19/2025,"ACH Credit PAYMENT    KAISER FRANCIS, PPD"," 17,284.27 ",Kaiser Francis, Income ,Revenue - Oil and Gas Sales
+5/19/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD  2000022048"," 9,153.52 ",Apache Corporation, Income ,Revenue
+5/19/2025,"ACH Credit 002051     PNR USA INC AP, CTX"," 9,643.59 ",PNR USA INC, Income ,Revenue - Oil and Gas Extraction
+5/19/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 4,093.70 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+5/16/2025,"Transfer to Loan Transfer from Acid Tech, Revenue to Acid Tech loan 430"," (91,234.36)",Acid Tech, Expense ,Loan Repayment
+5/16/2025,"Transfer to Loan Transfer from Acid Tech, Revenue to Acid Tech loan 429"," (104,236.11)",Acid Tech, Expense ,Loan Repayment
+5/16/2025,"Transfer to Loan Transfer from Acid Tech, Revenue to C   I           ."," (3,628.34)",Acid Tech, Expense ,Loan Payments
+5/16/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:94adf5e8-7025-4, Bill Pay Account 05/16/25"," (50,000.00)",Internal Transfer, Expense ,Bank Fees & Charges
+5/16/2025,"ACH Credit 002051     PNR USA INC AP, CTX"," 69,145.98 ",PNR USA INC, Income ,Revenue - Oil and Gas Extraction Services
+5/16/2025,"ACH Credit PAYMENTS   ConocoPhillips C, CCD  100022000357145"," 203,331.77 ",ConocoPhillips, Income ,Revenue from Oil and Gas Sales
+5/16/2025,"ACH Credit PAYMENTS   ConocoPhillips C, CCD  100022000357135"," 41,156.18 ",ConocoPhillips, Income ,Revenue from Oil and Gas Sales
+5/16/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD  0000701657"," 62,897.66 ",Diamondback E&P, Income ,Revenue from Oil and Gas Sales
+5/16/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD  2000022047"," 16,660.33 ",Apache Corporation, Income ,Revenue
+5/15/2025,"ACH Credit PAYMENTS   OCCIDENTAL, CTX"," 17,400.92 ",Occidental, Income ,Revenue
+5/14/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:a41b40a4-4f70-4, Salary&Bonuses051525"," (215,000.00)",Internal Transfer, Expense ,Salaries & Wages
+5/14/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 45,500.19 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+5/14/2025,"ACH Credit PAYMENTS   Contango OG Hous, CCD  02002000303005"," 14,025.19 ",Contango Oil & Gas, Income ,Revenue - Oil & Gas Sales
+5/13/2025,RD Checking Deposit," 93,869.35 ",Unknown, Income ,Revenue
+5/13/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD"," 16,073.19 ",Apache Corporation, Income ,Revenue from Oil and Gas Sales
+5/12/2025,"ACH Credit 002050     PNR USA INC AP, CTX"," 84,587.01 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+5/9/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:4ec7fcfc-def5-4, Bill Pay Account 05/09/25"," (100,000.00)",Internal Transfer, Expense ,Accounts Payable
+5/9/2025,RD Checking Deposit," 26,931.97 ",Unknown, Income ,Revenue
+5/9/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD   ACIDIZING TECHNOLOGY S"," 78,871.70 ",Apache Corporation, Income ,Revenue - Oilfield Services
+5/9/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD   ACID TECH SERVICES"," 61,337.51 ",Diamondback E&P, Income ,Service Revenue
+5/9/2025,"ACH Credit PAYMENTS   ConocoPhillips C, CCD   ACID TECH SVCS"," 24,453.78 ",ConocoPhillips, Income ,Service Revenue
+5/9/2025,"ACH Credit EDI PYMNTS Deep Blue Operat, CCD   Acid Tech Services LLC"," 10,103.10 ",Acid Tech Services LLC, Income ,Revenue - Oil and Gas Services
+5/8/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:ff225fd6-a934-4, Bill Pay Account 05/08/25"," (25,000.00)",Internal Transfer, Expense ,Bank Fees & Charges
+5/8/2025,"ACH Debit DD         WEBFILE TAX PYMT, CCD"," (20,000.00)",Texas Comptroller, Expense ,Taxes & Licenses
+5/8/2025,"ACH Credit ACHOUT     VTX ENERGY OPERA, CCD"," 71,095.97 ",VTX Energy Opera, Expense ,Contract Services
+5/7/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:1c77fb74-f9ff-4, Hourly Payroll 05/08/25"," (200,000.00)",Internal Transfer, Expense ,Salaries & Wages
+5/7/2025,"ACH Credit AP PAYMENT KINDER MORGAN, CCD"," 33,491.78 ",Kinder Morgan, Expense ,Utilities & Fuel
+5/6/2025,RD Checking Deposit," 33,621.89 ",Unknown, Income ,Revenue
+5/7/2025,"ACH Credit PAYMENTS   Contango OG Hous, CCD"," 7,431.04 ",Contango Oil & Gas, Income ,Revenue - Oil & Gas Sales
+5/5/2025,RD Checking Deposit," 13,423.39 ",Unknown, Income ,Revenue
+5/5/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (50,000.00)",Acid Tech, Expense ,Professional Services
+5/5/2025,"ACH Credit PAYMENTS   LE136 WaterBridg, CTX"," 97,251.30 ",WaterBridge, Expense ,Utilities & Water Management
+5/5/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD"," 8,165.39 ",Apache Corporation, Income ,Revenue
+5/5/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD"," 37,776.50 ",Apache Corporation, Income ,Revenue from Oil and Gas Sales
+5/5/2025,"ACH Credit 002050     PNR USA INC AP, CTX"," 7,143.03 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+5/2/2025,Check (On Us)," (7,000.00)",Unknown Vendor, Expense ,Operating Expenses
+5/2/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:d8912448-c1ac-4, Bill Pay Account 05/02/25"," (100,000.00)",Internal Transfer, Expense ,Bank Fees & Charges
+5/2/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (50,000.00)",Acid Tech, Expense ,Professional Services
+5/2/2025,"ACH Credit ACHOUT     VTX ENERGY OPERA, CCD"," 69,093.75 ",VTX Energy Opera, Expense ,Operating Expenses
+5/2/2025,"ACH Credit 002050     PNR USA INC AP, CTX"," 31,654.38 ",PNR USA INC, Income ,Revenue - Oil and Gas Extraction Services
+5/2/2025,"ACH Credit PAYMENTS   ConocoPhillips C, CCD"," 33,596.44 ",ConocoPhillips, Income ,Revenue from Oil and Gas Sales
+5/2/2025,"ACH Credit PAYMNT     OVINTIV 0896, CCD"," 12,658.77 ",Ovintiv, Income ,Revenue - Oil and Gas Sales
+5/2/2025,"ACH Credit EDI PYMNTS SM ENERGY COMPAN, PPD"," 16,115.59 ",SM Energy Company, Income ,Revenue - Oil and Gas Extraction
+5/1/2025,"ACH Debit TRD PMNT   TAX_REV_WDT_ECKS, CCD", (623.60),Texas Comptroller, Expense ,Taxes & Licenses
+5/1/2025,"ACH Debit DD         WEBFILE TAX PYMT, CCD", (34.41),Texas Comptroller, Expense ,Taxes & Licenses
+5/1/2025,RD Checking Deposit," 55,931.84 ",Unknown, Income ,Revenue
+5/1/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD"," 64,337.73 ",Apache Corporation, Income ,Revenue - Oil and Gas Sales
+4/29/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:ba721e5f-6bd4-4, 04/30/25 Salary & Safety Bonus"," (58,000.00)",Internal Transfer, Expense ,Salaries and Wages
+4/29/2025,"ACH Credit ACH        ENVIRONMENTAL DI, CCD"," 12,329.69 ",Environmental Dynamics Inc., Income ,Consulting Revenue
+4/29/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:6de555d1-7cee-4, Bill Pay Account 04/29/25"," (50,000.00)",Internal Transfer, Expense ,Accounts Payable
+4/29/2025,"ACH Credit 4/24 ACH   MATADOR881359374, CCD"," 3,667.75 ",Matador, Income ,Revenue - Oil and Gas Extraction Services
+4/28/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:93b06044-2027-4, Bill Pay Account 04/28/25"," (150,000.00)",Internal Transfer, Expense ,Accounts Payable
+4/28/2025,"ACH Debit EPAY       CHASE CREDIT CRD, WEB, 8336207160"," (4,900.80)",Chase Credit Card, Expense ,Bank Fees & Charges
+4/28/2025,"ACH Credit 002042     PNR USA INC AP, CTX"," 27,544.24 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+4/28/2025,"ACH Credit PAYMENT    KAISER FRANCIS, PPD"," 6,459.77 ",Kaiser Francis, Income ,Revenue - Oil and Gas Sales
+4/25/2025,"ACH Credit PAYMENTS   ConocoPhillips C, CCD"," 39,038.66 ",ConocoPhillips, Income ,Revenue from Oil and Gas Sales
+4/25/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD"," 32,404.35 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+4/25/2025,"ACH Credit 002042     PNR USA INC AP, CTX"," 10,997.53 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+4/25/2025,"ACH Credit PAYMNT     OVINTIV 0896, CCD"," 25,405.87 ",Ovintiv, Income ,Revenue - Oil and Gas Sales
+4/25/2025,"ACH Credit PAYMENTS   ConocoPhillips C, CCD"," 6,779.84 ",ConocoPhillips, Income ,Revenue from Oil and Gas Sales
+4/25/2025,"ACH Credit PAYMENTS   CPCo-North Ameri, CCD"," 9,432.76 ",CPCo-North Ameri, Income ,Revenue - Oil and Gas Extraction
+4/24/2025,"ACH Credit ACHOUT     VTX ENERGY OPERA, CCD"," 97,188.46 ",VTX Energy Opera, Expense ,Contract Services
+4/24/2025,Check (On Us)," (7,000.00)",Unknown Vendor, Expense ,Operating Expenses
+4/22/2025,RD Checking Deposit," 76,709.67 ",Unknown, Income ,Revenue
+4/23/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (100,000.00)",Acid Tech, Expense ,Accounts Payable
+4/21/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (50,000.00)",Acid Tech, Expense ,Professional Services
+4/21/2025,"ACH Debit DD         WEBFILE TAX PYMT, CCD"," (8,635.18)",Texas Comptroller, Expense ,Taxes & Licenses
+4/21/2025,"ACH Debit DD         WEBFILE TAX PYMT, CCD"," (2,607.87)",Texas Comptroller, Expense ,Taxes & Licenses
+4/21/2025,RD Checking Deposit," 40,850.53 ",Unknown, Income ,Revenue
+4/21/2025,"ACH Credit 002041     PNR USA INC AP, CTX"," 25,204.47 ",PNR USA INC, Income ,Revenue
+4/18/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:b9ffbdad-c01f-4, Bill Pay Account 04/18/25"," (70,000.00)",Internal Transfer, Expense ,Accounts Payable
+4/21/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD"," 19,278.68 ",Apache Corporation, Income ,Revenue - Oil and Gas Sales
+4/18/2025,"ACH Credit ACH 4/16   MATADOR881359374, CCD"," 21,184.10 ",Matador Resources, Income ,Revenue - Oil & Gas Sales
+4/18/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD"," 30,579.20 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+4/18/2025,"ACH Credit PAYMENTS   ConocoPhillips C, CCD"," 15,757.22 ",ConocoPhillips, Income ,Revenue from Oil and Gas Sales
+4/18/2025,"ACH Credit PO/REMIT   CHEVRON 0966, CTX"," 8,167.50 ",Chevron, Income ,Revenue - Oil and Gas Sales
+4/18/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD"," 1,903.72 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+4/17/2025,"Transfer to Loan Transfer from Acid Tech, Revenue to Acid Tech loan 429"," (105,435.18)",Acid Tech, Expense ,Loan Repayment
+4/17/2025,"Transfer to Loan Transfer from Acid Tech, Revenue to Acid Tech loan 430"," (92,000.04)",Acid Tech, Expense ,Loan Repayment
+4/17/2025,RD Checking Deposit," 13,682.78 ",Unknown, Income ,Revenue
+4/15/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (100,000.00)",Acid Tech, Expense ,Professional Services
+4/15/2025,"ACH Debit ONLINE PMT CAPITAL ONE, CCD"," (90,183.18)",Capital One, Expense ,Interest Expense
+4/15/2025,RD Checking Deposit," 65,662.74 ",Unknown, Income ,Revenue
+4/14/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:4ab1febc-2ca0-4, Salary Payroll-bonus 04/15/25"," (210,000.00)",Internal Transfer, Expense ,Salaries and Wages
+4/14/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (100,000.00)",Acid Tech, Expense ,Professional Services
+4/14/2025,RD Checking Deposit," 101,989.49 ",Unknown, Income ,Revenue
+4/14/2025,"ACH Credit 002041     PNR USA INC AP, CTX"," 31,659.61 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+4/14/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD"," 84,896.77 ",Apache Corporation, Income ,Revenue from Oil and Gas Sales
+4/14/2025,"ACH Credit PO/REMIT   CHEVRON 0966, CTX"," 6,417.50 ",Chevron, Income ,Revenue - Oil and Gas Sales
+4/14/2025,"ACH Credit PO/REMIT   CHEVRON 0966, CTX"," 6,417.50 ",Chevron, Income ,Revenue - Oil and Gas Sales
+4/11/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:ee297dd4-deb7-4, Bill Pay Account 04/11/25"," (50,000.00)",Internal Transfer, Expense ,Accounts Payable
+4/11/2025,"ACH Credit ACHOUT     VTX ENERGY OPERA, CCD"," 53,558.17 ",VTX Energy Opera, Expense ,Operating Expenses
+4/11/2025,"ACH Credit 002041     PNR USA INC AP, CTX"," 46,210.29 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+4/11/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD"," 37,312.35 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+4/11/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 16,399.64 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+4/11/2025,"ACH Credit PAYMENTS   ConocoPhillips C, CCD"," 7,564.63 ",ConocoPhillips, Income ,Revenue from Oil and Gas Sales
+4/11/2025,"ACH Credit PAYMNT     OVINTIV 0896, CCD"," 13,353.48 ",Ovintiv, Income ,Revenue from Oil and Gas Extraction
+4/10/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (100,000.00)",Acid Tech, Expense ,Professional Services
+4/9/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:cfbb7d42-0a4a-4, 04/10/25 Hourly Payroll"," (210,000.00)",Internal Transfer, Expense ,Payroll Expenses
+4/9/2025,RD Checking Deposit," 1,038.10 ",Unknown, Income ,Revenue
+4/9/2025,"ACH Credit AP PAYMENT KINDER MORGAN, CCD"," 31,073.35 ",Kinder Morgan, Expense ,Utilities & Fuel
+4/9/2025,"ACH Credit PAYMENTS   Contango OG Hous, CCD"," 11,974.97 ",Contango Oil & Gas, Income ,Revenue from Oil and Gas Sales
+4/8/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (100,000.00)",Acid Tech, Expense ,Professional Services
+4/8/2025,RD Checking Deposit," 31,311.43 ",Unknown, Income ,Revenue
+4/8/2025,"ACH Credit PO/REMIT   CHEVRON 0966, CTX"," 8,085.63 ",Chevron, Income ,Revenue - Oil and Gas Sales
+4/7/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 75,471.30 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+4/7/2025,"ACH Credit 002040     PNR USA INC AP, CTX"," 53,713.42 ",PNR USA INC, Income ,Revenue - Oil and Gas Extraction Services
+4/4/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:c8e0b29f-f088-4, Bill Pay Account 04/04/25"," (75,000.00)",Internal Transfer, Expense ,Accounts Payable
+4/4/2025,RD Checking Deposit," 33,523.94 ",Unknown, Income ,Revenue
+4/4/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 165,671.17 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+4/4/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD"," 23,212.79 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+4/4/2025,"ACH Credit ACHOUT     VTX ENERGY OPERA, CCD"," 21,149.37 ",VTX Energy Opera, Expense ,Operating Expenses
+4/4/2025,"ACH Credit PAYMNT     OVINTIV 0896, CCD"," 7,991.93 ",Ovintiv, Income ,Revenue - Oil and Gas Sales
+4/4/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD"," 7,466.47 ",DIAMONDBACK E&P, Income ,Revenue from Oil and Gas Sales
+4/2/2025,"ACH Credit PAYMNT     OVINTIV 0896, CCD"," 22,901.55 ",Ovintiv, Income ,Revenue from Oil and Gas Extraction
+4/2/2025,"ACH Credit 002040     PNR USA INC AP, CTX"," 14,514.64 ",PNR USA INC, Income ,Revenue - Oil and Gas Extraction Services
+4/1/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:eb10450d-8a68-4, Bill Pay Account 04/01/25"," (100,000.00)",Internal Transfer, Expense ,Bank Fees & Charges
+3/31/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:c5d07456-8c1f-4, Bill Pay Account"," (50,000.00)",Internal Transfer, Expense ,Bank Fees & Charges
+3/31/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (50,000.00)",Acid Tech, Expense ,Professional Services
+3/31/2025,"ACH Debit EPAY       CHASE CREDIT CRD, WEB, 8275885041"," (7,767.68)",Chase Credit Card, Expense ,Bank Fees & Charges
+3/31/2025,RD Checking Deposit," 268,690.39 ",Unknown, Income ,Revenue
+3/31/2025,"ACH Credit KFOC A/P   KAISER FRANCIS, PPD"," 20,890.65 ",Kaiser Francis, Income ,Revenue - Oil and Gas Sales
+3/31/2025,"ACH Credit PAYMNT     OVINTIV 0896, CCD"," 13,420.85 ",Ovintiv, Income ,Revenue from Oil and Gas Extraction
+3/31/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 9,583.31 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+3/28/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:ccd9753d-49df-4, 03/31/25 Salary & Safety Bonus"," (125,000.00)",Internal Transfer, Expense ,Salaries and Wages
+3/28/2025,"ACH Debit INS. PMT   Capital Premium, PPD"," (86,634.56)",Capital Premium, Expense ,Insurance Expense
+3/28/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:35efcec4-cfe3-4, Bill Pay Account"," (25,000.00)",Internal Transfer, Expense ,Accounts Payable
+3/28/2025,"ACH Debit INS. PMT   Capital Premium, PPD"," (82,509.10)",Capital Premium, Expense ,Insurance Expense
+3/28/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 83,389.69 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+3/28/2025,"ACH Credit 002032     PNR USA INC AP, CTX"," 5,348.00 ",PNR USA INC, Income ,Revenue - Oil and Gas Extraction
+3/28/2025,"ACH Credit PAYMENTS   ConocoPhillips C, CCD"," 54,598.85 ",ConocoPhillips, Income ,Revenue from Oil and Gas Sales
+3/27/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Payroll"," (190,000.00)",Acid Tech, Expense ,Payroll Expenses
+3/27/2025,RD Checking Deposit," 185,889.37 ",Unknown, Income ,Revenue
+3/27/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (50,000.00)",Acid Tech, Expense ,Professional Services
+3/27/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD"," 36,059.59 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+3/27/2025,"ACH Credit 002032     PNR USA INC AP, CTX"," 103,041.82 ",PNR USA INC, Income ,Revenue - Oil and Gas Extraction Services
+3/27/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD"," 10,248.89 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+3/27/2025,"ACH Credit CROWNQUEST CROWNQUEST OPER, CCD"," 5,887.84 ","CrownQuest Operating, LLC", Income ,Revenue - Oil and Gas Sales
+3/26/2025,Check (On Us)," (7,000.00)",Unknown Vendor, Expense ,Operating Expenses
+3/26/2025,"ACH Credit AP PAYMENT KINDER MORGAN, CCD"," 49,743.45 ",Kinder Morgan, Expense ,Utilities & Fuel
+3/26/2025,Check (On Us)," (7,000.00)",Unknown Vendor, Expense ,Operating Expenses
+3/26/2025,"ACH Credit 002032     PNR USA INC AP, CTX"," 8,836.19 ",PNR USA INC, Income ,Revenue - Oil and Gas Extraction Services
+3/25/2025,"ACH Credit 002032     PNR USA INC AP, CTX"," 18,619.00 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+3/24/2025,RD Checking Deposit," 79,206.85 ",Unknown, Income ,Revenue
+3/24/2025,POD - Credit/Deposit," 5,192.56 ",Customer Payment, Income ,Revenue - Oil and Gas Sales
+3/21/2025,"ACH Debit ONLINE PMT CAPITAL ONE, CCD"," (104,011.31)",Capital One, Expense ,Bank Fees & Charges
+3/21/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (50,000.00)",Acid Tech, Expense ,Professional Services
+3/21/2025,RD Checking Deposit," 66,856.14 ",Unknown, Income ,Revenue
+3/21/2025,"ACH Credit 002032     PNR USA INC AP, CTX"," 38,946.14 ",PNR USA INC, Income ,Revenue - Oil and Gas Extraction
+3/21/2025,"ACH Credit PAYMNT     OVINTIV 0896, CCD"," 26,504.83 ",Ovintiv, Income ,Revenue - Oil and Gas Sales
+3/21/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD"," 24,038.36 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+3/21/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD"," 12,664.53 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+3/21/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD"," 10,971.95 ",Apache Corporation, Income ,Revenue - Oil and Gas Sales
+3/20/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (100,000.00)",Acid Tech, Expense ,Professional Services
+3/20/2025,"ACH Debit DD         WEBFILE TAX PYMT, CCD"," (3,927.02)",Texas Comptroller, Expense ,Taxes & Licenses
+3/20/2025,"ACH Debit DD         WEBFILE TAX PYMT, CCD"," (7,931.54)",Texas Comptroller, Expense ,Taxes & Licenses
+3/20/2025,"ACH Credit ACHOUT     VTX ENERGY OPERA, CCD"," 39,600.21 ",VTX Energy Opera, Expense ,Contract Services
+3/18/2025,"Telephone Transfer Debit Phone/In-Person Transfer, Transfer per Phil"," (100,000.00)",Internal Transfer, Expense ,Bank Fees & Charges
+3/18/2025,RD Checking Deposit," 22,080.33 ",Unknown, Income ,Revenue
+3/18/2025,"ACH Credit 002031     PNR USA INC AP, CTX"," 8,093.29 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+3/17/2025,"Transfer to Loan Transfer from Acid Tech, Revenue to Acid Tech loan 429"," (103,766.20)",Acid Tech, Expense ,Loan Repayment
+3/17/2025,"Transfer to Loan Transfer from Acid Tech, Revenue to Acid Tech loan 430"," (91,631.23)",Acid Tech, Expense ,Loan Repayment
+3/17/2025,"Transfer to Loan Transfer from Acid Tech, Revenue to C   I           ."," (1,088.88)",Acid Tech, Income ,Revenue from Oil and Gas Sales
+3/17/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Payroll"," (10,000.00)",Acid Tech, Expense ,Payroll Expenses
+3/17/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD"," 53,789.48 ",Apache Corporation, Income ,Revenue - Oil and Gas Sales
+3/17/2025,"ACH Credit 002031     PNR USA INC AP, CTX"," 7,381.03 ",PNR USA INC, Income ,Revenue - Oil and Gas Extraction Services
+3/14/2025,RD Checking Deposit," 17,375.91 ",Unknown, Income ,Revenue
+3/14/2025,"ACH Credit ACHOUT     VTX ENERGY OPERA, CCD"," 72,954.47 ",VTX Energy Opera, Expense ,Contract Services
+3/14/2025,"ACH Credit PAYMNT     OVINTIV 0896, CCD"," 30,161.15 ",Ovintiv, Income ,Revenue - Oil and Gas Sales
+3/14/2025,"ACH Credit 002031     PNR USA INC AP, CTX"," 29,010.42 ",PNR USA INC, Income ,Revenue - Oil and Gas Extraction Services
+3/14/2025,"ACH Credit PAYMENTS   OCCIDENTAL, CTX"," 27,950.50 ",Occidental, Income ,Revenue
+3/14/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD"," 22,789.25 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+3/14/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 12,143.71 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+3/14/2025,"ACH Credit PAYMENTS   ConocoPhillips C, CCD"," 5,717.60 ",ConocoPhillips, Income ,Revenue from Oil and Gas Sales
+3/13/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:2d2d2e10-7a4e-4, Salary Payroll 03/15/25"," (197,000.00)",Internal Transfer, Expense ,Salaries and Wages
+3/12/2025,Check (Regular Inclearings)," (11,176.99)",Unknown Vendor, Expense ,Operating Expenses
+3/12/2025,RD Checking Deposit," 142,786.98 ",Unknown, Income ,Revenue
+3/12/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:51d68eba-2f1d-4, Hourly Payroll 03/13/25"," (230,000.00)",Internal Transfer, Expense ,Payroll Expenses
+3/10/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 29,979.47 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+3/10/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (100,000.00)",Acid Tech, Expense ,Accounts Payable
+3/10/2025,"ACH Credit 002030     PNR USA INC AP, CTX"," 10,563.52 ",PNR USA INC, Income ,Revenue - Oil and Gas Extraction
+3/7/2025,"ACH Credit PAYMENTS   ConocoPhillips C, CCD"," 49,006.76 ",ConocoPhillips, Income ,Revenue from Oil and Gas Sales
+3/7/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD"," 34,351.64 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+3/7/2025,"ACH Credit AP PAYMENT KINDER MORGAN, CCD"," 36,549.13 ",Kinder Morgan, Expense ,Utilities & Fuel
+3/7/2025,"ACH Credit PO/REMIT   CHEVRON 0966, CTX"," 18,704.03 ",Chevron, Income ,Revenue - Oil and Gas Sales
+3/7/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 13,490.67 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+3/7/2025,"ACH Credit PAYMNT     OVINTIV 0896, CCD"," 2,860.52 ",Ovintiv, Income ,Revenue from Oil and Gas Extraction
+3/6/2025,RD Checking Deposit," 45,100.50 ",Unknown, Income ,Revenue
+3/6/2025,"ACH Credit PAYMENTS   ConocoPhillips C, CCD"," 26,162.10 ",ConocoPhillips, Income ,Revenue - Oil and Gas Sales
+3/5/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (100,000.00)",Acid Tech, Expense ,Professional Services
+3/5/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:4de2f154-6d7a-4, Revenue to Bill Pay 03/05/25"," (50,000.00)",Internal Transfer, Expense ,Accounts Payable
+3/5/2025,"ACH Credit EDI PYMNTS SM ENERGY COMPAN, PPD"," 7,521.29 ",SM Energy Company, Income ,Revenue - Oil and Gas Extraction
+3/4/2025,"ACH Credit 002030     PNR USA INC AP, CTX"," 39,017.03 ",PNR USA INC, Income ,Revenue - Oil and Gas Extraction Services
+3/3/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 4,705.75 ",XTO Energy Inc., Income ,Revenue from Oil and Gas Sales
+2/28/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (100,000.00)",Acid Tech, Expense ,Accounts Payable
+2/28/2025,RD Checking Deposit," 50,865.91 ",Unknown, Income ,Revenue
+2/28/2025,"ACH Credit PAYMENTS   ConocoPhillips C, CCD"," 77,894.25 ",ConocoPhillips, Income ,Revenue - Oil and Gas Sales
+2/28/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 72,600.85 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+2/28/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD"," 64,786.26 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+2/28/2025,"ACH Credit ACHOUT     VTX ENERGY OPERA, CCD"," 62,262.00 ",VTX Energy Opera, Expense ,Operating Expenses
+2/28/2025,"ACH Credit PAYMENTS   ConocoPhillips C, CCD"," 20,489.20 ",ConocoPhillips, Income ,Revenue from Oil and Gas Sales
+2/28/2025,"ACH Credit PO/REMIT   CHEVRON 0966, CTX"," 6,732.50 ",Chevron, Income ,Revenue - Oil and Gas Sales
+2/27/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:4ddb3642-63cf-4, Salary & Safety Bonus 02/28/25"," (108,000.00)",Internal Transfer, Expense ,Salaries and Wages
+2/27/2025,"Wire Transfer Debit Wire Transfer Debit, GKD INDUSTRIES LTD, 111010170, 129890546410, 7939 54 STREET CALGARY ALBERTA, T2C 4R7 CANADA, TIB NA, DALLAS                    TX, PURCHASE PARTS, DO NOT CONVERT CURRENCY, 20250227MFP00060000000"," (1,050.00)",GKD Industries Ltd, Expense ,Equipment Parts & Supplies
+2/27/2025,Wire Transfer Fee, (65.00),Bank, Expense ,Bank Fees & Charges
+2/27/2025,"ACH Credit PAYMENTS   ConocoPhillips C, CCD"," 44,480.11 ",ConocoPhillips, Income ,Revenue from Oil and Gas Sales
+2/27/2025,"ACH Credit 002022     PNR USA INC AP, CTX"," 9,604.70 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+2/26/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:4067cbea-00c1-4, Hourly Payroll 02/27/25"," (200,000.00)",Internal Transfer, Expense ,Payroll Expenses
+2/27/2025,"ACH Credit CROWNQUEST CROWNQUEST OPER, CCD"," 7,369.92 ","CrownQuest Operating, LLC", Income ,Revenue - Oil and Gas Sales
+2/26/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:2ef17d25-f6a6-4, Revenue Acct to Bill Pay Acct"," (30,000.00)",Internal Transfer, Expense ,Accounts Payable
+2/26/2025,"ACH Debit EPAY       CHASE CREDIT CRD, WEB, 8188405074"," (4,624.23)",Chase Credit Card, Expense ,Bank Fees & Charges
+2/26/2025,RD Checking Deposit," 18,802.50 ",Unknown, Income ,Revenue
+2/26/2025,"ACH Credit AP PAYMENT KINDER MORGAN, CCD"," 35,969.96 ",Kinder Morgan, Expense ,Utilities & Fuel
+2/26/2025,"ACH Credit 002022     PNR USA INC AP, CTX"," 32,031.03 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+2/25/2025,"ACH Debit ONLINE PMT CAPITAL ONE, CCD"," (79,928.45)",Capital One, Expense ,Interest Expense
+2/25/2025,"Wire Transfer Debit Wire Transfer Debit, GKD INDUSTRIES LTD, 111010170, 129890546410, 7939 54 STREET CALGARY, ALBERTA T2C 4R7, CANADA, TIB NA, DALLAS                    TX, PURCHASE PARTS, DO NOT CONVERT CURRENCY, 20250225MFP00060000000"," (20,056.00)",GKD Industries Ltd, Expense ,Equipment & Parts
+2/25/2025,Wire Transfer Fee, (65.00),Bank, Expense ,Bank Fees & Charges
+2/25/2025,RD Checking Deposit," 79,237.60 ",Unknown, Income ,Revenue
+2/25/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 28,524.94 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+2/24/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (100,000.00)",Acid Tech, Expense ,Professional Services
+2/24/2025,"ACH Credit 002022     PNR USA INC AP, CTX"," 28,283.24 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+2/24/2025,POD - Credit/Deposit," 23,952.19 ",Customer Payment, Income ,Revenue - Oil and Gas Sales
+2/24/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 2,990.19 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+2/21/2025,"ACH Debit DD         WEBFILE TAX PYMT, CCD"," (6,715.10)",Texas Comptroller, Expense ,Taxes & Licenses
+2/21/2025,"ACH Debit DD         WEBFILE TAX PYMT, CCD"," (4,692.23)",Texas Comptroller, Expense ,Taxes & Licenses
+2/21/2025,RD Checking Deposit," 13,644.11 ",Unknown, Income ,Revenue
+2/21/2025,"ACH Debit TRD PMNT   TAX_REV_WDT_ECKS, CCD", (10.00),Texas Comptroller of Public Accounts, Expense ,Taxes & Licenses
+2/21/2025,"ACH Credit Payment    LIME ROCK RESOUR, PPD"," 62,488.20 ",Lime Rock Resources, Income ,Revenue - Oil and Gas Sales
+2/21/2025,"ACH Credit PAYMNT     OVINTIV 0896, CCD"," 40,239.19 ",Ovintiv, Income ,Revenue - Oil and Gas Sales
+2/21/2025,"ACH Credit 002022     PNR USA INC AP, CTX"," 9,446.60 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+2/20/2025,Check (On Us), (25.00),Unknown Vendor, Expense ,Operating Expenses
+2/20/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (100,000.00)",Acid Tech, Expense ,Professional Services
+2/19/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:b1732f3a-26ef-4, Transfer to Bills Pay 02-19-25"," (50,000.00)",Internal Transfer, Expense ,Accounts Payable
+2/19/2025,"ACH Credit 002021     PNR USA INC AP, CTX"," 43,172.88 ",PNR USA INC, Income ,Revenue - Oil and Gas Extraction Services
+2/18/2025,"Transfer to Loan Transfer from Acid Tech, Revenue to Acid Tech loan 429"," (106,423.61)",Acid Tech, Expense ,Loan Repayment
+2/19/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD"," 22,457.80 ",Apache Corporation, Income ,Revenue - Oil and Gas Sales
+2/18/2025,"Transfer to Loan Transfer from Acid Tech, Revenue to Acid Tech loan 430"," (92,988.46)",Acid Tech, Expense ,Loan Repayment
+2/18/2025,"Transfer to Loan Transfer from Acid Tech, Revenue to C   I           ."," (1,205.56)",Acid Tech, Income ,Revenue from Oil and Gas Sales
+2/18/2025,RD Checking Deposit," 106,054.29 ",Unknown, Income ,Revenue
+2/18/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 14,715.74 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+2/14/2025,RD Checking Deposit," 6,256.62 ",Unknown, Income ,Revenue
+2/14/2025,"ACH Credit ACHOUT     VTX ENERGY OPERA, CCD"," 39,760.53 ",VTX Energy Opera, Expense ,Contract Services
+2/14/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD"," 32,448.08 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+2/14/2025,"ACH Credit Payment    LIME ROCK RESOUR, PPD"," 31,450.59 ",Lime Rock Resources, Income ,Revenue from Oil and Gas Extraction
+2/14/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 29,640.96 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+2/14/2025,"ACH Credit 002021     PNR USA INC AP, CTX"," 25,821.46 ",PNR USA INC, Income ,Revenue - Oil and Gas Extraction Services
+2/14/2025,"ACH Credit PO/REMIT   CHEVRON 0966, CTX"," 7,222.70 ",Chevron, Income ,Revenue - Oil and Gas Sales
+2/14/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD"," 3,794.40 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+2/14/2025,"ACH Credit ACH 2/12   MATADOR881359374, CCD"," 6,585.80 ",Matador Resources, Income ,Revenue - Oil and Gas Sales
+2/13/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:5aa7fc61-470e-4, 02-14-2025 Salary & Bonuses"," (190,000.00)",Internal Transfer, Expense ,Salaries & Wages
+2/13/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (100,000.00)",Acid Tech, Expense ,Professional Services
+2/13/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay", (100.00),Acid Tech, Expense ,Professional Services
+2/12/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:3a816cbb-da66-4, Hourly Payroll 02-13-2025"," (200,000.00)",Internal Transfer, Expense ,Payroll Expenses
+2/13/2025,"ACH Credit 002021     PNR USA INC AP, CTX"," 7,286.69 ",PNR USA INC, Income ,Revenue - Services Rendered
+2/11/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (100,000.00)",Acid Tech, Expense ,Professional Services
+2/11/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 43,530.14 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+2/11/2025,"ACH Credit 002021     PNR USA INC AP, CTX"," 13,817.47 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+2/11/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD"," 12,345.86 ",Apache Corporation, Income ,Revenue
+2/11/2025,"ACH Credit PAYMENT    TRP OPERATING, PPD", 0.25 ,TRP Operating, Income ,Revenue - Oil and Gas Sales
+2/10/2025,RD Checking Deposit," 226,606.74 ",Unknown, Income ,Revenue
+2/10/2025,"ACH Credit 002020     PNR USA INC AP, CTX"," 21,541.91 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+2/10/2025,"ACH Credit PO/REMIT   CHEVRON 0966, CTX"," 24,480.10 ",Chevron, Income ,Revenue - Oil and Gas Sales
+2/10/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 10,269.29 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+2/10/2025,"ACH Credit PO/REMIT   CHEVRON 0966, CTX"," 6,417.50 ",Chevron, Income ,Revenue - Oil and Gas Sales
+2/7/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 140,692.28 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+2/7/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD"," 26,552.66 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+2/7/2025,"ACH Credit PAYMNT     OVINTIV 0896, CCD"," 13,454.54 ",Ovintiv, Income ,Revenue from Oil and Gas Extraction
+2/6/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD"," 25,721.94 ",Apache Corporation, Income ,Revenue - Oil and Gas Sales
+2/6/2025,"ACH Credit PAYMENTS   OCCIDENTAL, CTX"," 15,692.04 ",Occidental, Income ,Revenue - Oil and Gas Sales
+2/6/2025,"ACH Credit 002020     PNR USA INC AP, CTX"," 14,894.88 ",PNR USA INC, Income ,Revenue - Oil and Gas Extraction Services
+2/6/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 13,725.73 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+2/6/2025,"ACH Credit CROWNQUEST CROWNQUEST OPER, CCD"," 6,425.84 ","CrownQuest Operating, LLC", Income ,Revenue - Oil and Gas Sales
+2/5/2025,Wire Transfer Fee, (30.00),Bank, Expense ,Bank Fees & Charges
+2/5/2025,"ACH Credit AP PAYMENT KINDER MORGAN, CCD"," 19,315.26 ",Kinder Morgan, Expense ,Utilities & Fuel
+2/5/2025,"Wire Transfer Debit Wire Transfer Debit, CARLOS M HERNANDEZ, 111000614, 828227959, CARMEN I LEGASPI OCON, 5427 KLEBERG DR, GRAND PRAIRIE TX 75052-2692, JPMCHASE TEXAS, BANK ONE TEXAS            TX, PURCHASE VEHICLE, 20250205MFP00060000012, 20250205MMQFMP2H077754, 02051341FT01"," (30,000.00)",Carmen I Legaspi Ocon, Expense ,Vehicles & Equipment
+2/5/2025,"ACH Credit 002020     PNR USA INC AP, CTX"," 18,918.48 ",PNR USA INC, Income ,Revenue - Oil and Gas Extraction Services
+2/4/2025,"ACH Credit 002020     PNR USA INC AP, CTX"," 14,739.88 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+2/4/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Payroll"," (10,000.00)",Acid Tech, Expense ,Payroll Expenses
+2/4/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 11,263.69 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+2/3/2025,"ACH Debit DD         WEBFILE TAX PYMT, CCD", (21.58),Texas Comptroller of Public Accounts, Expense ,Taxes & Licenses
+2/3/2025,Wire Transfer Fee, (30.00),Bank, Expense ,Bank Fees & Charges
+2/3/2025,"Wire Transfer Debit Wire Transfer Debit, GLOBAL AUTO SALES, 113008465, 1302000854, 25303 OAKHURST DR, SPRING TX 77386, WOODFOREST N/B HOU, HOUSTON                   TX, PURCHASE VEHICLE, 20250203MFP00060000013, 20250203K3B75B1C000669, 02031442FT01"," (21,513.81)",Global Auto Sales, Expense ,Vehicles & Equipment
+1/31/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (100,000.00)",Acid Tech, Expense ,Professional Services
+1/31/2025,"Wire Transfer Debit Wire Transfer Debit, PERMIAN BASIN ABSTRACT COMPANY, 112311713, 230707, ESCROW ACCOUNT, 127 NW AVE A, ANDREWS TX 79714, NATL BK OF ANDREWS, ANDREWS                   TX, GF #25-23371, PURCHASE PROPERTY LOCATED IN P, 20250131MFP00060000028, 20250131MFP00114001309, 01311624FT01"," (272,715.25)",Permian Basin Abstract Company, Expense ,Property Acquisition
+1/31/2025,Wire Transfer Fee, (30.00),Bank, Expense ,Bank Fees & Charges
+1/31/2025,RD Checking Deposit," 17,443.29 ",Unknown, Income ,Revenue
+1/31/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD"," 144,069.64 ",Apache Corporation, Income ,Revenue
+1/31/2025,"ACH Credit Payment    LIME ROCK RESOUR, PPD"," 29,923.35 ",Lime Rock Resources, Income ,Revenue from Oil and Gas Sales
+1/31/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD"," 9,465.90 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+1/31/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 9,062.38 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+1/31/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD"," 7,007.84 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+1/30/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:60072b91-3442-4, Salary Payroll 01-31-2025"," (120,000.00)",Internal Transfer, Expense ,Salaries and Wages
+1/31/2025,"ACH Credit EDI PYMNTS SM ENERGY COMPAN, PPD"," 5,793.97 ",SM Energy Company, Income ,Revenue from Oil and Gas Extraction
+1/29/2025,"Transfer to DDA Transfer CH x4717 to, CH x4709 TMID:3b023aa9-a167-4, Hourly payroll 01/30/2025"," (180,000.00)",Internal Transfer, Expense ,Payroll Expenses
+1/30/2025,"ACH Credit 1/28 ACH   MATADOR881359374, CCD"," 10,678.45 ",Matador Resources, Income ,Revenue - Oil and Gas Sales
+1/29/2025,RD Checking Deposit," 25,131.48 ",Unknown, Income ,Revenue
+1/29/2025,"ACH Debit EPAY       CHASE CREDIT CRD, WEB, 8120017301"," (5,589.43)",Chase Credit Card, Expense ,Bank Fees & Charges
+1/29/2025,"ACH Credit 002012     PNR USA INC AP, CTX"," 27,741.36 ",PNR USA INC, Income ,Revenue - Services Rendered
+1/28/2025,RD Checking Deposit," 63,076.10 ",Unknown, Income ,Revenue
+1/28/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:263014cb-7c0f-4, Revenue to Bill Pay"," (40,000.00)",Internal Transfer, Expense ,Accounts Payable
+1/28/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 32,051.69 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+1/27/2025,"ACH Credit 002012     PNR USA INC AP, CTX"," 16,405.14 ",PNR USA INC, Income ,Revenue - Oil and Gas Extraction Services
+1/27/2025,"ACH Credit PAYMENTS   Contango OG Hous, CCD"," 4,765.32 ",Contango Oil & Gas, Income ,Revenue - Oil and Gas Sales
+1/27/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD"," 12,512.52 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+1/24/2025,"ACH Credit ACHOUT     VTX ENERGY OPERA, CCD"," 86,624.17 ",VTX Energy Opera, Expense ,Contract Services
+1/23/2025,"ACH Debit ONLINE PMT CAPITAL ONE, CCD"," (57,139.86)",Capital One, Expense ,Bank Fees & Charges
+1/23/2025,"ACH Debit TRD PMNT   TAX_REV_WDT_ECKS, CCD", (394.85),Texas Comptroller of Public Accounts, Expense ,Taxes & Licenses
+1/23/2025,"Transfer to DDA Transfer CH x4717 to, CH x5285 TMID:0c194102-5bc1-4, Test", (1.00),Internal Transfer, Expense ,Bank Fees & Charges
+1/23/2025,RD Checking Deposit," 31,957.02 ",Unknown, Income ,Revenue
+1/23/2025,"ACH Credit 002012     PNR USA INC AP, CTX"," 21,104.62 ",PNR USA INC, Income ,Revenue - Services Rendered
+1/23/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD"," 9,576.41 ",Apache Corporation, Income ,Revenue from Oil and Gas Sales
+1/22/2025,Check (Regular Inclearings)," (2,750.00)",Unknown Vendor, Expense ,Operating Expenses
+1/22/2025,"ACH Credit AP PAYMENT KINDER MORGAN, CCD"," 29,873.30 ",Kinder Morgan, Expense ,Utilities & Fuel
+1/22/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD"," 22,031.66 ",Apache Corporation, Income ,Revenue - Oil and Gas Sales
+1/21/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (150,000.00)",Acid Tech, Expense ,Professional Services
+1/21/2025,"ACH Debit DD         WEBFILE TAX PYMT, CCD"," (22,547.01)",Texas Comptroller, Expense ,Taxes & Licenses
+1/22/2025,"ACH Credit EDI PYMNTS SM ENERGY COMPAN, PPD"," 7,202.05 ",SM Energy Company, Income ,Revenue from Oil and Gas Extraction
+1/21/2025,"ACH Debit DD         WEBFILE TAX PYMT, CCD"," (3,071.19)",Texas Comptroller, Expense ,Taxes & Licenses
+1/21/2025,RD Checking Deposit," 82,021.06 ",Unknown, Income ,Revenue
+1/21/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD"," 10,536.14 ",Apache Corporation, Income ,Revenue from Oil and Gas Extraction
+1/21/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD"," 35,891.59 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+1/17/2025,"ACH Credit ACHOUT     VTX ENERGY OPERA, CCD"," 79,103.47 ",VTX Energy Opera, Expense ,Operating Expenses
+1/21/2025,"ACH Credit EDI PYMNTS Deep Blue Operat, CCD"," 4,340.70 ",Deep Blue Operat, Income ,Revenue - Oil and Gas Extraction Services
+1/17/2025,"ACH Credit 002011     PNR USA INC AP, CTX"," 65,461.99 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+1/17/2025,"ACH Credit PAYMENTS   OCCIDENTAL, CTX"," 30,749.87 ",Occidental, Income ,Revenue - Oil and Gas Sales
+1/17/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 26,278.98 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+1/17/2025,"ACH Credit AP PAYMENT KINDER MORGAN, CCD"," 6,503.75 ",Kinder Morgan, Expense ,Utilities & Fuel
+1/16/2025,"Transfer to Loan Transfer from Acid Tech, Revenue to Acid Tech loan 429"," (106,979.74)",Acid Tech, Expense ,Loan Repayment
+1/16/2025,"Transfer to Loan Transfer from Acid Tech, Revenue to Acid Tech loan 430"," (93,513.64)",Acid Tech, Expense ,Loan Repayment
+1/16/2025,"Transfer to Loan Transfer from Acid Tech, Revenue to C   I           ."," (1,208.33)",Acid Tech, Expense ,Loan Payments
+1/15/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (100,000.00)",Acid Tech, Expense ,Professional Services
+1/16/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD"," 21,357.35 ",Apache Corporation, Income ,Revenue
+1/15/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD"," 12,808.87 ",Apache Corporation, Income ,Revenue
+1/15/2025,"ACH Credit 002011     PNR USA INC AP, CTX"," 9,669.09 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+1/14/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Payroll"," (200,000.00)",Acid Tech, Expense ,Payroll Expenses
+1/14/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Payroll"," (175,000.00)",Acid Tech, Expense ,Payroll & Benefits
+1/14/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 34,193.74 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+1/14/2025,"ACH Credit ACH        ENVIRONMENTAL DI, CCD"," 15,367.97 ",Environmental Dynamics Inc., Expense ,Environmental Compliance
+1/14/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD"," 22,737.74 ",Apache Corporation, Income ,Revenue from Oil and Gas Sales
+1/13/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (200,000.00)",Acid Tech, Expense ,Accounts Payable
+1/14/2025,"ACH Credit 002011     PNR USA INC AP, CTX"," 7,979.72 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+1/13/2025,RD Checking Deposit," 4,200.00 ",Unknown, Income ,Revenue
+1/13/2025,RD Checking Deposit," 12,856.49 ",Unknown, Income ,Revenue
+1/13/2025,POD - Credit/Deposit," 2,882.26 ",Customer Payment, Income ,Revenue - Oil and Gas Sales
+1/13/2025,"ACH Credit EDI PYMNTS Deep Blue Operat, CCD"," 31,244.62 ",Deep Blue Operat, Income ,Revenue - Oil and Gas Extraction Services
+1/10/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD"," 46,793.65 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+1/10/2025,"ACH Credit PAYMENTS   OCCIDENTAL, CTX"," 43,530.75 ",Occidental, Income ,Revenue
+1/10/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 186,723.95 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+1/10/2025,"ACH Credit 002010     PNR USA INC AP, CTX"," 35,716.75 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+1/10/2025,"ACH Credit EDI PYMNTS APACHE CORPORATI, CCD"," 18,019.15 ",Apache Corporation, Income ,Revenue from Oil and Gas Extraction
+1/9/2025,RD Checking Deposit," 32,214.40 ",Unknown, Income ,Revenue
+1/10/2025,"ACH Credit PAYMNT     OVINTIV 0896, CCD"," 6,241.29 ",Ovintiv, Income ,Revenue - Oil and Gas Sales
+1/9/2025,"ACH Credit 002010     PNR USA INC AP, CTX"," 30,543.84 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+1/9/2025,"ACH Credit CROWNQUEST CROWNQUEST OPER, CCD"," 13,355.16 ","CrownQuest Operating, LLC", Income ,Revenue - Oil and Gas Sales
+1/8/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Bill Pay"," (150,000.00)",Acid Tech, Expense ,Professional Services
+1/8/2025,"ACH Credit PAYMENTS   Contango OG Hous, CCD"," 7,239.73 ",Contango Oil & Gas, Income ,Revenue from Oil and Gas Sales
+1/7/2025,"ACH Credit ACH        ENVIRONMENTAL DI, CCD"," 27,127.18 ",Environmental Dynamics Inc., Income ,Consulting Revenue
+1/7/2025,"ACH Debit EPAY       CHASE CREDIT CRD, WEB, 8046793444"," (12,906.99)",Chase Credit Card, Expense ,Bank Fees & Charges
+1/7/2025,"ACH Credit 002010     PNR USA INC AP, CTX"," 22,871.46 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+1/6/2025,"ACH Credit 002010     PNR USA INC AP, CTX"," 30,314.84 ",PNR USA INC, Income ,Revenue - Oil and Gas Services
+1/3/2025,"Transfer to DDA Transfer from Acid Tech, Revenue to Acid Tech Payroll"," (10,000.00)",Acid Tech, Expense ,Payroll Expenses
+1/3/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD"," 54,750.51 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+1/3/2025,"ACH Credit ACH PAYMNT XTO ENERGY INC., CTX"," 23,387.65 ",XTO Energy Inc., Income ,Revenue - Oil and Gas Sales
+1/3/2025,"ACH Credit PO/REMIT   CHEVRON 0966, CTX"," 11,362.80 ",Chevron, Income ,Revenue - Oil and Gas Sales
+1/3/2025,"ACH Credit ACH        DIAMONDBACK E&P, CCD"," 6,706.23 ",Diamondback E&P, Income ,Revenue - Oil and Gas Sales
+1/3/2025,"ACH Credit PO/REMIT   CHEVRON 0966, CTX"," 6,417.50 ",Chevron, Income ,Revenue - Oil and Gas Sales
+1/2/2025,"Transfer to DDA Transfer from Comm Ck, 0008 to Comm Ck         0009"," (200,000.00)",Internal Transfer, Expense ,Bank Fees & Charges
