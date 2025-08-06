@@ -26,6 +26,13 @@
                     </div>
                 </div>
                 <div class="col-md-6">
+                    <!-- Dark Mode Toggle -->
+                    <div class="d-flex justify-content-end mb-2">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="darkModeToggle">
+                            <i class="fas fa-moon" id="modeIcon"></i>
+                            <span id="modeText">Dark</span>
+                        </button>
+                    </div>
                     <!-- Enhanced Filters Form -->
                     <form method="GET" class="row g-2">
                         <div class="col-md-3">
@@ -515,133 +522,130 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<!-- Cash Flow Account Tabs - Text Visibility Fix -->
+<!-- Cash Flow Dashboard - Dark/Light Mode System -->
 <style>
+:root {
+    --text-primary: #000;
+    --text-secondary: #6c757d;
+    --bg-primary: #fff;
+    --bg-secondary: #f8f9fa;
+}
+
+[data-bs-theme="dark"] {
+    --text-primary: #fff;
+    --text-secondary: #adb5bd;
+    --bg-primary: #212529;
+    --bg-secondary: #343a40;
+}
+
 /* =================================================================
-   CASH FLOW DASHBOARD - ACCOUNT TABS CARD - TEXT VISIBILITY FIX
-   Selector específico para evitar afectar otros módulos
+   CASH FLOW DASHBOARD - UNIVERSAL TEXT VISIBILITY SYSTEM
    ================================================================= */
 
-/* Selector específico para la card de pestañas de cuentas en Cash Flow */
+/* Pestañas de navegación */
 #accountTabs .nav-link,
-#accountTabs .nav-link .d-flex {
-    color: #2c3e50 !important;
+#accountTabs .nav-link .d-flex,
+#accountTabs .nav-link div {
+    color: var(--text-primary) !important;
 }
 
-/* Texto dentro del contenido de las pestañas */
-#accountTabsContent .card-header h6,
-#accountTabsContent .card-body span,
-#accountTabsContent .card-body .small,
-#accountTabsContent .card-body .text-muted {
-    color: #2c3e50 !important;
+/* Títulos y headers generales */
+.card-header h6,
+.card-header .card-title,
+.card-header h5 {
+    color: var(--text-primary) !important;
 }
 
-/* Títulos de las cards internas */
-#accountTabsContent .card-header {
-    border-bottom: 1px solid #eaeaea;
-    color: #2c3e50;
-}
-
-/* Headers de las pestañas - separación visual */
-.card-header.bg-white.border-0 {
-    border-bottom: 1px solid #eaeaea !important;
-}
-
-/* Asegurar que los valores monetarios sean legibles */
-#accountTabsContent .fw-semibold,
-#accountTabsContent .fw-bold {
-    color: #2c3e50 !important;
-}
-
-/* Específico para Monthly Variation text */
-#accountTabsContent .text-muted {
-    color: #6c757d !important;
-}
-
-/* Específico para success/warning colors que deben mantenerse */
-#accountTabsContent .text-success {
-    color: #198754 !important;
-}
-
-#accountTabsContent .text-warning {
-    color: #fd7e14 !important;
-}
-
-/* Específico para pestañas de cuentas individuales - mejorar visibilidad */
-/* Account KPIs - primera columna */
-#accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body.text-white h6,
-#accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body.text-white h3,
-#accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body.text-white .small,
-#accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body.text-white div {
+/* FORZAR NEGRO EN MODO CLARO - Account KPIs */
+body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body h6,
+body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body h3,
+body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body .small,
+body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body div,
+body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body .text-white-50 {
     color: #000 !important;
 }
 
-/* Monthly Variation - segunda columna */
-#accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body h6.text-muted,
-#accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body .small.text-muted,
-#accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body .small.text-muted div {
+/* FORZAR NEGRO EN MODO CLARO - Monthly Variation */
+body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body h6,
+body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body .text-muted,
+body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body .small {
     color: #000 !important;
 }
 
-/* Top 5 Transactions - tercera columna */
-#accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card .card-body .d-flex .small,
-#accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card .card-body .d-flex .fw-semibold {
+/* FORZAR NEGRO EN MODO CLARO - Top 5 Transactions */
+body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card-header h6,
+body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card-body .d-flex .small,
+body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card-body .d-flex .fw-semibold,
+body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card-body span {
     color: #000 !important;
 }
 
-/* Específico para la sección Overview - Monthly Cash Flow Trend */
-#overview .card-header .card-title,
-#overview .card-header h6 {
+/* FORZAR NEGRO EN MODO CLARO - Overview Quick Stats */
+body:not([data-bs-theme="dark"]) #overview .col-lg-4 .card-body h3,
+body:not([data-bs-theme="dark"]) #overview .col-lg-4 .card-body p {
     color: #000 !important;
 }
 
-/* Quick Stats - valores monetarios en negro para mejor legibilidad */
-#overview .col-lg-4 .card-body.text-white h3,
-#overview .col-lg-4 .card-body.text-white p {
+/* FORZAR NEGRO EN MODO CLARO - Overview Chart Title */
+body:not([data-bs-theme="dark"]) #overview .card-header .card-title,
+body:not([data-bs-theme="dark"]) #overview .card-header h6 {
     color: #000 !important;
 }
 
+/* Modo oscuro - textos blancos */
+[data-bs-theme="dark"] #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body h6,
+[data-bs-theme="dark"] #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body h3,
+[data-bs-theme="dark"] #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body .small,
+[data-bs-theme="dark"] #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body div,
+[data-bs-theme="dark"] #accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card-body .d-flex .small,
+[data-bs-theme="dark"] #accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card-body .d-flex .fw-semibold,
+[data-bs-theme="dark"] #overview .col-lg-4 .card-body h3,
+[data-bs-theme="dark"] #overview .col-lg-4 .card-body p {
+    color: #fff !important;
+}
 
-/* Compatibilidad con modo oscuro futuro */
-@media (prefers-color-scheme: dark) {
-    #accountTabs .nav-link,
-    #accountTabs .nav-link .d-flex,
-    #accountTabsContent .card-header h6,
-    #accountTabsContent .card-body span,
-    #accountTabsContent .card-body .small,
-    #accountTabsContent .fw-semibold,
-    #accountTabsContent .fw-bold {
-        color: #ecf0f1 !important;
-    }
-    
-    #accountTabsContent .card-header {
-        border-bottom-color: #34495e;
-    }
-    
-    .card-header.bg-white.border-0 {
-        border-bottom-color: #34495e !important;
-    }
-    
-    #accountTabsContent .text-muted {
-        color: #adb5bd !important;
-    }
-    
-    /* Mantener todos los textos de pestañas en negro incluso en modo oscuro */
-    #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body.text-white h6,
-    #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body.text-white h3,
-    #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body.text-white .small,
-    #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body.text-white div,
-    #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body h6.text-muted,
-    #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body .small.text-muted,
-    #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body .small.text-muted div,
-    #accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card .card-body .d-flex .small,
-    #accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card .card-body .d-flex .fw-semibold,
-    #overview .card-header .card-title,
-    #overview .card-header h6,
-    #overview .col-lg-4 .card-body.text-white h3,
-    #overview .col-lg-4 .card-body.text-white p {
-        color: #000 !important;
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    #darkModeToggle {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
     }
 }
 </style>
+
+<script>
+// Dark Mode Toggle System
+document.addEventListener('DOMContentLoaded', function() {
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const modeIcon = document.getElementById('modeIcon');
+    const modeText = document.getElementById('modeText');
+    const body = document.body;
+    
+    // Obtener modo actual del localStorage o usar claro por defecto
+    const currentMode = localStorage.getItem('darkMode') || 'light';
+    
+    function setMode(mode) {
+        if (mode === 'dark') {
+            body.setAttribute('data-bs-theme', 'dark');
+            modeIcon.className = 'fas fa-sun';
+            modeText.textContent = 'Light';
+            localStorage.setItem('darkMode', 'dark');
+        } else {
+            body.removeAttribute('data-bs-theme');
+            modeIcon.className = 'fas fa-moon';
+            modeText.textContent = 'Dark';
+            localStorage.setItem('darkMode', 'light');
+        }
+    }
+    
+    // Aplicar modo inicial
+    setMode(currentMode);
+    
+    // Toggle al hacer clic
+    darkModeToggle.addEventListener('click', function() {
+        const isCurrentlyDark = body.hasAttribute('data-bs-theme') && body.getAttribute('data-bs-theme') === 'dark';
+        setMode(isCurrentlyDark ? 'light' : 'dark');
+    });
+});
+</script></style>
 {% endblock %}
