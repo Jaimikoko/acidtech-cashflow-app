@@ -1,0 +1,21 @@
+Date,Description,Amount,Type,Category,Accounting_Class,Reference
+2025-01-02,Payment from Tech Solutions Inc,25000.00,CREDIT,INCOME,Revenue,INV-2025-001
+2025-01-05,Acme Corporation - Monthly Service,18500.50,CREDIT,INCOME,Revenue,INV-2025-002
+2025-01-08,DataFlow Corp - Project Payment,32000.00,CREDIT,INCOME,Revenue,INV-2025-003
+2025-01-12,Global Systems Ltd - Consulting,15750.00,CREDIT,INCOME,Revenue,INV-2025-004
+2025-01-15,CloudTech Partners - License Fee,8900.25,CREDIT,INCOME,Revenue,INV-2025-005
+2025-01-18,Digital Innovations - Development,42000.00,CREDIT,INCOME,Revenue,INV-2025-006
+2025-01-22,Enterprise Solutions - Support,12500.00,CREDIT,INCOME,Revenue,INV-2025-007
+2025-01-25,Smart Systems Co - Integration,28750.75,CREDIT,INCOME,Revenue,INV-2025-008
+2025-01-28,Innovation Labs - Research,19200.00,CREDIT,INCOME,Revenue,INV-2025-009
+2025-01-30,Future Tech Inc - Maintenance,11800.00,CREDIT,INCOME,Revenue,INV-2025-010
+2025-02-02,Tech Solutions Inc - Monthly,25000.00,CREDIT,INCOME,Revenue,INV-2025-011
+2025-02-05,Acme Corporation - Additional Service,22000.00,CREDIT,INCOME,Revenue,INV-2025-012
+2025-02-08,New Client - Alpha Corp,35000.00,CREDIT,INCOME,Revenue,INV-2025-013
+2025-02-12,DataFlow Corp - Phase 2,28500.00,CREDIT,INCOME,Revenue,INV-2025-014
+2025-02-15,Global Systems Ltd - Enhancement,16800.50,CREDIT,INCOME,Revenue,INV-2025-015
+2025-02-18,CloudTech Partners - Upgrade,13200.00,CREDIT,INCOME,Revenue,INV-2025-016
+2025-02-22,Digital Innovations - New Project,38000.00,CREDIT,INCOME,Revenue,INV-2025-017
+2025-02-25,Enterprise Solutions - Premium,15500.00,CREDIT,INCOME,Revenue,INV-2025-018
+2025-02-28,Smart Systems Co - Expansion,31200.25,CREDIT,INCOME,Revenue,INV-2025-019
+2025-03-03,Innovation Labs - Advanced Analytics,24500.00,CREDIT,INCOME,Revenue,INV-2025-020
