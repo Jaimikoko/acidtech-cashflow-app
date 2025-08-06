@@ -567,8 +567,23 @@ document.addEventListener('DOMContentLoaded', function() {
     color: #fd7e14 !important;
 }
 
-/* Específico para Top 5 Transactions - cambio de color a negro */
-/* Selector directo para las tabs de cuenta individual donde están los Top 5 */
+/* Específico para pestañas de cuentas individuales - mejorar visibilidad */
+/* Account KPIs - primera columna */
+#accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body.text-white h6,
+#accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body.text-white h3,
+#accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body.text-white .small,
+#accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body.text-white div {
+    color: #000 !important;
+}
+
+/* Monthly Variation - segunda columna */
+#accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body h6.text-muted,
+#accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body .small.text-muted,
+#accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body .small.text-muted div {
+    color: #000 !important;
+}
+
+/* Top 5 Transactions - tercera columna */
 #accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card .card-body .d-flex .small,
 #accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card .card-body .d-flex .fw-semibold {
     color: #000 !important;
@@ -585,6 +600,7 @@ document.addEventListener('DOMContentLoaded', function() {
 #overview .col-lg-4 .card-body.text-white p {
     color: #000 !important;
 }
+
 
 /* Compatibilidad con modo oscuro futuro */
 @media (prefers-color-scheme: dark) {
@@ -610,7 +626,14 @@ document.addEventListener('DOMContentLoaded', function() {
         color: #adb5bd !important;
     }
     
-    /* Mantener Top 5 Transactions y Overview en negro incluso en modo oscuro */
+    /* Mantener todos los textos de pestañas en negro incluso en modo oscuro */
+    #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body.text-white h6,
+    #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body.text-white h3,
+    #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body.text-white .small,
+    #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body.text-white div,
+    #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body h6.text-muted,
+    #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body .small.text-muted,
+    #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body .small.text-muted div,
     #accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card .card-body .d-flex .small,
     #accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card .card-body .d-flex .fw-semibold,
     #overview .card-header .card-title,
