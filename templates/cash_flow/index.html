@@ -580,6 +580,12 @@ document.addEventListener('DOMContentLoaded', function() {
     color: #000 !important;
 }
 
+/* Quick Stats - valores monetarios en negro para mejor legibilidad */
+#overview .col-lg-4 .card-body.text-white h3,
+#overview .col-lg-4 .card-body.text-white p {
+    color: #000 !important;
+}
+
 /* Compatibilidad con modo oscuro futuro */
 @media (prefers-color-scheme: dark) {
     #accountTabs .nav-link,
@@ -608,7 +614,9 @@ document.addEventListener('DOMContentLoaded', function() {
     #accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card .card-body .d-flex .small,
     #accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card .card-body .d-flex .fw-semibold,
     #overview .card-header .card-title,
-    #overview .card-header h6 {
+    #overview .card-header h6,
+    #overview .col-lg-4 .card-body.text-white h3,
+    #overview .col-lg-4 .card-body.text-white p {
         color: #000 !important;
     }
 }
