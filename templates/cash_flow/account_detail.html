@@ -1,7 +1,7 @@
 {% extends "masterlayout.html" %}
 
-{% block title %}{{ account_info.name }} - Cash Flow Analysis{% endblock %}
-{% block page_title %}{{ account_info.name }} Detail{% endblock %}
+{% block title %}Account Detail - {{ account_info.name }}{% endblock %}
+{% block page_title %}Account Detail{% endblock %}
 
 {% block content %}
 <div class="container-fluid">
@@ -35,14 +35,81 @@
         </div>
     </div>
 
+    <!-- Filters Section -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold text-dark">Time Period</label>
+                    <select class="form-select form-select-sm" id="timePeriodFilter">
+                        <option value="day">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                        <option value="year" selected>This Year</option>
+                        <option value="custom">Custom Range</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold text-dark">Month</label>
+                    <select class="form-select form-select-sm" id="monthFilter">
+                        <option value="">All Months</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold text-dark">Year</label>
+                    <select class="form-select form-select-sm" id="yearFilter">
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025" selected>2025</option>
+                    </select>
+                </div>
+                <div class="col-md-3" id="customRangeDiv" style="display: none;">
+                    <div class="row">
+                        <div class="col-6">
+                            <label class="form-label fw-semibold text-dark">From</label>
+                            <input type="date" class="form-control form-control-sm" id="startDate">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label fw-semibold text-dark">To</label>
+                            <input type="date" class="form-control form-control-sm" id="endDate">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold text-dark">&nbsp;</label>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary btn-sm flex-fill" onclick="applyFilters()">
+                            <i class="fas fa-filter"></i> Apply Filters
+                        </button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="resetFilters()">
+                            <i class="fas fa-refresh"></i> Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Account KPIs -->
     <div class="row mb-4">
         <div class="col-lg-3 col-md-6 mb-3">
             <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, {{ account_info.color }}dd 0%, {{ account_info.color }}aa 100%);">
                 <div class="card-body text-white">
-                    <h6 class="text-white-50 mb-2">Total Amount</h6>
-                    <h3 class="fw-bold mb-1">${{ "%.0f"|format(account_data.total_amount) }}</h3>
-                    <small class="text-white-75">{{ account_data.transaction_count }} transactions</small>
+                    <h6 class="mb-2" style="color: rgba(255,255,255,0.9);">Total Amount</h6>
+                    <h3 class="fw-bold mb-1 text-white">${{ "{:,.0f}".format(account_data.total_amount) }}</h3>
+                    <small style="color: rgba(255,255,255,0.8);">{{ account_data.transaction_count }} transactions</small>
                 </div>
             </div>
         </div>
@@ -50,8 +117,8 @@
         <div class="col-lg-3 col-md-6 mb-3">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
-                    <h6 class="text-muted mb-2">Monthly Average</h6>
-                    <h3 class="fw-bold mb-1">${{ "%.0f"|format(account_data.average_monthly) }}</h3>
+                    <h6 class="text-secondary mb-2 fw-semibold">Monthly Average</h6>
+                    <h3 class="fw-bold mb-1 text-dark">${{ "{:,.0f}".format(account_data.average_monthly) }}</h3>
                     <small class="text-muted">Per month in {{ year }}</small>
                 </div>
             </div>
@@ -60,9 +127,9 @@
         <div class="col-lg-3 col-md-6 mb-3">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
-                    <h6 class="text-muted mb-2">Peak Month</h6>
+                    <h6 class="text-secondary mb-2 fw-semibold">Peak Month</h6>
                     <h3 class="fw-bold mb-1 text-success">{{ ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][account_data.peak_month-1] }}</h3>
-                    <small class="text-muted">${{ "%.0f"|format(account_data.monthly_data[account_data.peak_month].amount) }}</small>
+                    <small class="text-muted">${{ "{:,.0f}".format(account_data.monthly_data[account_data.peak_month].amount) }}</small>
                 </div>
             </div>
         </div>
@@ -70,7 +137,7 @@
         <div class="col-lg-3 col-md-6 mb-3">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
-                    <h6 class="text-muted mb-2">Growth Trend</h6>
+                    <h6 class="text-secondary mb-2 fw-semibold">Growth Trend</h6>
                     <h3 class="fw-bold mb-1 text-success">+5.2%</h3>
                     <small class="text-muted">Month over month avg</small>
                 </div>
@@ -103,13 +170,13 @@
                 </div>
                 <div class="card-body">
                     {% for entity, amount in account_data.top_entities[:10] %}
-                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 {% if not loop.last %}border-bottom{% endif %}">
-                            <div>
-                                <h6 class="mb-0 fw-semibold">{{ entity }}</h6>
-                                <small class="text-muted">{{ ((amount / account_data.total_amount) * 100)|round(1) }}% of total</small>
+                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 {% if not loop.last %}border-bottom border-light{% endif %}">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-0 fw-semibold text-dark">{{ entity }}</h6>
+                                <small class="text-secondary">{{ ((amount / account_data.total_amount) * 100)|round(1) }}% of total</small>
                             </div>
-                            <div class="text-end">
-                                <span class="fw-bold">${{ "%.0f"|format(amount) }}</span>
+                            <div class="text-end ms-2">
+                                <span class="fw-bold text-dark">${{ "{:,.0f}".format(amount) }}</span>
                             </div>
                         </div>
                     {% endfor %}
@@ -151,12 +218,12 @@
                                 {% for transaction in account_data.recent_transactions[:20] %}
                                     <tr>
                                         <td>
-                                            <small class="text-muted">{{ transaction.date.strftime('%m/%d/%Y') if transaction.date else 'N/A' }}</small>
+                                            <small class="text-secondary fw-semibold">{{ transaction.date.strftime('%m/%d/%Y') if transaction.date else 'N/A' }}</small>
                                         </td>
                                         <td>
-                                            <div class="fw-semibold">{{ transaction.description }}</div>
+                                            <div class="fw-semibold text-dark">{{ transaction.description }}</div>
                                             {% if transaction.get('service_category') %}
-                                                <small class="text-muted">{{ transaction.service_category }}</small>
+                                                <small class="text-secondary">{{ transaction.service_category }}</small>
                                             {% endif %}
                                         </td>
                                         {% if account_data.account == 'Revenue 4717' %}
@@ -166,7 +233,7 @@
                                         {% endif %}
                                         <td class="text-end fw-semibold">
                                             <span class="{% if transaction.type == 'inflow' %}text-success{% else %}text-danger{% endif %}">
-                                                ${{ "%.2f"|format(transaction.amount) }}
+                                                ${{ "{:,.2f}".format(transaction.amount) }}
                                             </span>
                                         </td>
                                         <td class="text-center">
@@ -284,5 +351,102 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Dynamic Filters Functions
+function toggleCustomRange() {
+    const timePeriod = document.getElementById('timePeriodFilter').value;
+    const customRangeDiv = document.getElementById('customRangeDiv');
+    
+    if (timePeriod === 'custom') {
+        customRangeDiv.style.display = 'block';
+    } else {
+        customRangeDiv.style.display = 'none';
+    }
+}
+
+function applyFilters() {
+    const timePeriod = document.getElementById('timePeriodFilter').value;
+    const month = document.getElementById('monthFilter').value;
+    const year = document.getElementById('yearFilter').value;
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+    
+    // Build URL with filters
+    let url = window.location.pathname + '?';
+    const params = [];
+    
+    if (year) params.push('year=' + year);
+    if (month) params.push('month=' + month);
+    if (timePeriod === 'custom' && startDate) params.push('start_date=' + startDate);
+    if (timePeriod === 'custom' && endDate) params.push('end_date=' + endDate);
+    if (timePeriod !== 'custom') params.push('period=' + timePeriod);
+    
+    url += params.join('&');
+    
+    // Show loading indicator
+    showLoadingOverlay();
+    
+    // Redirect with filters
+    window.location.href = url;
+}
+
+function resetFilters() {
+    document.getElementById('timePeriodFilter').value = 'year';
+    document.getElementById('monthFilter').value = '';
+    document.getElementById('yearFilter').value = '2025';
+    document.getElementById('startDate').value = '';
+    document.getElementById('endDate').value = '';
+    toggleCustomRange();
+    
+    // Redirect to clean URL
+    window.location.href = window.location.pathname + '?year=2025';
+}
+
+function showLoadingOverlay() {
+    // Create loading overlay
+    const overlay = document.createElement('div');
+    overlay.id = 'loadingOverlay';
+    overlay.innerHTML = `
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div class="text-center">
+                <div class="spinner-border text-primary" role="status"></div>
+                <div class="mt-2 text-muted">Applying filters...</div>
+            </div>
+        </div>
+    `;
+    overlay.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+        background: rgba(255,255,255,0.9); z-index: 9999;
+    `;
+    document.body.appendChild(overlay);
+}
+
+// Event listeners
+document.getElementById('timePeriodFilter').addEventListener('change', toggleCustomRange);
+
+// Initialize filters from URL params
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    if (urlParams.get('year')) {
+        document.getElementById('yearFilter').value = urlParams.get('year');
+    }
+    if (urlParams.get('month')) {
+        document.getElementById('monthFilter').value = urlParams.get('month');
+    }
+    if (urlParams.get('period')) {
+        document.getElementById('timePeriodFilter').value = urlParams.get('period');
+        toggleCustomRange();
+    }
+    if (urlParams.get('start_date')) {
+        document.getElementById('startDate').value = urlParams.get('start_date');
+        document.getElementById('timePeriodFilter').value = 'custom';
+        toggleCustomRange();
+    }
+    if (urlParams.get('end_date')) {
+        document.getElementById('endDate').value = urlParams.get('end_date');
+    }
+});
+
 </script>
 {% endblock %}
