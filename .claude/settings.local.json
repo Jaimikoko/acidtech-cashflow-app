@@ -40,7 +40,11 @@
       "Bash(az keyvault secret list:*)",
       "Bash(az webapp config ssl list:*)",
       "Bash(az appservice plan show:*)",
-      "Bash(az monitor app-insights component show:*)"
+      "Bash(az monitor app-insights component show:*)",
+      "Bash(cat:*)",
+      "Bash(curl:*)",
+      "Bash(az webapp log tail:*)",
+      "Bash(az webapp log download:*)"
     ],
     "deny": []
   }

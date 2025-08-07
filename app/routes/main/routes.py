@@ -7,8 +7,13 @@ from database import db
 from utils.excel_data_manager import excel_manager
 import json
 import os
+import time
+import logging
 
 from . import main_bp
+
+# Get logger for this module
+logger = logging.getLogger(__name__)
 
 @main_bp.route('/favicon.ico')
 def favicon():

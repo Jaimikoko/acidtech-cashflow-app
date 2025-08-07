@@ -11,7 +11,8 @@ from flask import Flask, jsonify
 from flask_migrate import Migrate
 from flask_login import LoginManager
 
-# Configure logging
+# Configure basic logging for production compatibility
+import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
