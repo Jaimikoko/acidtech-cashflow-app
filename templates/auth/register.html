@@ -1,74 +1,72 @@
-{% extends "base.html" %}
+{% extends "masterlayout.html" %}
 
 {% block title %}Register - Cash Flow Management{% endblock %}
 
 {% block content %}
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
+<div class="min-vh-100 d-flex align-items-center justify-content-center bg-light py-5">
+    <div class="col-12 col-md-4">
         <div>
-            <div class="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-gradient-cash">
+            <div class="mx-auto d-flex align-items-center justify-content-center rounded-circle bg-gradient-cash" style="height: 3rem; width: 3rem;">
                 <i class="fas fa-user-plus text-white text-xl"></i>
             </div>
-            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            <h2 class="mt-4 text-center fs-2 fw-bold text-dark">
                 Create your account
             </h2>
-            <p class="mt-2 text-center text-sm text-gray-600">
+            <p class="mt-2 text-center small text-muted">
                 Start managing your cash flow today
             </p>
         </div>
-        <form class="mt-8 space-y-6" method="POST">
-            <div class="space-y-4">
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
+        <form class="mt-4" method="POST">
+            <div>
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <label for="first_name" class="form-label small">First Name</label>
                         <input id="first_name" name="first_name" type="text" required 
-                               class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+                               class="form-control" 
                                placeholder="First Name">
                     </div>
-                    <div>
-                        <label for="last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
+                    <div class="col-6">
+                        <label for="last_name" class="form-label small">Last Name</label>
                         <input id="last_name" name="last_name" type="text" required 
-                               class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+                               class="form-control" 
                                placeholder="Last Name">
                     </div>
                 </div>
                 
-                <div>
-                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                <div class="mb-3">
+                    <label for="username" class="form-label small">Username</label>
                     <input id="username" name="username" type="text" required 
-                           class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+                           class="form-control" 
                            placeholder="Username">
                 </div>
                 
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                <div class="mb-3">
+                    <label for="email" class="form-label small">Email Address</label>
                     <input id="email" name="email" type="email" required 
-                           class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+                           class="form-control" 
                            placeholder="Email address">
                 </div>
                 
-                <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                <div class="mb-3">
+                    <label for="password" class="form-label small">Password</label>
                     <input id="password" name="password" type="password" required 
-                           class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+                           class="form-control" 
                            placeholder="Password">
                 </div>
             </div>
 
-            <div>
+            <div class="mb-3">
                 <button type="submit" 
-                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                        <i class="fas fa-user-plus text-blue-500 group-hover:text-blue-400"></i>
-                    </span>
+                        class="btn btn-primary w-100">
+                    <i class="fas fa-user-plus me-2"></i>
                     Create Account
                 </button>
             </div>
 
-            <div class="text-center">
-                <p class="text-sm text-gray-600">
+            <div class="text-center mt-3">
+                <p class="small text-muted">
                     Already have an account?
-                    <a href="{{ url_for('auth.login') }}" class="font-medium text-blue-600 hover:text-blue-500">
+                    <a href="{{ url_for('auth.login') }}" class="fw-medium text-primary">
                         Sign in here
                     </a>
                 </p>

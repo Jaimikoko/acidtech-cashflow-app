@@ -27,7 +27,20 @@
       "Bash(set USE_FILE_MODE=true)",
       "Bash(BASE_URL=https://app.acidtech.fintraqx.com pytest -v \"tests/test_routes_qa.py::TestMainRoutes::test_dashboard_route\" --tb=line)",
       "Bash(gh run list:*)",
-      "Bash(gh run view:*)"
+      "Bash(gh run view:*)",
+      "Bash(az group show:*)",
+      "Bash(az resource list:*)",
+      "Bash(az webapp show:*)",
+      "Bash(az webapp config show:*)",
+      "Bash(az webapp config appsettings list:*)",
+      "Bash(az sql server show:*)",
+      "Bash(az sql db list:*)",
+      "Bash(az storage account show:*)",
+      "Bash(az keyvault show:*)",
+      "Bash(az keyvault secret list:*)",
+      "Bash(az webapp config ssl list:*)",
+      "Bash(az appservice plan show:*)",
+      "Bash(az monitor app-insights component show:*)"
     ],
     "deny": []
   }

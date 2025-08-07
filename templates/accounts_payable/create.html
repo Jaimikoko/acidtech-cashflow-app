@@ -1,100 +1,100 @@
-{% extends "base.html" %}
+{% extends "masterlayout.html" %}
 
 {% block title %}Add Payable Transaction - Cash Flow Management{% endblock %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto">
+<div class="container">
     <!-- Page Header -->
-    <div class="bg-white shadow rounded-lg p-6 mb-6">
-        <div class="flex items-center justify-between">
+    <div class="card mb-4">
+        <div class="card-body d-flex align-items-center justify-content-between">
             <div>
-                <h1 class="text-2xl font-bold text-gray-900 flex items-center">
+                <h1 class="h2 fw-bold text-dark d-flex align-items-center">
                     <i class="fas fa-credit-card text-red-600 mr-3"></i>
                     Add Payable Transaction
                 </h1>
-                <p class="text-gray-600">Create a new accounts payable entry</p>
+                <p class="text-muted">Create a new accounts payable entry</p>
             </div>
-            <a href="{{ url_for('accounts_payable.index') }}" class="text-gray-600 hover:text-gray-800">
+            <a href="{{ url_for('accounts_payable.index') }}" class="text-muted text-decoration-none">
                 <i class="fas fa-arrow-left mr-2"></i>Back to List
             </a>
         </div>
     </div>
 
     <!-- Form -->
-    <div class="bg-white shadow rounded-lg p-6">
-        <form method="POST" enctype="multipart/form-data" class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="card">
+        <form method="POST" enctype="multipart/form-data" class="card-body">
+            <div class="row mb-3">
                 <!-- Vendor -->
-                <div>
-                    <label for="vendor" class="block text-sm font-medium text-gray-700">Vendor Name *</label>
+                <div class="col-md-6 mb-3">
+                    <label for="vendor" class="form-label">Vendor Name *</label>
                     <input type="text" id="vendor" name="vendor" required
-                           class="form-input"
+                           class="form-control"
                            placeholder="Enter vendor name">
                 </div>
 
                 <!-- Amount -->
-                <div>
-                    <label for="amount" class="block text-sm font-medium text-gray-700">Amount *</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <span class="text-gray-500 sm:text-sm">$</span>
+                <div class="col-md-6 mb-3">
+                    <label for="amount" class="form-label">Amount *</label>
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <span>$</span>
                         </div>
                         <input type="number" step="0.01" id="amount" name="amount" required
-                               class="form-input pl-7"
+                               class="form-control"
                                placeholder="0.00">
                     </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="row mb-3">
                 <!-- Invoice Number -->
-                <div>
-                    <label for="invoice_number" class="block text-sm font-medium text-gray-700">Invoice Number</label>
+                <div class="col-md-6 mb-3">
+                    <label for="invoice_number" class="form-label">Invoice Number</label>
                     <input type="text" id="invoice_number" name="invoice_number"
-                           class="form-input"
+                           class="form-control"
                            placeholder="Enter invoice number">
                 </div>
 
                 <!-- Due Date -->
-                <div>
-                    <label for="due_date" class="block text-sm font-medium text-gray-700">Due Date *</label>
+                <div class="col-md-6 mb-3">
+                    <label for="due_date" class="form-label">Due Date *</label>
                     <input type="date" id="due_date" name="due_date" required
-                           class="form-input">
+                           class="form-control">
                 </div>
             </div>
 
             <!-- Description -->
-            <div>
-                <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
                 <textarea id="description" name="description" rows="3"
                           class="form-input"
                           placeholder="Enter transaction description"></textarea>
             </div>
 
             <!-- Receipt Upload -->
-            <div>
-                <label for="receipt" class="block text-sm font-medium text-gray-700">Receipt/Invoice File</label>
-                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-gray-400 transition-colors">
-                    <div class="space-y-1 text-center">
-                        <i class="fas fa-file-upload text-gray-400 text-3xl"></i>
-                        <div class="flex text-sm text-gray-600">
-                            <label for="receipt" class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
+            <div class="mb-3">
+                <label for="receipt" class="form-label">Receipt/Invoice File</label>
+                <div class="border border-2 border-dashed rounded p-4 text-center">
+                    <div class="text-center">
+                        <i class="fas fa-file-upload text-muted display-4"></i>
+                        <div class="small text-muted">
+                            <label for="receipt" class="btn btn-link p-0 fw-medium text-primary"
                                 <span>Upload a file</span>
                                 <input id="receipt" name="receipt" type="file" class="sr-only" accept=".pdf,.jpg,.jpeg,.png">
                             </label>
                             <p class="pl-1">or drag and drop</p>
                         </div>
-                        <p class="text-xs text-gray-500">PDF, PNG, JPG up to 16MB</p>
+                        <p class="small text-muted">PDF, PNG, JPG up to 16MB</p>
                     </div>
                 </div>
             </div>
 
             <!-- Form Actions -->
-            <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
-                <a href="{{ url_for('accounts_payable.index') }}" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <div class="d-flex justify-content-end gap-2 pt-3 border-top">
+                <a href="{{ url_for('accounts_payable.index') }}" class="btn btn-secondary">
                     Cancel
                 </a>
-                <button type="submit" class="btn-primary">
+                <button type="submit" class="btn btn-primary">
                     <i class="fas fa-save mr-2"></i>Save Transaction
                 </button>
             </div>
@@ -116,8 +116,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const file = e.target.files[0];
         if (file) {
             const fileInfo = document.createElement('div');
-            fileInfo.className = 'text-sm text-green-600 mt-2';
-            fileInfo.innerHTML = `<i class="fas fa-check mr-1"></i>Selected: ${file.name}`;
+            fileInfo.className = 'small text-success mt-2';
+            fileInfo.innerHTML = `<i class="fas fa-check me-1"></i>Selected: ${file.name}`;
             
             // Remove previous file info
             const existingInfo = document.querySelector('.file-info');
