@@ -1,200 +1,169 @@
-{% extends "masterlayout.html" %}
+{% extends "base.html" %}
 
-{% block title %}Dashboard - AcidTech Cash Flow Management{% endblock %}
-{% block page_title %}Cash Flow Dashboard{% endblock %}
+{% block title %}Dashboard - AcidTech CashFlow{% endblock %}
 
 {% block content %}
 <div class="container-fluid">
-    <!-- Page Header -->
-    <div class="card border-0 shadow-sm mb-4">
-        <div class="card-body">
-            <div class="d-flex align-items-center justify-content-between">
-                <div>
-                    <h2 class="fw-bold text-dark mb-1">Welcome back!</h2>
-                    <p class="text-muted mb-0">Here's your cash flow overview</p>
-                </div>
-                <div class="text-end">
-                    <p class="text-muted small mb-0">Last updated</p>
-                    <p class="fw-semibold">{{ moment().format('MMM DD, YYYY') if moment else 'Today' }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- KPI Cards -->
-    <div class="row mb-4">
-        <!-- Total Receivables -->
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-                <div class="card-body text-white">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white bg-opacity-25 me-3" style="width: 40px; height: 40px;">
-                                <i class="fas fa-arrow-up text-white"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1">
-                            <p class="small mb-1 text-white-50">Total Receivables</p>
-                            <h4 class="fw-bold mb-0">${{ "%.2f"|format(total_receivables|default(0)) }}</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Total Payables -->
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
-                <div class="card-body text-white">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white bg-opacity-25 me-3" style="width: 40px; height: 40px;">
-                                <i class="fas fa-arrow-down text-white"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1">
-                            <p class="small mb-1 text-white-50">Total Payables</p>
-                            <h4 class="fw-bold mb-0">${{ "%.2f"|format(total_payables|default(0)) }}</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Net Cash Flow -->
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
-                <div class="card-body text-white">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white bg-opacity-25 me-3" style="width: 40px; height: 40px;">
-                                <i class="fas fa-chart-line text-white"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1">
-                            <p class="small mb-1 text-white-50">Net Cash Flow</p>
-                            <h4 class="fw-bold mb-0 {% if ((total_receivables|default(0)) - (total_payables|default(0))) >= 0 %}text-white{% else %}text-white{% endif %}">
-                                ${{ "%.2f"|format((total_receivables|default(0)) - (total_payables|default(0))) }}
-                            </h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Overdue Items -->
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
-                <div class="card-body text-white">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white bg-opacity-25 me-3" style="width: 40px; height: 40px;">
-                                <i class="fas fa-exclamation-triangle text-white"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1">
-                            <p class="small mb-1 text-white-50">Overdue Items</p>
-                            <h4 class="fw-bold mb-0">{{ (overdue_receivables|default(0)) + (overdue_payables|default(0)) }}</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Cash Flow Chart -->
-    <div class="card border-0 shadow-sm mb-4">
-        <div class="card-header bg-white border-0">
-            <h5 class="card-title mb-0">Cash Flow Trend (Last 30 Days)</h5>
-        </div>
-        <div class="card-body">
-            <canvas id="cashFlowChart" height="100"></canvas>
-        </div>
-    </div>
-
-    <!-- Recent Transactions and Quick Actions -->
     <div class="row">
-        <!-- Recent Transactions -->
-        <div class="col-lg-8 mb-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-0">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <h5 class="card-title mb-0">Recent Transactions</h5>
-                        <a href="{{ url_for('accounts_payable.index') }}" class="btn btn-sm btn-outline-primary">View all</a>
-                    </div>
-                </div>
-                <div class="card-body">
-                    {% if recent_transactions %}
-                        <div class="list-group list-group-flush">
-                            {% for transaction in recent_transactions %}
-                            <div class="list-group-item border-0 px-0">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <div class="d-flex align-items-center">
-                                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle me-3 {% if transaction.type == 'receivable' %}bg-success-subtle{% else %}bg-danger-subtle{% endif %}" style="width: 35px; height: 35px;">
-                                            <i class="fas {% if transaction.type == 'receivable' %}fa-arrow-up text-success{% else %}fa-arrow-down text-danger{% endif %}"></i>
-                                        </div>
-                                        <div>
-                                            <p class="fw-semibold mb-0">{{ transaction.vendor_customer|default('N/A') }}</p>
-                                            <small class="text-muted">{{ transaction.invoice_number|default('N/A') }}</small>
-                                        </div>
-                                    </div>
-                                    <div class="text-end">
-                                        <p class="fw-semibold mb-0 {% if transaction.type == 'receivable' %}text-success{% else %}text-danger{% endif %}">
-                                            ${{ "%.2f"|format(transaction.amount|default(0)) }}
-                                        </p>
-                                        <small class="text-muted">{{ transaction.due_date.strftime('%m/%d/%Y') if transaction.due_date else 'N/A' }}</small>
+        <div class="col-md-12">
+            <h1 class="h3 mb-4 text-gray-800">Financial Dashboard</h1>
+            
+            <!-- KPI Cards Row -->
+            <div class="row">
+                <!-- Total Receivables Card -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Accounts Receivable</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        {{ "${:,.2f}".format(total_receivables) }}
                                     </div>
                                 </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                </div>
                             </div>
-                            {% endfor %}
                         </div>
-                    {% else %}
-                        <div class="text-center py-5">
-                            <i class="fas fa-inbox text-muted fa-3x mb-3"></i>
-                            <p class="text-muted mb-0">No recent transactions</p>
+                    </div>
+                </div>
+
+                <!-- Total Payables Card -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-info shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        Accounts Payable</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        {{ "${:,.2f}".format(total_payables) }}
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-credit-card fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
                         </div>
-                    {% endif %}
+                    </div>
+                </div>
+
+                <!-- Overdue Receivables Card -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                        Overdue Receivables</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        {{ overdue_receivables }}
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Overdue Payables Card -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-danger shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                        Overdue Payables</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        {{ overdue_payables }}
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-calendar-times fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Quick Actions -->
-        <div class="col-lg-4 mb-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-0">
-                    <h5 class="card-title mb-0">Quick Actions</h5>
+            <!-- Recent Transactions Table -->
+            {% if recent_transactions %}
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Recent Transactions</h6>
                 </div>
                 <div class="card-body">
-                    <div class="row g-3">
-                        <div class="col-6">
-                            <a href="{{ url_for('accounts_payable.create') }}" class="btn btn-outline-primary w-100 d-flex flex-column align-items-center py-3">
-                                <i class="fas fa-plus text-primary fs-4 mb-2"></i>
-                                <span class="small fw-semibold">Add Payable</span>
-                            </a>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Vendor/Customer</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for transaction in recent_transactions %}
+                                <tr>
+                                    <td>{{ transaction.created_at.strftime('%Y-%m-%d') if transaction.created_at else 'N/A' }}</td>
+                                    <td>
+                                        <span class="badge badge-{{ 'success' if transaction.type == 'receivable' else 'info' }}">
+                                            {{ transaction.type.title() }}
+                                        </span>
+                                    </td>
+                                    <td>{{ transaction.vendor_customer }}</td>
+                                    <td>${{ "{:,.2f}".format(transaction.amount) }}</td>
+                                    <td>
+                                        <span class="badge badge-{{ 'success' if transaction.status == 'paid' else 'warning' }}">
+                                            {{ transaction.status.title() }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Quick Actions -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card shadow">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
                         </div>
-                        <div class="col-6">
-                            <a href="{{ url_for('accounts_receivable.create') }}" class="btn btn-outline-success w-100 d-flex flex-column align-items-center py-3">
-                                <i class="fas fa-plus text-success fs-4 mb-2"></i>
-                                <span class="small fw-semibold">Add Receivable</span>
-                            </a>
-                        </div>
-                        <div class="col-6">
-                            <a href="{{ url_for('purchase_orders.create') }}" class="btn btn-outline-info w-100 d-flex flex-column align-items-center py-3">
-                                <i class="fas fa-shopping-cart text-info fs-4 mb-2"></i>
-                                <span class="small fw-semibold">New PO</span>
-                            </a>
-                        </div>
-                        <div class="col-6">
-                            <a href="{{ url_for('cash_flow.index') }}" class="btn btn-outline-info w-100 d-flex flex-column align-items-center py-3">
-                                <i class="fas fa-coins text-info fs-4 mb-2"></i>
-                                <span class="small fw-semibold">Cash Flow</span>
-                            </a>
-                        </div>
-                        <div class="col-6">
-                            <a href="{{ url_for('reports.index') }}" class="btn btn-outline-warning w-100 d-flex flex-column align-items-center py-3">
-                                <i class="fas fa-chart-bar text-warning fs-4 mb-2"></i>
-                                <span class="small fw-semibold">Reports</span>
-                            </a>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <a href="{{ url_for('accounts_receivable.create') }}" class="btn btn-success btn-block">
+                                        <i class="fas fa-plus"></i> New Invoice
+                                    </a>
+                                </div>
+                                <div class="col-md-3">
+                                    <a href="{{ url_for('accounts_payable.create') }}" class="btn btn-info btn-block">
+                                        <i class="fas fa-plus"></i> New Bill
+                                    </a>
+                                </div>
+                                <div class="col-md-3">
+                                    <a href="{{ url_for('purchase_orders.create') }}" class="btn btn-primary btn-block">
+                                        <i class="fas fa-plus"></i> New P.O.
+                                    </a>
+                                </div>
+                                <div class="col-md-3">
+                                    <a href="{{ url_for('cash_flow.index') }}" class="btn btn-warning btn-block">
+                                        <i class="fas fa-chart-line"></i> Cash Flow
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -202,94 +171,4 @@
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize cash flow chart with Chart.js
-    const ctx = document.getElementById('cashFlowChart').getContext('2d');
-    
-    // Create sample data based on current values
-    const receivablesAmount = {{ total_receivables|default(45750) }};
-    const payablesAmount = {{ total_payables|default(13200) }};
-    
-    // Generate sample trend data
-    const labels = [];
-    const receivablesData = [];
-    const payablesData = [];
-    
-    for (let i = 29; i >= 0; i--) {
-        const date = new Date();
-        date.setDate(date.getDate() - i);
-        labels.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
-        
-        // Generate realistic variations
-        const receivableVariation = (Math.random() - 0.5) * 0.2;
-        const payableVariation = (Math.random() - 0.5) * 0.2;
-        
-        receivablesData.push(receivablesAmount * (1 + receivableVariation));
-        payablesData.push(payablesAmount * (1 + payableVariation));
-    }
-    
-    const chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Receivables',
-                data: receivablesData,
-                borderColor: '#10b981',
-                backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                tension: 0.4,
-                fill: false
-            }, {
-                label: 'Payables',
-                data: payablesData,
-                borderColor: '#ef4444',
-                backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                tension: 0.4,
-                fill: false
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: false
-                }
-            },
-            scales: {
-                x: {
-                    display: true,
-                    title: {
-                        display: true,
-                        text: 'Date'
-                    }
-                },
-                y: {
-                    display: true,
-                    title: {
-                        display: true,
-                        text: 'Amount ($)'
-                    },
-                    ticks: {
-                        callback: function(value) {
-                            return '$' + value.toLocaleString();
-                        }
-                    }
-                }
-            },
-            interaction: {
-                intersect: false,
-                mode: 'index'
-            }
-        }
-    });
-});
-</script>
 {% endblock %}

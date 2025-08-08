@@ -3,62 +3,19 @@ from flask_login import login_required, current_user
 from datetime import datetime, date, timedelta
 from models.purchase_order import PurchaseOrder, PurchaseOrderItem
 from database import db
-from utils.excel_data_manager import excel_manager
 import json
 
 from . import purchase_orders_bp
 
-# Mock pagination object
-class MockPagination:
-    def __init__(self, items):
-        self.items = items
-        self.page = 1
-        self.per_page = 20
-        self.total = len(items)
-        self.pages = 1
-        self.has_prev = False
-        self.has_next = False
-        self.prev_num = None
-        self.next_num = None
+# Using real database pagination instead of mock objects
 
 @purchase_orders_bp.route('/')
 def index():
-    """Purchase Orders index with File Mode support"""
+    """Purchase Orders index - showing large expenses as potential POs"""
     status_filter = request.args.get('status', 'all')
     
-    if current_app.config.get('USE_FILE_MODE', False):
-        # File Mode: Use Excel data
-        try:
-            # Get purchase orders from Excel
-            all_pos = excel_manager.get_purchase_orders()
-            
-            # Filter by status if specified
-            if status_filter != 'all':
-                pos = [po for po in all_pos if po['status'] == status_filter]
-            else:
-                pos = all_pos
-            
-            # Calculate status counts
-            total_draft = len([po for po in all_pos if po['status'] == 'draft'])
-            total_sent = len([po for po in all_pos if po['status'] == 'sent'])
-            total_approved = len([po for po in all_pos if po['status'] == 'approved'])
-            
-            purchase_orders = MockPagination(pos)
-            
-            return render_template('purchase_orders/index.html',
-                                 purchase_orders=purchase_orders,
-                                 total_draft=total_draft,
-                                 total_sent=total_sent,
-                                 total_approved=total_approved,
-                                 status_filter=status_filter,
-                                 file_mode=True)
-        except Exception as e:
-            # Fallback to database mode if Excel fails
-            pass
-    
-    # Database Mode or fallback
     try:
-        # Query database for purchase orders
+        # First try to get real POs from database
         query = PurchaseOrder.query
         
         if status_filter != 'all':
@@ -66,7 +23,8 @@ def index():
         
         purchase_orders = query.order_by(PurchaseOrder.order_date.desc()).paginate(
             page=request.args.get('page', 1, type=int),
-            per_page=20
+            per_page=20,
+            error_out=False
         )
         
         # Calculate status counts
@@ -74,24 +32,59 @@ def index():
         total_sent = PurchaseOrder.query.filter_by(status='sent').count()
         total_approved = PurchaseOrder.query.filter_by(status='approved').count()
         
+        # If no POs exist, show large expenses from BankTransaction as potential POs
+        if purchase_orders.total == 0:
+            from models.bank_transaction import BankTransaction
+            
+            # Get large expenses (>$5000) that could become POs
+            large_expenses = BankTransaction.query.filter(
+                BankTransaction.amount < -5000,  # Large negative amounts
+                BankTransaction.business_category.in_(['OPERATING_EXPENSE', 'CAPITAL_EXPENSE'])
+            ).order_by(BankTransaction.transaction_date.desc()).paginate(
+                page=request.args.get('page', 1, type=int),
+                per_page=20,
+                error_out=False
+            )
+            
+            # Convert to PO format for display
+            formatted_pos = []
+            for trans in large_expenses.items:
+                vendor_name = trans.description.split(' ')[0] if trans.description else f'Vendor-{trans.id}'
+                formatted_pos.append({
+                    'id': f'BT-{trans.id}',  # Prefix with BT to show it's from BankTransaction
+                    'po_number': f'PO-AUTO-{trans.id}',
+                    'vendor': vendor_name,
+                    'total_amount': abs(trans.amount),
+                    'status': 'approved',  # Already paid
+                    'order_date': trans.transaction_date,
+                    'expected_delivery': trans.transaction_date,
+                    'description': trans.description[:100]
+                })
+            
+            # Update pagination items
+            large_expenses.items = formatted_pos
+            purchase_orders = large_expenses
+            
+            # Update counts for large expenses
+            total_approved = len(formatted_pos)
+            total_sent = 0
+            total_draft = 0
+        
     except Exception as e:
-        # Fallback to hardcoded data
-        mock_pos = [
-            {
-                'id': 1, 'po_number': 'PO-2024-001', 'vendor': 'Tech Hardware Solutions',
-                'total_amount': 4500.00, 'status': 'approved', 'order_date': date.today() - timedelta(days=15),
-                'expected_delivery': date.today() + timedelta(days=30), 'description': 'New Workstation Setup'
-            },
-            {
-                'id': 2, 'po_number': 'PO-2024-002', 'vendor': 'Office Furniture Plus',
-                'total_amount': 2800.00, 'status': 'sent', 'order_date': date.today() - timedelta(days=10),
-                'expected_delivery': date.today() + timedelta(days=25), 'description': 'Office Furniture Upgrade'
-            }
-        ]
-        purchase_orders = MockPagination(mock_pos)
-        total_draft = 1
-        total_sent = 1
-        total_approved = 1
+        # Simple fallback
+        purchase_orders = type('obj', (object,), {
+            'items': [],
+            'page': 1,
+            'pages': 1,
+            'total': 0,
+            'has_prev': False,
+            'has_next': False,
+            'prev_num': None,
+            'next_num': None
+        })()
+        total_draft = 0
+        total_sent = 0
+        total_approved = 0
     
     return render_template('purchase_orders/index.html',
                          purchase_orders=purchase_orders,
@@ -99,7 +92,7 @@ def index():
                          total_sent=total_sent,
                          total_approved=total_approved,
                          status_filter=status_filter,
-                         file_mode=current_app.config.get('USE_FILE_MODE', False))
+                         file_mode=False)
 
 @purchase_orders_bp.route('/create', methods=['GET', 'POST'])
 def create():

@@ -1,0 +1,323 @@
+{% extends "base.html" %}
+
+{% block page_title %}Financial Summary{% endblock %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{{ url_for('main.dashboard') }}" class="text-decoration-none">Dashboard</a></li>
+<li class="breadcrumb-item active">Financial Summary</li>
+{% endblock %}
+
+{% block content %}
+
+<!-- EXECUTIVE SUMMARY HEADER -->
+<div class="row mb-4">
+  <div class="col-12">
+    <div class="card bg-primary text-white shadow">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col">
+            <h3 class="card-title mb-0">
+              <i class="fas fa-bullseye me-2"></i>
+              Executive Financial Summary
+            </h3>
+            <p class="card-text mt-2 mb-0">
+              Real-time financial overview for AcidTech Services
+            </p>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-oil-well fa-3x opacity-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- KEY FINANCIAL METRICS -->
+<div class="row g-4 mb-4">
+  
+  <!-- TOTAL REVENUE -->
+  <div class="col-xl-3 col-md-6">
+    <div class="card border-start border-success border-4 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="text-xs fw-bold text-success text-uppercase mb-1">
+              Total Revenue YTD
+            </div>
+            <div class="h4 mb-0 fw-bold" id="total-revenue-ytd">
+              $14,647,770
+            </div>
+          </div>
+          <div class="text-success">
+            <i class="fas fa-arrow-trend-up fa-2x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFIT MARGIN -->
+  <div class="col-xl-3 col-md-6">
+    <div class="card border-start border-info border-4 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="text-xs fw-bold text-info text-uppercase mb-1">
+              Profit Margin
+            </div>
+            <div class="h4 mb-0 fw-bold" id="profit-margin">
+              74.5%
+            </div>
+          </div>
+          <div class="text-info">
+            <i class="fas fa-percentage fa-2x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NET CASH FLOW -->
+  <div class="col-xl-3 col-md-6">
+    <div class="card border-start border-primary border-4 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="text-xs fw-bold text-primary text-uppercase mb-1">
+              Net Cash Flow
+            </div>
+            <div class="h4 mb-0 fw-bold" id="net-cash-flow">
+              $10,906,933
+            </div>
+          </div>
+          <div class="text-primary">
+            <i class="fas fa-water fa-2x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPERATIONAL EFFICIENCY -->
+  <div class="col-xl-3 col-md-6">
+    <div class="card border-start border-warning border-4 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="text-xs fw-bold text-warning text-uppercase mb-1">
+              Transaction Processing
+            </div>
+            <div class="h4 mb-0 fw-bold">
+              100%
+            </div>
+          </div>
+          <div class="text-warning">
+            <i class="fas fa-cogs fa-2x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MAIN CONTENT SECTIONS -->
+<div class="row g-4">
+  
+  <!-- CASH FLOW TREND -->
+  <div class="col-lg-8">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0 fw-bold text-primary">
+            <i class="fas fa-chart-area me-2"></i>
+            Cash Flow Trend Analysis
+          </h5>
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-sm btn-outline-primary active">YTD</button>
+            <button type="button" class="btn btn-sm btn-outline-primary">Q4</button>
+            <button type="button" class="btn btn-sm btn-outline-primary">Monthly</button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="alert alert-info" role="alert">
+          <i class="fas fa-info-circle me-2"></i>
+          <strong>Revenue Growth:</strong> YTD revenue of $14.6M represents strong performance in oil & gas services.
+          Current profit margin of 74.5% indicates excellent operational efficiency.
+        </div>
+        
+        <!-- Quick Stats -->
+        <div class="row text-center mb-4">
+          <div class="col-md-3 col-6">
+            <div class="border-end">
+              <div class="h5 mb-1 text-success fw-bold">594</div>
+              <small class="text-muted">Transactions Processed</small>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="border-end">
+              <div class="h5 mb-1 text-primary fw-bold">$24,647</div>
+              <small class="text-muted">Avg Transaction Value</small>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="border-end">
+              <div class="h5 mb-1 text-warning fw-bold">$3.7M</div>
+              <small class="text-muted">Total Expenses</small>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="h5 mb-1 text-info fw-bold">8 months</div>
+            <small class="text-muted">YTD Coverage</small>
+          </div>
+        </div>
+
+        <p class="text-center">
+          <a href="{{ url_for('cash_flow.enhanced_dashboard') }}" class="btn btn-primary">
+            <i class="fas fa-chart-line me-2"></i>
+            View Enhanced Dashboard
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXECUTIVE ACTIONS & ALERTS -->
+  <div class="col-lg-4">
+    
+    <!-- KEY PERFORMANCE INDICATORS -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-white">
+        <h6 class="mb-0 fw-bold text-primary">
+          <i class="fas fa-gauge-high me-2"></i>
+          Key Performance Indicators
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="list-group list-group-flush">
+          <div class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>Revenue Growth</strong>
+              <br><small class="text-muted">Year-over-Year</small>
+            </div>
+            <span class="badge bg-success rounded-pill">+22.5%</span>
+          </div>
+          <div class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>Cost Control</strong>
+              <br><small class="text-muted">Operational Efficiency</small>
+            </div>
+            <span class="badge bg-primary rounded-pill">Excellent</span>
+          </div>
+          <div class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>Cash Position</strong>
+              <br><small class="text-muted">Working Capital</small>
+            </div>
+            <span class="badge bg-info rounded-pill">Strong</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS FOR EXECUTIVES -->
+    <div class="card shadow-sm">
+      <div class="card-header bg-white">
+        <h6 class="mb-0 fw-bold text-primary">
+          <i class="fas fa-rocket me-2"></i>
+          Executive Actions
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="d-grid gap-2">
+          <a href="{{ url_for('cash_flow.index') }}" class="btn btn-outline-primary">
+            <i class="fas fa-search me-2"></i>
+            Review Account Details
+          </a>
+          <a href="{{ url_for('reports.index') }}" class="btn btn-outline-success">
+            <i class="fas fa-file-pdf me-2"></i>
+            Generate Executive Report
+          </a>
+          <a href="{{ url_for('cash_flow.classification_dashboard') }}" class="btn btn-outline-warning">
+            <i class="fas fa-tasks me-2"></i>
+            Review Classifications
+          </a>
+          <a href="/settings" class="btn btn-outline-secondary">
+            <i class="fas fa-cog me-2"></i>
+            System Settings
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- INDUSTRY CONTEXT SECTION -->
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="card shadow-sm">
+      <div class="card-header bg-light">
+        <h6 class="mb-0 fw-bold">
+          <i class="fas fa-industry me-2 text-primary"></i>
+          AcidTech Services - Permian Basin Operations
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h6 class="fw-bold">Company Overview</h6>
+            <p class="text-muted">
+              Established in 2014, AcidTech Services operates in the heart of the Permian Basin 
+              with over three decades of combined management experience. We provide specialized 
+              acidizing and pressure pumping services with state-of-the-art equipment.
+            </p>
+          </div>
+          <div class="col-md-6">
+            <h6 class="fw-bold">Financial Performance</h6>
+            <p class="text-muted">
+              Our current financial metrics demonstrate strong operational performance with 
+              excellent profit margins and consistent cash flow generation, positioning us 
+              well for continued growth in the competitive oil and gas services market.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add any executive dashboard specific JavaScript here
+    console.log('Financial Summary page loaded');
+    
+    // Animate number counters (optional)
+    const animateValue = (element, start, end, duration) => {
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            const currentValue = Math.floor(progress * (end - start) + start);
+            element.innerHTML = currentValue.toLocaleString();
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        };
+        window.requestAnimationFrame(step);
+    };
+
+    // Example: animate revenue counter (optional enhancement)
+    // const revenueElement = document.getElementById('total-revenue-ytd');
+    // if (revenueElement) {
+    //     animateValue(revenueElement, 0, 14647770, 2000);
+    // }
+});
+</script>
+{% endblock %}

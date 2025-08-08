@@ -19,114 +19,88 @@
     
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
-<body class="bg-light">
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg bg-gradient-cash shadow">
-        <div class="container">
-            <a class="navbar-brand text-white d-flex align-items-center" href="{{ url_for('main.dashboard') if current_user.is_authenticated else url_for('main.index') }}">
-                <i class="fas fa-chart-line fs-4 me-2"></i>
-                <span class="fw-bold">AciTech Cash Flow</span>
-            </a>
+<body>
+    {% if current_user.is_authenticated %}
+    <!-- AUTHENTICATED LAYOUT: Bootstrap Grid with Sidebar -->
+    <div class="container-fluid">
+        <div class="row">
             
-            {% if current_user.is_authenticated %}
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <!-- SIDEBAR -->
+            {% include 'components/sidebar.html' %}
             
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ url_for('main.dashboard') }}">
-                            <i class="fas fa-tachometer-alt me-1"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-money-bill-wave me-1"></i> Transactions
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ url_for('accounts_payable.index') }}">
-                                <i class="fas fa-credit-card me-2"></i> Accounts Payable
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('accounts_receivable.index') }}">
-                                <i class="fas fa-receipt me-2"></i> Accounts Receivable
-                            </a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ url_for('purchase_orders.index') }}">
-                            <i class="fas fa-shopping-cart me-1"></i> Purchase Orders
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ url_for('reports.index') }}">
-                            <i class="fas fa-chart-bar me-1"></i> Reports
-                        </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user me-1"></i> {{ current_user.first_name }}
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">
-                                <i class="fas fa-sign-out-alt me-2"></i> Logout
-                            </a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            {% else %}
-            <div class="d-flex">
-                <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light me-2">Login</a>
-                <a href="{{ url_for('auth.register') }}" class="btn btn-light">Register</a>
-            </div>
-            {% endif %}
-        </div>
-    </nav>
-
-    <!-- Flash Messages -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="container mt-4">
-                {% for category, message in messages %}
-                    <div class="alert alert-{% if category == 'error' %}danger{% elif category == 'success' %}success{% else %}info{% endif %} alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endwith %}
-
-    <!-- Main Content -->
-    <main class="container my-4">
-        {% block content %}{% endblock %}
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-dark text-white mt-5">
-        <div class="container py-4">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-chart-line me-2"></i>
-                        <span class="fw-semibold">AciTech Cash Flow Management</span>
+            <!-- MAIN CONTENT -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                
+                <!-- TOP NAVBAR -->
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    
+                    <!-- Mobile Toggle Button -->
+                    <button class="btn btn-outline-dark d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <!-- Page Title -->
+                    <h1 class="h2 text-primary fw-bold">
+                        {% block page_title %}Dashboard{% endblock %}
+                    </h1>
+                    
+                    <!-- User Info -->
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group me-2">
+                            <span class="text-muted me-3">Welcome, {{ current_user.first_name or 'User' }}</span>
+                            <a href="{{ url_for('auth.logout') }}" class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-sign-out-alt me-1"></i>Logout
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-6 text-md-end">
-                    <small class="text-muted">
-                        © 2025 AciTech. All rights reserved.
-                    </small>
-                </div>
-            </div>
+                
+                <!-- BREADCRUMBS -->
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        {% block breadcrumbs %}
+                        <li class="breadcrumb-item"><a href="{{ url_for('main.dashboard') }}" class="text-decoration-none">Dashboard</a></li>
+                        {% endblock %}
+                    </ol>
+                </nav>
+
+                <!-- FLASH MESSAGES -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{% if category == 'error' %}danger{% elif category == 'success' %}success{% else %}info{% endif %} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                <!-- PAGE CONTENT -->
+                {% block content %}{% endblock %}
+                
+            </main>
+            
         </div>
-    </footer>
+    </div>
+    
+    {% else %}
+    <!-- UNAUTHENTICATED LAYOUT: Redirect to Login -->
+    <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="text-center">
+            <h3>Authentication Required</h3>
+            <p>Please <a href="{{ url_for('auth.login') }}">login</a> to access this page.</p>
+        </div>
+    </div>
+    {% endif %}
+
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <!-- Custom JavaScript -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/navigation.js') }}"></script>
 
     {% block scripts %}{% endblock %}
 </body>

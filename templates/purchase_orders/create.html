@@ -1,63 +1,257 @@
-{% extends "masterlayout.html" %}
+{% extends "base.html" %}
 
-{% block title %}Create Purchase Order - Cash Flow Management{% endblock %}
+{% block page_title %}Create Purchase Order{% endblock %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{{ url_for('main.dashboard') }}" class="text-decoration-none">Dashboard</a></li>
+<li class="breadcrumb-item"><a href="{{ url_for('purchase_orders.index') }}" class="text-decoration-none">Purchase Orders</a></li>
+<li class="breadcrumb-item active">Create</li>
+{% endblock %}
 
 {% block content %}
-<div class="space-y-6">
-    <!-- Page Header -->
-    <div class="bg-white shadow rounded-lg p-6">
-        <div class="flex items-center justify-between">
-            <div>
-                <h1 class="text-2xl font-bold text-gray-900">Create Purchase Order</h1>
-                <p class="text-gray-600">Create a new purchase order</p>
-            </div>
-            <a href="{{ url_for('purchase_orders.index') }}" class="text-gray-600 hover:text-gray-800">
-                <i class="fas fa-arrow-left mr-2"></i>Back to Purchase Orders
-            </a>
+
+<!-- EXECUTIVE HEADER - MISMO DISEÑO QUE FINANCIAL SUMMARY -->
+<div class="row mb-4">
+  <div class="col-12">
+    <div class="card bg-info text-white shadow">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col">
+            <h3 class="card-title mb-0">
+              <i class="fas fa-plus-circle me-2"></i>
+              Create New Purchase Order
+            </h3>
+            <p class="card-text mt-2 mb-0">
+              Create a new purchase order for procurement management
+            </p>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-plus-circle fa-3x opacity-50"></i>
+          </div>
         </div>
+      </div>
     </div>
-
-    <!-- Purchase Order Form -->
-    <div class="bg-white shadow rounded-lg p-6">
-        <form method="POST" class="space-y-6">
-            {{ form.hidden_tag() }}
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    {{ form.vendor.label(class="block text-sm font-medium text-gray-700 mb-2") }}
-                    {{ form.vendor(class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500") }}
-                </div>
-                <div>
-                    {{ form.po_number.label(class="block text-sm font-medium text-gray-700 mb-2") }}
-                    {{ form.po_number(class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500") }}
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    {{ form.amount.label(class="block text-sm font-medium text-gray-700 mb-2") }}
-                    {{ form.amount(class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500") }}
-                </div>
-                <div>
-                    {{ form.order_date.label(class="block text-sm font-medium text-gray-700 mb-2") }}
-                    {{ form.order_date(class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500") }}
-                </div>
-            </div>
-
-            <div>
-                {{ form.description.label(class="block text-sm font-medium text-gray-700 mb-2") }}
-                {{ form.description(class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", rows="3") }}
-            </div>
-
-            <div class="flex justify-end space-x-4">
-                <a href="{{ url_for('purchase_orders.index') }}" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
-                    Cancel
-                </a>
-                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                    Create Purchase Order
-                </button>
-            </div>
-        </form>
-    </div>
+  </div>
 </div>
+
+<!-- PURCHASE ORDER FORM -->
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0 fw-bold text-primary">
+            <i class="fas fa-file-plus me-2"></i>
+            Purchase Order Details
+          </h5>
+          <a href="{{ url_for('purchase_orders.index') }}" class="btn btn-outline-secondary btn-sm">
+            <i class="fas fa-arrow-left me-2"></i>Back to List
+          </a>
+        </div>
+      </div>
+      <div class="card-body">
+        <form method="POST" class="row g-3">
+          
+          <!-- PO Number -->
+          <div class="col-md-6">
+            <label for="po_number" class="form-label fw-bold">PO Number <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="po_number" name="po_number" required 
+                   placeholder="PO-2025-XXX">
+          </div>
+          
+          <!-- Vendor -->
+          <div class="col-md-6">
+            <label for="vendor" class="form-label fw-bold">Vendor <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="vendor" name="vendor" required 
+                   placeholder="Enter vendor name">
+          </div>
+          
+          <!-- Order Date -->
+          <div class="col-md-6">
+            <label for="order_date" class="form-label fw-bold">Order Date <span class="text-danger">*</span></label>
+            <input type="date" class="form-control" id="order_date" name="order_date" required>
+          </div>
+          
+          <!-- Expected Delivery -->
+          <div class="col-md-6">
+            <label for="expected_delivery" class="form-label fw-bold">Expected Delivery</label>
+            <input type="date" class="form-control" id="expected_delivery" name="expected_delivery">
+          </div>
+          
+          <!-- Description -->
+          <div class="col-12">
+            <label for="description" class="form-label fw-bold">Description <span class="text-danger">*</span></label>
+            <textarea class="form-control" id="description" name="description" rows="3" required
+                      placeholder="Enter detailed description of items/services"></textarea>
+          </div>
+          
+          <!-- Terms -->
+          <div class="col-12">
+            <label for="terms" class="form-label fw-bold">Terms & Conditions</label>
+            <textarea class="form-control" id="terms" name="terms" rows="2"
+                      placeholder="Payment terms, delivery conditions, etc."></textarea>
+          </div>
+          
+          <!-- Submit Buttons -->
+          <div class="col-12 pt-3 border-top">
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-success">
+                <i class="fas fa-save me-2"></i>Create Purchase Order
+              </button>
+              <a href="{{ url_for('purchase_orders.index') }}" class="btn btn-secondary">
+                <i class="fas fa-times me-2"></i>Cancel
+              </a>
+            </div>
+          </div>
+          
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <!-- HELP PANEL -->
+  <div class="col-lg-4">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white">
+        <h6 class="mb-0 fw-bold text-primary">
+          <i class="fas fa-info-circle me-2"></i>
+          Purchase Order Guidelines
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="list-group list-group-flush">
+          <div class="list-group-item px-0">
+            <div class="d-flex">
+              <div class="flex-shrink-0">
+                <i class="fas fa-check-circle text-success mt-1"></i>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <strong>PO Number</strong>
+                <p class="text-muted small mb-0">Use format: PO-YYYY-XXX (e.g., PO-2025-001)</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="list-group-item px-0">
+            <div class="d-flex">
+              <div class="flex-shrink-0">
+                <i class="fas fa-check-circle text-success mt-1"></i>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <strong>Vendor Information</strong>
+                <p class="text-muted small mb-0">Enter complete vendor name and contact details</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="list-group-item px-0">
+            <div class="d-flex">
+              <div class="flex-shrink-0">
+                <i class="fas fa-check-circle text-success mt-1"></i>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <strong>Description</strong>
+                <p class="text-muted small mb-0">Provide detailed description of items or services</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="list-group-item px-0">
+            <div class="d-flex">
+              <div class="flex-shrink-0">
+                <i class="fas fa-info-circle text-info mt-1"></i>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <strong>Status Flow</strong>
+                <p class="text-muted small mb-0">Draft → Sent → Approved → Fulfilled</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Recent POs -->
+    <div class="card shadow-sm mt-4">
+      <div class="card-header bg-white">
+        <h6 class="mb-0 fw-bold text-primary">
+          <i class="fas fa-history me-2"></i>
+          Recent Purchase Orders
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="small">
+          <div class="d-flex justify-content-between py-1">
+            <span class="text-muted">PO-2025-001</span>
+            <span class="badge bg-success">Approved</span>
+          </div>
+          <div class="d-flex justify-content-between py-1">
+            <span class="text-muted">PO-2025-002</span>
+            <span class="badge bg-warning">Sent</span>
+          </div>
+          <div class="d-flex justify-content-between py-1">
+            <span class="text-muted">PO-2025-003</span>
+            <span class="badge bg-info">Fulfilled</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPANY CONTEXT SECTION - MISMO QUE FINANCIAL SUMMARY -->
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="card shadow-sm">
+      <div class="card-header bg-light">
+        <h6 class="mb-0 fw-bold">
+          <i class="fas fa-oil-well me-2 text-primary"></i>
+          AcidTech Services - Procurement Management
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h6 class="fw-bold">Procurement Process</h6>
+            <p class="text-muted">
+              Our purchase order system ensures proper vendor management, approval workflows, 
+              and compliance with industry standards for oil & gas operations.
+            </p>
+          </div>
+          <div class="col-md-6">
+            <h6 class="fw-bold">Quality Standards</h6>
+            <p class="text-muted">
+              All purchase orders follow rigorous approval processes to maintain operational 
+              excellence and cost control in our Permian Basin operations.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Set default order date to today
+    document.getElementById('order_date').value = new Date().toISOString().split('T')[0];
+    
+    // Auto-generate PO number
+    const currentYear = new Date().getFullYear();
+    document.getElementById('po_number').placeholder = `PO-${currentYear}-XXX`;
+    
+    // Form validation
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(e) {
+        const poNumber = document.getElementById('po_number').value;
+        if (!poNumber.startsWith('PO-')) {
+            alert('PO Number should start with "PO-"');
+            e.preventDefault();
+        }
+    });
+});
+</script>
 {% endblock %}

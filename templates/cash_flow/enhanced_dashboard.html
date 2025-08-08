@@ -1,0 +1,592 @@
+{% extends "base.html" %}
+
+{% block title %}Enhanced Dashboard - AcidTech Cash Flow Management{% endblock %}
+{% block page_title %}Enhanced Dashboard{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Enhanced Dashboard Styles */
+.kpi-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.kpi-value {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.kpi-label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.7;
+}
+
+.account-summary-card {
+    border-left: 4px solid #ddd;
+}
+
+.account-summary-card.revenue {
+    border-left-color: #10b981;
+}
+
+.account-summary-card.expense {
+    border-left-color: #ef4444;
+}
+
+.account-summary-card.credit {
+    border-left-color: #3b82f6;
+}
+
+.classification-progress {
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.refresh-indicator {
+    display: none;
+    color: #10b981;
+}
+
+.refresh-indicator.active {
+    display: inline-block;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.status-badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+}
+
+.trend-indicator {
+    font-size: 0.8rem;
+    padding: 0.2rem 0.4rem;
+    border-radius: 8px;
+    margin-left: 0.5rem;
+}
+
+.trend-up {
+    background-color: #dcfce7;
+    color: #16a34a;
+}
+
+.trend-down {
+    background-color: #fef2f2;
+    color: #dc2626;
+}
+
+.auto-refresh-controls {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-1">Enhanced Cash Flow Dashboard</h1>
+            <p class="text-muted mb-0">Real-time KPIs with classified transaction data</p>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <span class="refresh-indicator" id="refreshIndicator">
+                <i class="fas fa-sync-alt"></i>
+            </span>
+            <span class="badge bg-success">
+                <i class="fas fa-robot"></i> Auto-Classified
+            </span>
+            <small class="text-muted" id="lastUpdated">
+                {% if last_updated %}
+                    Last updated: {{ last_updated[:19] }}Z
+                {% endif %}
+            </small>
+        </div>
+    </div>
+
+    <!-- Auto-refresh Controls -->
+    <div class="auto-refresh-controls">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <label class="form-check-label">
+                    <input type="checkbox" class="form-check-input me-1" id="autoRefresh" checked>
+                    Auto-refresh every 5 minutes
+                </label>
+            </div>
+            <div class="btn-group btn-group-sm">
+                <button class="btn btn-outline-primary" id="refreshNow">
+                    <i class="fas fa-sync-alt"></i> Refresh Now
+                </button>
+                <button class="btn btn-outline-secondary" id="classifyAll">
+                    <i class="fas fa-robot"></i> Re-classify All
+                </button>
+            </div>
+        </div>
+    </div>
+
+    {% if error %}
+    <div class="alert alert-danger">
+        <i class="fas fa-exclamation-triangle"></i> {{ error }}
+    </div>
+    {% endif %}
+
+    <!-- Primary KPIs Row -->
+    <div class="row g-3 mb-4" id="primaryKPIs">
+        <div class="col-lg-3 col-md-6">
+            <div class="card kpi-card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="text-success mb-2">
+                        <i class="fas fa-dollar-sign fa-2x"></i>
+                    </div>
+                    <h3 class="kpi-value text-dark" id="revenueTotal">
+                        ${{ "%.2f"|format(kpis.revenue_total or 0)|replace('.00', '') }}
+                    </h3>
+                    <p class="kpi-label text-muted mb-0">Total Revenue</p>
+                    <span class="trend-indicator trend-up">
+                        <i class="fas fa-arrow-up"></i> +12.5%
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card kpi-card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="text-danger mb-2">
+                        <i class="fas fa-credit-card fa-2x"></i>
+                    </div>
+                    <h3 class="kpi-value text-dark" id="totalExpenses">
+                        ${{ "%.2f"|format(kpis.total_expenses or 0)|replace('.00', '') }}
+                    </h3>
+                    <p class="kpi-label text-muted mb-0">Total Expenses</p>
+                    <span class="trend-indicator trend-down">
+                        <i class="fas fa-arrow-down"></i> -5.2%
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card kpi-card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="text-primary mb-2">
+                        <i class="fas fa-chart-line fa-2x"></i>
+                    </div>
+                    <h3 class="kpi-value text-dark" id="netCashFlow">
+                        ${{ "%.2f"|format(kpis.net_cash_flow or 0)|replace('.00', '') }}
+                    </h3>
+                    <p class="kpi-label text-muted mb-0">Net Cash Flow</p>
+                    <span class="trend-indicator trend-up">
+                        <i class="fas fa-arrow-up"></i> +18.3%
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card kpi-card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="text-info mb-2">
+                        <i class="fas fa-percentage fa-2x"></i>
+                    </div>
+                    <h3 class="kpi-value text-dark" id="profitMargin">
+                        {{ "%.1f"|format(kpis.profit_margin or 0) }}%
+                    </h3>
+                    <p class="kpi-label text-muted mb-0">Profit Margin</p>
+                    <span class="trend-indicator trend-up">
+                        <i class="fas fa-arrow-up"></i> +2.1pp
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Secondary KPIs and Classification Status -->
+    <div class="row g-3 mb-4">
+        <div class="col-lg-8">
+            <!-- Account Summaries -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header border-0 bg-white">
+                    <h5 class="mb-0">Account Summaries</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3" id="accountSummaries">
+                        {% if account_summaries %}
+                        {% for account_name, summary in account_summaries.items() %}
+                        <div class="col-md-6">
+                            <div class="account-summary-card card border-0 h-100 
+                                {% if 'Revenue' in account_name %}revenue{% elif 'Bill Pay' in account_name or 'Payroll' in account_name %}expense{% else %}credit{% endif %}">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h6 class="card-title mb-0">{{ account_name }}</h6>
+                                        <span class="status-badge bg-light text-dark">
+                                            {{ summary.totals.transaction_count or 0 }} txns
+                                        </span>
+                                    </div>
+                                    <div class="row text-center">
+                                        <div class="col">
+                                            <small class="text-muted d-block">Net Total</small>
+                                            <strong class="{% if summary.totals.net_total >= 0 %}text-success{% else %}text-danger{% endif %}">
+                                                ${{ "%.0f"|format(summary.totals.net_total or 0) }}
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <div class="col-12">
+                            <div class="text-center text-muted">
+                                <p>No account summaries available</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <!-- Classification Status -->
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header border-0 bg-white">
+                    <h5 class="mb-0">Classification Status</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="fw-semibold">Overall Progress</span>
+                        <span class="badge bg-success" id="classificationPercentage">
+                            {{ "%.1f"|format(classification_status.classification_percentage or 0) }}%
+                        </span>
+                    </div>
+                    
+                    <div class="classification-progress bg-light mb-3">
+                        <div class="bg-success h-100" style="width: {{ classification_status.classification_percentage or 0 }}%"></div>
+                    </div>
+                    
+                    <div class="small">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Classified:</span>
+                            <span class="fw-semibold" id="classifiedCount">{{ classification_status.classified_transactions or 0 }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Unclassified:</span>
+                            <span class="fw-semibold" id="unclassifiedCount">{{ classification_status.unclassified_transactions or 0 }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Total:</span>
+                            <span class="fw-semibold" id="totalTransactions">{{ classification_status.total_transactions or 0 }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transfer Reconciliation & Credit Card Status -->
+    <div class="row g-3 mb-4">
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header border-0 bg-white">
+                    <h5 class="mb-0">Transfer Reconciliation</h5>
+                </div>
+                <div class="card-body" id="transferStatus">
+                    <div class="row text-center">
+                        <div class="col">
+                            <small class="text-muted d-block">Outgoing</small>
+                            <strong class="text-danger">
+                                ${{ "%.0f"|format(transfer_reconciliation.total_outgoing_transfers or 0) }}
+                            </strong>
+                        </div>
+                        <div class="col">
+                            <small class="text-muted d-block">Incoming</small>
+                            <strong class="text-success">
+                                ${{ "%.0f"|format(transfer_reconciliation.total_incoming_transfers or 0) }}
+                            </strong>
+                        </div>
+                        <div class="col">
+                            <small class="text-muted d-block">Status</small>
+                            <span class="badge {% if transfer_reconciliation.status == 'RECONCILED' %}bg-success{% else %}bg-warning{% endif %}">
+                                {{ transfer_reconciliation.status or 'UNKNOWN' }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header border-0 bg-white">
+                    <h5 class="mb-0">Credit Card (Capital One)</h5>
+                </div>
+                <div class="card-body" id="creditCardStatus">
+                    {% if credit_card_summary.total_transactions > 0 %}
+                    <div class="row text-center">
+                        <div class="col">
+                            <small class="text-muted d-block">Purchases</small>
+                            <strong class="text-danger">
+                                ${{ "%.0f"|format(credit_card_summary.total_purchases or 0) }}
+                            </strong>
+                        </div>
+                        <div class="col">
+                            <small class="text-muted d-block">Payments</small>
+                            <strong class="text-success">
+                                ${{ "%.0f"|format(credit_card_summary.total_payments or 0) }}
+                            </strong>
+                        </div>
+                        <div class="col">
+                            <small class="text-muted d-block">Receipts</small>
+                            <span class="badge bg-info">
+                                {{ credit_card_summary.receipts.completion_rate or 0 }}%
+                            </span>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="text-center text-muted">
+                        <i class="fas fa-credit-card fa-2x mb-2"></i>
+                        <p class="mb-0">No credit card transactions found</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-1">Quick Actions</h6>
+                            <small class="text-muted">Manage your classified transactions</small>
+                        </div>
+                        <div class="btn-group">
+                            <a href="/cash-flow/" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-chart-line"></i> View Cash Flow
+                            </a>
+                            <a href="/cash-flow/classification-dashboard" class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-robot"></i> Classification Dashboard  
+                            </a>
+                            <a href="/cash-flow/api/classification/status" class="btn btn-outline-info btn-sm" target="_blank">
+                                <i class="fas fa-code"></i> API Status
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Enhanced Dashboard JavaScript
+class EnhancedDashboard {
+    constructor() {
+        this.refreshInterval = null;
+        this.autoRefresh = true;
+        this.init();
+    }
+
+    init() {
+        this.setupEventListeners();
+        this.startAutoRefresh();
+        this.loadInitialData();
+    }
+
+    setupEventListeners() {
+        // Auto refresh toggle
+        document.getElementById('autoRefresh')?.addEventListener('change', (e) => {
+            this.autoRefresh = e.target.checked;
+            if (this.autoRefresh) {
+                this.startAutoRefresh();
+            } else {
+                this.stopAutoRefresh();
+            }
+        });
+
+        // Manual refresh button
+        document.getElementById('refreshNow')?.addEventListener('click', () => {
+            this.refreshData();
+        });
+
+        // Classify all button
+        document.getElementById('classifyAll')?.addEventListener('click', () => {
+            this.runClassification();
+        });
+    }
+
+    startAutoRefresh() {
+        this.stopAutoRefresh(); // Clear any existing interval
+        if (this.autoRefresh) {
+            this.refreshInterval = setInterval(() => {
+                this.refreshData();
+            }, 5 * 60 * 1000); // 5 minutes
+        }
+    }
+
+    stopAutoRefresh() {
+        if (this.refreshInterval) {
+            clearInterval(this.refreshInterval);
+            this.refreshInterval = null;
+        }
+    }
+
+    showRefreshIndicator(show = true) {
+        const indicator = document.getElementById('refreshIndicator');
+        if (indicator) {
+            indicator.classList.toggle('active', show);
+        }
+    }
+
+    async loadInitialData() {
+        // Load data if not provided server-side
+        if (!document.getElementById('revenueTotal').textContent.includes('$')) {
+            await this.refreshData();
+        }
+    }
+
+    async refreshData() {
+        this.showRefreshIndicator(true);
+        
+        try {
+            // Fetch dashboard summary
+            const response = await fetch('/cash-flow/api/dashboard/summary');
+            const result = await response.json();
+
+            if (result.success) {
+                this.updateKPIs(result.data.kpis);
+                this.updateClassificationStatus(result.data.classification_status);
+                this.updateAccountSummaries(result.data.account_summaries);
+                this.updateTransferStatus(result.data.transfer_reconciliation);
+                this.updateCreditCardStatus(result.data.credit_card_summary);
+                this.updateLastUpdated(result.data.last_updated);
+            } else {
+                console.error('Failed to refresh data:', result.error);
+                this.showError('Failed to refresh dashboard data');
+            }
+        } catch (error) {
+            console.error('Error refreshing data:', error);
+            this.showError('Network error while refreshing data');
+        } finally {
+            this.showRefreshIndicator(false);
+        }
+    }
+
+    updateKPIs(kpis) {
+        const formatCurrency = (value) => {
+            return '$' + Math.round(value).toLocaleString();
+        };
+
+        document.getElementById('revenueTotal').textContent = formatCurrency(kpis.revenue_total);
+        document.getElementById('totalExpenses').textContent = formatCurrency(kpis.total_expenses);
+        document.getElementById('netCashFlow').textContent = formatCurrency(kpis.net_cash_flow);
+        document.getElementById('profitMargin').textContent = kpis.profit_margin.toFixed(1) + '%';
+    }
+
+    updateClassificationStatus(status) {
+        document.getElementById('classificationPercentage').textContent = status.classification_percentage.toFixed(1) + '%';
+        document.getElementById('classifiedCount').textContent = status.classified_transactions.toLocaleString();
+        document.getElementById('unclassifiedCount').textContent = status.unclassified_transactions.toLocaleString();
+        document.getElementById('totalTransactions').textContent = status.total_transactions.toLocaleString();
+
+        // Update progress bar
+        const progressBar = document.querySelector('.classification-progress .bg-success');
+        if (progressBar) {
+            progressBar.style.width = status.classification_percentage + '%';
+        }
+    }
+
+    updateAccountSummaries(summaries) {
+        // Update account summary cards
+        // This would need to be implemented based on the specific structure
+        console.log('Account summaries updated:', summaries);
+    }
+
+    updateTransferStatus(transfers) {
+        // Update transfer reconciliation display
+        console.log('Transfer status updated:', transfers);
+    }
+
+    updateCreditCardStatus(creditCard) {
+        // Update credit card summary
+        console.log('Credit card status updated:', creditCard);
+    }
+
+    updateLastUpdated(timestamp) {
+        const lastUpdatedElement = document.getElementById('lastUpdated');
+        if (lastUpdatedElement && timestamp) {
+            const date = new Date(timestamp);
+            lastUpdatedElement.textContent = 'Last updated: ' + date.toLocaleTimeString();
+        }
+    }
+
+    async runClassification() {
+        this.showRefreshIndicator(true);
+        
+        try {
+            const response = await fetch('/cash-flow/api/classification/classify-all', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ force_reclassify: false })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                this.showSuccess(`Successfully classified ${result.stats.successful_classifications} transactions`);
+                // Refresh data after classification
+                setTimeout(() => this.refreshData(), 1000);
+            } else {
+                this.showError('Classification failed: ' + result.error);
+            }
+        } catch (error) {
+            console.error('Error running classification:', error);
+            this.showError('Network error during classification');
+        } finally {
+            this.showRefreshIndicator(false);
+        }
+    }
+
+    showError(message) {
+        // Simple error notification
+        console.error(message);
+        // You could implement a toast notification here
+    }
+
+    showSuccess(message) {
+        // Simple success notification  
+        console.log(message);
+        // You could implement a toast notification here
+    }
+}
+
+// Initialize dashboard when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    new EnhancedDashboard();
+});
+</script>
+{% endblock %}

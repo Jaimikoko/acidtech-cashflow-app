@@ -46,26 +46,48 @@ def register():
         return redirect(url_for('main.dashboard'))
     
     if request.method == 'POST':
-        username = request.form['username']
-        email = request.form['email']
-        first_name = request.form['first_name']
-        last_name = request.form['last_name']
+        username = request.form['username'].strip()
+        email = request.form['email'].strip().lower()
+        first_name = request.form['first_name'].strip()
+        last_name = request.form['last_name'].strip()
         password = request.form['password']
         
+        # Validation
+        errors = []
+        
+        if len(username) < 3:
+            errors.append('Username must be at least 3 characters long')
+        
+        if len(password) < 8:
+            errors.append('Password must be at least 8 characters long')
+        
+        if not any(c.isdigit() for c in password):
+            errors.append('Password must contain at least one number')
+        
+        # Check for existing username/email
         if User.query.filter_by(username=username).first():
-            flash('Username already exists')
-            return redirect(url_for('auth.register'))
+            errors.append('Username already exists')
         
         if User.query.filter_by(email=email).first():
-            flash('Email already exists')
-            return redirect(url_for('auth.register'))
+            errors.append('Email already exists')
         
-        user = User(username=username, email=email, first_name=first_name, last_name=last_name)
+        if errors:
+            for error in errors:
+                flash(error, 'error')
+            return render_template('auth/register.html')
+        
+        user = User(
+            username=username, 
+            email=email, 
+            first_name=first_name, 
+            last_name=last_name,
+            role='user'  # Default role
+        )
         user.set_password(password)
         db.session.add(user)
         db.session.commit()
         
-        flash('Registration successful')
+        flash('Registration successful! You can now login.', 'success')
         return redirect(url_for('auth.login'))
     
     return render_template('auth/register.html')

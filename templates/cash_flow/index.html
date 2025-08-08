@@ -1,651 +1,328 @@
-{% extends "masterlayout.html" %}
+{% extends "base.html" %}
 
-{% block title %}Cash Flow Analysis - AcidTech Cash Flow Management{% endblock %}
-{% block page_title %}Cash Flow Analysis{% endblock %}
+{% block page_title %}Cash Flow Management{% endblock %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{{ url_for('main.dashboard') }}" class="text-decoration-none">Dashboard</a></li>
+<li class="breadcrumb-item active">Cash Flow Management</li>
+{% endblock %}
 
 {% block content %}
-<div class="container-fluid">
-    <!-- Page Header with Enhanced Filters -->
-    <div class="card border-0 shadow-sm mb-4">
-        <div class="card-body">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <div>
-                        <h2 class="fw-bold text-dark mb-1">Cash Flow Analysis</h2>
-                        <p class="text-muted mb-0">Comprehensive financial analysis with account breakdowns</p>
-                        <div class="mt-2">
-                            {% if file_mode %}
-                                <span class="badge bg-success me-2">
-                                    <i class="fas fa-file-excel"></i> File Mode Active - {{ cash_flow_data.transaction_count }} transactions
-                                </span>
-                            {% endif %}
-                            <span class="badge bg-primary">
-                                <i class="fas fa-calendar"></i> Year {{ year or 2025 }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <!-- Dark Mode Toggle -->
-                    <div class="d-flex justify-content-end mb-2">
-                        <button type="button" class="btn btn-outline-secondary btn-sm" id="darkModeToggle">
-                            <i class="fas fa-moon" id="modeIcon"></i>
-                            <span id="modeText">Dark</span>
-                        </button>
-                    </div>
-                    <!-- Enhanced Filters Form -->
-                    <form method="GET" class="row g-2">
-                        <div class="col-md-3">
-                            <select name="account" class="form-select form-select-sm" onchange="this.form.submit()">
-                                <option value="all" {% if account_filter == 'all' %}selected{% endif %}>All Accounts</option>
-                                {% for account_key, account_info in account_mappings.items() %}
-                                    <option value="{{ account_key }}" {% if account_filter == account_key %}selected{% endif %}>
-                                        {{ account_info.name }}
-                                    </option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <select name="year" class="form-select form-select-sm" onchange="this.form.submit()">
-                                <option value="2025" {% if year == 2025 %}selected{% endif %}>2025</option>
-                                <option value="2024" {% if year == 2024 %}selected{% endif %}>2024</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <select name="month" class="form-select form-select-sm" onchange="this.form.submit()">
-                                <option value="" {% if not month %}selected{% endif %}>All Months</option>
-                                {% for m in range(1, 13) %}
-                                    <option value="{{ m }}" {% if month == m %}selected{% endif %}>
-                                        {{ ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][m-1] }}
-                                    </option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <button type="submit" class="btn btn-primary btn-sm w-100">
-                                <i class="fas fa-filter"></i> Apply
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+
+<!-- EXECUTIVE HEADER - MISMO DISEÑO QUE FINANCIAL SUMMARY -->
+<div class="row mb-4">
+  <div class="col-12">
+    <div class="card bg-primary text-white shadow">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col">
+            <h3 class="card-title mb-0">
+              <i class="fas fa-chart-line me-2"></i>
+              Cash Flow Management
+            </h3>
+            <p class="card-text mt-2 mb-0">
+              Comprehensive financial analysis and cash flow monitoring for AcidTech Services
+            </p>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-chart-line fa-3x opacity-50"></i>
+          </div>
         </div>
+      </div>
     </div>
-
-    <!-- Enhanced Summary KPI Cards -->
-    <div class="row mb-4">
-        <!-- Total Inflows -->
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-                <div class="card-body text-white">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <p class="small mb-1 text-white-50">Total Inflows {{ year or 2025 }}</p>
-                            <h4 class="fw-bold mb-0">${{ "%.0f"|format(cash_flow_data.total_inflows|default(0)) }}</h4>
-                            <small class="text-white-75">{{ cash_flow_data.transaction_count or 0 }} transactions</small>
-                        </div>
-                        <div class="text-right">
-                            <i class="fas fa-arrow-up fa-2x text-white-50"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Total Outflows -->
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
-                <div class="card-body text-white">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <p class="small mb-1 text-white-50">Total Outflows {{ year or 2025 }}</p>
-                            <h4 class="fw-bold mb-0">${{ "%.0f"|format(cash_flow_data.total_outflows|default(0)) }}</h4>
-                            <small class="text-white-75">All accounts</small>
-                        </div>
-                        <div class="text-right">
-                            <i class="fas fa-arrow-down fa-2x text-white-50"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Net Cash Flow -->
-        <div class="col-lg-3 col-md-6 mb-3">
-            {% set net_flow = cash_flow_data.net_flow|default(0) %}
-            <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, {% if net_flow >= 0 %}#3b82f6 0%, #1d4ed8 100%{% else %}#f59e0b 0%, #d97706 100%{% endif %});">
-                <div class="card-body text-white">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <p class="small mb-1 text-white-50">Net Cash Flow</p>
-                            <h4 class="fw-bold mb-0">${{ "%.0f"|format(net_flow) }}</h4>
-                            <small class="text-white-75">{% if net_flow >= 0 %}Positive flow{% else %}Negative flow{% endif %}</small>
-                        </div>
-                        <div class="text-right">
-                            <i class="fas fa-balance-scale fa-2x text-white-50"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Monthly Average -->
-        <div class="col-lg-3 col-md-6 mb-3">
-            {% set monthly_avg = (cash_flow_data.net_flow|default(0)) / 12 %}
-            <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
-                <div class="card-body text-white">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <p class="small mb-1 text-white-50">Monthly Average</p>
-                            <h4 class="fw-bold mb-0">${{ "%.0f"|format(monthly_avg) }}</h4>
-                            <small class="text-white-75">Net flow per month</small>
-                        </div>
-                        <div class="text-right">
-                            <i class="fas fa-chart-line fa-2x text-white-50"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Account Tabs -->
-    <div class="card border-0 shadow-sm mb-4">
-        <div class="card-header bg-white border-0">
-            <ul class="nav nav-tabs card-header-tabs" id="accountTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">
-                        <i class="fas fa-chart-line"></i> Overview
-                    </button>
-                </li>
-                {% for account_key, account_info in account_mappings.items() %}
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="{{ account_key.lower().replace(' ', '-') }}-tab" data-bs-toggle="tab" data-bs-target="#{{ account_key.lower().replace(' ', '-') }}" type="button" role="tab">
-                            <div class="d-flex align-items-center">
-                                <div class="rounded-circle me-2" style="width: 10px; height: 10px; background-color: {{ account_info.color }};"></div>
-                                {{ account_key.split()[0] }} {{ account_key.split()[1] if account_key.split()|length > 1 else '' }}
-                            </div>
-                        </button>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div class="card-body">
-            <div class="tab-content" id="accountTabsContent">
-                <!-- Overview Tab -->
-                <div class="tab-pane fade show active" id="overview" role="tabpanel">
-                    <div class="row">
-                        <!-- Monthly Chart -->
-                        <div class="col-lg-8 mb-4">
-                            <div class="card border-0 bg-light">
-                                <div class="card-header bg-white border-0">
-                                    <h6 class="card-title mb-0">
-                                        <i class="fas fa-chart-bar text-primary"></i> Monthly Cash Flow Trend {{ year or 2025 }}
-                                    </h6>
-                                </div>
-                                <div class="card-body">
-                                    <canvas id="monthlyChart" width="100%" height="60"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Quick Stats -->
-                        <div class="col-lg-4 mb-4">
-                            <div class="row g-3">
-                                <div class="col-12">
-                                    <div class="card border-0 bg-gradient" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-                                        <div class="card-body text-white text-center">
-                                            <h3 class="fw-bold mb-1">${{ "%.0f"|format(cash_flow_data.total_inflows) }}</h3>
-                                            <p class="mb-0 small">Total Inflows</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="card border-0 bg-gradient" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
-                                        <div class="card-body text-white text-center">
-                                            <h3 class="fw-bold mb-1">${{ "%.0f"|format(cash_flow_data.total_outflows) }}</h3>
-                                            <p class="mb-0 small">Total Outflows</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="card border-0 bg-gradient" style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);">
-                                        <div class="card-body text-white text-center">
-                                            <h3 class="fw-bold mb-1">${{ "%.0f"|format(cash_flow_data.net_flow) }}</h3>
-                                            <p class="mb-0 small">Net Flow</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Individual Account Tabs -->
-                {% for account_key, account_info in account_mappings.items() %}
-                    <div class="tab-pane fade" id="{{ account_key.lower().replace(' ', '-') }}" role="tabpanel">
-                        {% set account_data = account_summaries.get(account_key, {}) %}
-                        <div class="row">
-                            <!-- Account KPIs -->
-                            <div class="col-lg-3 mb-3">
-                                <div class="card border-0 h-100" style="background: linear-gradient(135deg, {{ account_info.color }}dd 0%, {{ account_info.color }}aa 100%);">
-                                    <div class="card-body text-white">
-                                        <h6 class="text-white-50 mb-2">{{ account_info.name }}</h6>
-                                        <h3 class="fw-bold mb-1">${{ "%.0f"|format(account_data.get('total_amount', 0)) }}</h3>
-                                        <div class="small">
-                                            <div>{{ account_data.get('transaction_count', 0) }} transactions</div>
-                                            <div>Avg: ${{ "%.0f"|format(account_data.get('average_monthly', 0)) }}/mo</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Monthly Variation -->
-                            <div class="col-lg-3 mb-3">
-                                <div class="card border-0 h-100">
-                                    <div class="card-body">
-                                        <h6 class="text-muted mb-2">Monthly Variation</h6>
-                                        <h4 class="fw-bold text-success mb-1">+5.2%</h4>
-                                        <div class="small text-muted">
-                                            <div>Peak: {{ ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][account_data.get('peak_month', 1)-1] }}</div>
-                                            <div>Low: {{ ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][account_data.get('lowest_month', 1)-1] }}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Top Entities -->
-                            <div class="col-lg-6 mb-3">
-                                <div class="card border-0 h-100">
-                                    <div class="card-header bg-white border-0">
-                                        <h6 class="mb-0">Top 5 {{ 'Customers' if account_key == 'Revenue 4717' else 'Transactions' }}</h6>
-                                    </div>
-                                    <div class="card-body">
-                                        {% for entity, amount in account_data.get('top_entities', [])[:5] %}
-                                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                                <span class="small">{{ entity }}</span>
-                                                <span class="fw-semibold">${{ "%.0f"|format(amount) }}</span>
-                                            </div>
-                                        {% endfor %}
-                                        {% if not account_data.get('top_entities') %}
-                                            <p class="text-muted small mb-0">No data available</p>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Account Actions -->
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="d-flex gap-2 mb-3">
-                                    <a href="{{ url_for('cash_flow.account_detail', account_name=account_key) }}" class="btn btn-primary btn-sm">
-                                        <i class="fas fa-eye"></i> View Details
-                                    </a>
-                                    <a href="{{ url_for('cash_flow.export_account_data', account_name=account_key, year=year or 2025) }}" class="btn btn-success btn-sm">
-                                        <i class="fas fa-download"></i> Export Excel
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    
-    <div class="row">
-
-        <!-- Aging Analysis (Revenue 4717) -->
-        <div class="col-lg-4 mb-4">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white border-0">
-                    <h5 class="card-title mb-0">
-                        <i class="fas fa-clock text-warning"></i> A/R Aging Analysis
-                    </h5>
-                </div>
-                <div class="card-body">
-                    {% if aging_analysis %}
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="small text-success">Current (0-30 days)</span>
-                                <span class="fw-semibold text-success">${{ "%.0f"|format(aging_analysis.current.amount) }}</span>
-                            </div>
-                            <div class="progress mb-2" style="height: 6px;">
-                                <div class="progress-bar bg-success" style="width: {{ (aging_analysis.current.amount / (aging_analysis.current.amount + aging_analysis['30_days'].amount + aging_analysis['60_days'].amount + aging_analysis['90_plus'].amount + 1)) * 100 }}%"></div>
-                            </div>
-                            <small class="text-muted">{{ aging_analysis.current.count }} transactions</small>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="small text-warning">31-60 days</span>
-                                <span class="fw-semibold text-warning">${{ "%.0f"|format(aging_analysis['30_days'].amount) }}</span>
-                            </div>
-                            <div class="progress mb-2" style="height: 6px;">
-                                <div class="progress-bar bg-warning" style="width: {{ (aging_analysis['30_days'].amount / (aging_analysis.current.amount + aging_analysis['30_days'].amount + aging_analysis['60_days'].amount + aging_analysis['90_plus'].amount + 1)) * 100 }}%"></div>
-                            </div>
-                            <small class="text-muted">{{ aging_analysis['30_days'].count }} transactions</small>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="small text-danger">61-90 days</span>
-                                <span class="fw-semibold text-danger">${{ "%.0f"|format(aging_analysis['60_days'].amount) }}</span>
-                            </div>
-                            <div class="progress mb-2" style="height: 6px;">
-                                <div class="progress-bar bg-danger" style="width: {{ (aging_analysis['60_days'].amount / (aging_analysis.current.amount + aging_analysis['30_days'].amount + aging_analysis['60_days'].amount + aging_analysis['90_plus'].amount + 1)) * 100 }}%"></div>
-                            </div>
-                            <small class="text-muted">{{ aging_analysis['60_days'].count }} transactions</small>
-                        </div>
-                        
-                        <div class="mb-0">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="small text-dark">90+ days</span>
-                                <span class="fw-semibold text-dark">${{ "%.0f"|format(aging_analysis['90_plus'].amount) }}</span>
-                            </div>
-                            <div class="progress mb-2" style="height: 6px;">
-                                <div class="progress-bar bg-dark" style="width: {{ (aging_analysis['90_plus'].amount / (aging_analysis.current.amount + aging_analysis['30_days'].amount + aging_analysis['60_days'].amount + aging_analysis['90_plus'].amount + 1)) * 100 }}%"></div>
-                            </div>
-                            <small class="text-muted">{{ aging_analysis['90_plus'].count }} transactions</small>
-                        </div>
-                    {% else %}
-                        <p class="text-muted small">No aging data available</p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Recent Transactions -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white border-0">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="card-title mb-0">
-                            <i class="fas fa-list text-info"></i> Recent Cash Flow Transactions
-                        </h5>
-                        <span class="badge bg-light text-dark">{{ cash_flow_data.transaction_count }} total transactions</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Description</th>
-                                    <th>Account</th>
-                                    <th>Type</th>
-                                    <th class="text-end">Amount</th>
-                                    <th class="text-center">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for transaction in cash_flow_data.transactions %}
-                                    <tr>
-                                        <td>
-                                            <small class="text-muted">{{ transaction.date.strftime('%m/%d/%Y') if transaction.date else 'N/A' }}</small>
-                                        </td>
-                                        <td>
-                                            <div class="fw-semibold">{{ transaction.description }}</div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="rounded-circle me-2" style="width: 8px; height: 8px; background-color: {{ account_mappings[transaction.account].color if transaction.account in account_mappings else '#6b7280' }};"></div>
-                                                <small>{{ account_mappings[transaction.account].name if transaction.account in account_mappings else transaction.account }}</small>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            {% if transaction.type == 'inflow' %}
-                                                <span class="badge bg-success-subtle text-success">
-                                                    <i class="fas fa-arrow-up"></i> Inflow
-                                                </span>
-                                            {% else %}
-                                                <span class="badge bg-danger-subtle text-danger">
-                                                    <i class="fas fa-arrow-down"></i> Outflow
-                                                </span>
-                                            {% endif %}
-                                        </td>
-                                        <td class="text-end fw-semibold">
-                                            <span class="{% if transaction.type == 'inflow' %}text-success{% else %}text-danger{% endif %}">
-                                                ${{ "%.2f"|format(transaction.amount) }}
-                                            </span>
-                                        </td>
-                                        <td class="text-center">
-                                            {% if transaction.status == 'completed' %}
-                                                <span class="badge bg-success">Completed</span>
-                                            {% elif transaction.status == 'pending' %}
-                                                <span class="badge bg-warning">Pending</span>
-                                            {% else %}
-                                                <span class="badge bg-secondary">{{ transaction.status|title }}</span>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+  </div>
 </div>
 
-<!-- Chart.js Script -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- KEY METRICS - MISMO DISEÑO QUE FINANCIAL SUMMARY -->
+<div class="row g-4 mb-4">
+  
+  <!-- TOTAL INFLOWS -->
+  <div class="col-xl-3 col-md-6">
+    <div class="card border-start border-success border-4 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="text-xs fw-bold text-success text-uppercase mb-1">
+              Total Inflows
+            </div>
+            <div class="h4 mb-0 fw-bold" id="total-inflows">
+              {{ cash_flow_data.total_inflows|default(0)|currency }}
+            </div>
+          </div>
+          <div class="text-success">
+            <i class="fas fa-arrow-up fa-2x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOTAL OUTFLOWS -->
+  <div class="col-xl-3 col-md-6">
+    <div class="card border-start border-danger border-4 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="text-xs fw-bold text-danger text-uppercase mb-1">
+              Total Outflows
+            </div>
+            <div class="h4 mb-0 fw-bold" id="total-outflows">
+              {{ cash_flow_data.total_outflows|default(0)|currency }}
+            </div>
+          </div>
+          <div class="text-danger">
+            <i class="fas fa-arrow-down fa-2x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NET CASH FLOW -->
+  <div class="col-xl-3 col-md-6">
+    <div class="card border-start border-primary border-4 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="text-xs fw-bold text-primary text-uppercase mb-1">
+              Net Cash Flow
+            </div>
+            <div class="h4 mb-0 fw-bold" id="net-cash-flow">
+              {{ cash_flow_data.net_flow|default(0)|currency }}
+            </div>
+          </div>
+          <div class="text-primary">
+            <i class="fas fa-balance-scale fa-2x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRANSACTION COUNT -->
+  <div class="col-xl-3 col-md-6">
+    <div class="card border-start border-info border-4 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="text-xs fw-bold text-info text-uppercase mb-1">
+              Total Transactions
+            </div>
+            <div class="h4 mb-0 fw-bold" id="transaction-count">
+              {{ cash_flow_data.transaction_count|default(0) }}
+            </div>
+          </div>
+          <div class="text-info">
+            <i class="fas fa-list fa-2x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MAIN CONTENT SECTIONS - MISMO LAYOUT QUE FINANCIAL SUMMARY -->
+<div class="row g-4">
+  
+  <!-- CASH FLOW ANALYSIS -->
+  <div class="col-lg-8">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0 fw-bold text-primary">
+            <i class="fas fa-chart-bar me-2"></i>
+            Cash Flow Analysis
+          </h5>
+          <div class="btn-group" role="group">
+            <a href="{{ url_for('cash_flow.enhanced_dashboard') }}" class="btn btn-success btn-sm">
+              <i class="fas fa-chart-line me-2"></i>Enhanced Dashboard
+            </a>
+            <button class="btn btn-outline-primary btn-sm">
+              <i class="fas fa-sync me-2"></i>Refresh
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="alert alert-info" role="alert">
+          <i class="fas fa-info-circle me-2"></i>
+          <strong>Cash Flow Status:</strong> {{ cash_flow_data.transaction_count|default(0) }} transactions processed with comprehensive financial tracking.
+          Real-time monitoring of all cash flow activities across accounts.
+        </div>
+        
+        <!-- Account Quick Access -->
+        <div class="row mb-3">
+          {% for account_key, account_info in account_mappings.items() %}
+          <div class="col-md-6 col-lg-3 mb-2">
+            <a href="{{ url_for('cash_flow.account_detail', account_name=account_key) }}" 
+               class="btn btn-outline-primary btn-sm w-100">
+              <i class="fas fa-folder me-1"></i>
+              {{ account_key.split()[0] }} {{ account_key.split()[1] if account_key.split()|length > 1 else '' }}
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead class="table-light">
+              <tr>
+                <th>Date</th>
+                <th>Account</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th class="text-end">Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for transaction in cash_flow_data.transactions[:10] %}
+              <tr>
+                <td class="text-muted small">{{ transaction.date.strftime('%m/%d/%Y') if transaction.date else 'N/A' }}</td>
+                <td>
+                  <span class="badge" style="background-color: {{ account_mappings[transaction.account].color if transaction.account in account_mappings else '#6b7280' }};">
+                    {{ account_mappings[transaction.account].name if transaction.account in account_mappings else transaction.account }}
+                  </span>
+                </td>
+                <td>{{ transaction.description }}</td>
+                <td>
+                  {% if transaction.type == 'inflow' %}
+                    <span class="badge bg-success">Inflow</span>
+                  {% else %}
+                    <span class="badge bg-danger">Outflow</span>
+                  {% endif %}
+                </td>
+                <td class="text-end fw-bold">
+                  <span class="{% if transaction.type == 'inflow' %}text-success{% else %}text-danger{% endif %}">
+                    ${{ "%.2f"|format(transaction.amount) }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge {% if transaction.status == 'completed' %}bg-success{% else %}bg-warning{% endif %}">
+                    {{ transaction.status|title }}
+                  </span>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <p class="text-center mt-3">
+          <a href="{{ url_for('cash_flow.enhanced_dashboard') }}" class="btn btn-primary">
+            <i class="fas fa-chart-line me-2"></i>
+            View Enhanced Dashboard
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXECUTIVE ACTIONS -->
+  <div class="col-lg-4">
+    
+    <!-- ACCOUNT SUMMARY -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-white">
+        <h6 class="mb-0 fw-bold text-primary">
+          <i class="fas fa-chart-pie me-2"></i>
+          Account Summary
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="list-group list-group-flush">
+          {% for account_key, account_data in account_summaries.items() %}
+          <div class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>{{ account_key.split()[0] }} {{ account_key.split()[1] if account_key.split()|length > 1 else '' }}</strong>
+              <br><small class="text-muted">{{ account_data.get('transaction_count', 0) }} transactions</small>
+            </div>
+            <span class="badge bg-primary rounded-pill">${{ "%.0f"|format(account_data.get('total_amount', 0)) }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="card shadow-sm">
+      <div class="card-header bg-white">
+        <h6 class="mb-0 fw-bold text-primary">
+          <i class="fas fa-rocket me-2"></i>
+          Executive Actions
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="d-grid gap-2">
+          <a href="{{ url_for('cash_flow.enhanced_dashboard') }}" class="btn btn-outline-success">
+            <i class="fas fa-chart-line me-2"></i>
+            Enhanced Dashboard
+          </a>
+          <a href="{{ url_for('cash_flow.classification_dashboard') }}" class="btn btn-outline-warning">
+            <i class="fas fa-robot me-2"></i>
+            Transaction Classification
+          </a>
+          <a href="{{ url_for('reports.cash_flow') }}" class="btn btn-outline-info">
+            <i class="fas fa-calendar-alt me-2"></i>
+            Generate Cash Flow Report
+          </a>
+          <button class="btn btn-outline-secondary">
+            <i class="fas fa-file-export me-2"></i>
+            Export to Excel
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- COMPANY CONTEXT SECTION - MISMO QUE FINANCIAL SUMMARY -->
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="card shadow-sm">
+      <div class="card-header bg-light">
+        <h6 class="mb-0 fw-bold">
+          <i class="fas fa-oil-well me-2 text-primary"></i>
+          AcidTech Services - Cash Flow Management
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h6 class="fw-bold">Financial Performance</h6>
+            <p class="text-muted">
+              Our cash flow management system provides comprehensive tracking and analysis of all 
+              financial transactions with real-time monitoring and detailed reporting capabilities.
+            </p>
+          </div>
+          <div class="col-md-6">
+            <h6 class="fw-bold">Data Analytics</h6>
+            <p class="text-muted">
+              Advanced financial analytics with account-level breakdowns, trend analysis, and 
+              executive dashboards ensure optimal cash flow management and strategic decision making.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Monthly Chart with Mixed Chart Types
-    const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+    console.log('Cash Flow Management page loaded');
     
-    function loadMonthlyChart() {
-        const params = new URLSearchParams({
-            account: '{{ account_filter }}',
-            year: '{{ year or 2025 }}'
-        });
-        
-        fetch(`/cash-flow/api/monthly-chart?${params}`)
-            .then(response => response.json())
-            .then(data => {
-                new Chart(monthlyCtx, {
-                    type: 'bar',
-                    data: data,
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: 'Monthly Cash Flow with Cumulative Balance'
-                            },
-                            legend: {
-                                position: 'top'
-                            }
-                        },
-                        scales: {
-                            y: {
-                                type: 'linear',
-                                display: true,
-                                position: 'left',
-                                beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: 'Monthly Flow ($)'
-                                },
-                                ticks: {
-                                    callback: function(value) {
-                                        return '$' + (value/1000).toFixed(0) + 'K';
-                                    }
-                                }
-                            },
-                            y1: {
-                                type: 'linear',
-                                display: true,
-                                position: 'right',
-                                title: {
-                                    display: true,
-                                    text: 'Cumulative Balance ($)'
-                                },
-                                ticks: {
-                                    callback: function(value) {
-                                        return '$' + (value/1000).toFixed(0) + 'K';
-                                    }
-                                },
-                                grid: {
-                                    drawOnChartArea: false,
-                                }
-                            }
-                        },
-                        interaction: {
-                            intersect: false,
-                            mode: 'index'
-                        }
-                    }
-                });
-            })
-            .catch(error => {
-                console.error('Error loading monthly chart:', error);
-            });
-    }
-    
-    // Load initial chart
-    loadMonthlyChart();
-    
-    // Reload chart when account tabs are switched
-    document.querySelectorAll('#accountTabs button[data-bs-toggle="tab"]').forEach(tab => {
-        tab.addEventListener('shown.bs.tab', function() {
-            setTimeout(loadMonthlyChart, 100); // Small delay to ensure tab is visible
-        });
-    });
+    // Auto-refresh cash flow data every 60 seconds
+    setInterval(function() {
+        console.log('Refreshing cash flow data...');
+        // Add AJAX call to refresh data
+    }, 60000);
 });
 </script>
-
-<!-- Cash Flow Dashboard - Dark/Light Mode System -->
-<style>
-:root {
-    --text-primary: #000;
-    --text-secondary: #6c757d;
-    --bg-primary: #fff;
-    --bg-secondary: #f8f9fa;
-}
-
-[data-bs-theme="dark"] {
-    --text-primary: #fff;
-    --text-secondary: #adb5bd;
-    --bg-primary: #212529;
-    --bg-secondary: #343a40;
-}
-
-/* =================================================================
-   CASH FLOW DASHBOARD - UNIVERSAL TEXT VISIBILITY SYSTEM
-   ================================================================= */
-
-/* Pestañas de navegación */
-#accountTabs .nav-link,
-#accountTabs .nav-link .d-flex,
-#accountTabs .nav-link div {
-    color: var(--text-primary) !important;
-}
-
-/* Títulos y headers generales */
-.card-header h6,
-.card-header .card-title,
-.card-header h5 {
-    color: var(--text-primary) !important;
-}
-
-/* FORZAR NEGRO EN MODO CLARO - Account KPIs */
-body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body h6,
-body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body h3,
-body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body .small,
-body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body div,
-body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body .text-white-50 {
-    color: #000 !important;
-}
-
-/* FORZAR NEGRO EN MODO CLARO - Monthly Variation */
-body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body h6,
-body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body .text-muted,
-body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body .small {
-    color: #000 !important;
-}
-
-/* FORZAR NEGRO EN MODO CLARO - Top 5 Transactions */
-body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card-header h6,
-body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card-body .d-flex .small,
-body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card-body .d-flex .fw-semibold,
-body:not([data-bs-theme="dark"]) #accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card-body span {
-    color: #000 !important;
-}
-
-/* FORZAR NEGRO EN MODO CLARO - Overview Quick Stats */
-body:not([data-bs-theme="dark"]) #overview .col-lg-4 .card-body h3,
-body:not([data-bs-theme="dark"]) #overview .col-lg-4 .card-body p {
-    color: #000 !important;
-}
-
-/* FORZAR NEGRO EN MODO CLARO - Overview Chart Title */
-body:not([data-bs-theme="dark"]) #overview .card-header .card-title,
-body:not([data-bs-theme="dark"]) #overview .card-header h6 {
-    color: #000 !important;
-}
-
-/* Modo oscuro - textos blancos */
-[data-bs-theme="dark"] #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body h6,
-[data-bs-theme="dark"] #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body h3,
-[data-bs-theme="dark"] #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body .small,
-[data-bs-theme="dark"] #accountTabsContent .tab-pane:not(#overview) .col-lg-3 .card-body div,
-[data-bs-theme="dark"] #accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card-body .d-flex .small,
-[data-bs-theme="dark"] #accountTabsContent .tab-pane:not(#overview) .col-lg-6 .card-body .d-flex .fw-semibold,
-[data-bs-theme="dark"] #overview .col-lg-4 .card-body h3,
-[data-bs-theme="dark"] #overview .col-lg-4 .card-body p {
-    color: #fff !important;
-}
-
-/* Responsive para móviles */
-@media (max-width: 768px) {
-    #darkModeToggle {
-        font-size: 0.75rem;
-        padding: 0.25rem 0.5rem;
-    }
-}
-</style>
-
-<script>
-// Dark Mode Toggle System
-document.addEventListener('DOMContentLoaded', function() {
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    const modeIcon = document.getElementById('modeIcon');
-    const modeText = document.getElementById('modeText');
-    const body = document.body;
-    
-    // Obtener modo actual del localStorage o usar claro por defecto
-    const currentMode = localStorage.getItem('darkMode') || 'light';
-    
-    function setMode(mode) {
-        if (mode === 'dark') {
-            body.setAttribute('data-bs-theme', 'dark');
-            modeIcon.className = 'fas fa-sun';
-            modeText.textContent = 'Light';
-            localStorage.setItem('darkMode', 'dark');
-        } else {
-            body.removeAttribute('data-bs-theme');
-            modeIcon.className = 'fas fa-moon';
-            modeText.textContent = 'Dark';
-            localStorage.setItem('darkMode', 'light');
-        }
-    }
-    
-    // Aplicar modo inicial
-    setMode(currentMode);
-    
-    // Toggle al hacer clic
-    darkModeToggle.addEventListener('click', function() {
-        const isCurrentlyDark = body.hasAttribute('data-bs-theme') && body.getAttribute('data-bs-theme') === 'dark';
-        setMode(isCurrentlyDark ? 'light' : 'dark');
-    });
-});
-</script></style>
 {% endblock %}

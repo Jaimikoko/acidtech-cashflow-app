@@ -1,30 +1,197 @@
-/* Custom CSS for AciTech Cash Flow App */
+/* ========================================
+   ACIDTECH PROFESSIONAL STYLES
+   Bootstrap 5 Compatible - Oil & Gas Industry
+======================================== */
 
-/* Custom utility classes for Bootstrap */
+/* ACIDTECH BRAND COLORS - Professional Palette */
+:root {
+  --acidtech-primary: #1a365d;     /* Deep Navy - Corporate Trust */
+  --acidtech-secondary: #2c5aa0;   /* Professional Blue */
+  --acidtech-success: #16a085;     /* Revenue Green */
+  --acidtech-warning: #d4a843;     /* Oil Gold */
+  --acidtech-danger: #c0392b;      /* Alert Red */
+  --acidtech-dark: #2c3e50;        /* Corporate Dark */
+  --acidtech-light: #f8f9fa;       /* Clean Light */
+  --acidtech-gray: #6c757d;        /* Professional Gray */
+}
+
+/* ========================================
+   SIDEBAR NAVIGATION - Bootstrap Native
+======================================== */
+
+/* Desktop Sidebar */
+.sidebar-desktop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+  background: linear-gradient(180deg, var(--acidtech-primary), var(--acidtech-dark));
+  padding: 0;
+  z-index: 1030;
+  overflow-y: auto;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+}
+
+/* Sidebar Header */
+.sidebar-header {
+  padding: 1.5rem 1rem;
+  background: rgba(0,0,0,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar-brand {
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-brand:hover {
+  color: rgba(255,255,255,0.8);
+}
+
+/* Navigation Items */
+.nav-section-title {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 1.5rem 0 0.5rem 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar .nav-link {
+  color: rgba(255,255,255,0.8);
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  border-left: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+  background: rgba(255,255,255,0.1);
+  color: white;
+  border-left-color: var(--acidtech-success);
+}
+
+.sidebar .nav-link i {
+  width: 20px;
+  margin-right: 0.75rem;
+  text-align: center;
+}
+
+/* Content with Sidebar */
+.main-content-with-sidebar {
+  margin-left: 250px;
+  min-height: 100vh;
+  background: var(--acidtech-light);
+}
+
+/* ========================================
+   DASHBOARD CARDS - Professional Design
+======================================== */
+
+.dashboard-card {
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+}
+
+.dashboard-card .card-body {
+  padding: 1.5rem;
+}
+
+.dashboard-card .card-footer {
+  background: rgba(0,0,0,0.05);
+  padding: 0.75rem 1.5rem;
+  border: none;
+}
+
+/* KPI Values */
+.kpi-value {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.kpi-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+/* Professional Gradients */
+.bg-gradient-primary-acidtech {
+  background: linear-gradient(135deg, var(--acidtech-primary), var(--acidtech-secondary));
+}
+
+.bg-gradient-success-acidtech {
+  background: linear-gradient(135deg, var(--acidtech-success), #138d75);
+}
+
+.bg-gradient-warning-acidtech {
+  background: linear-gradient(135deg, var(--acidtech-warning), #b7950b);
+}
+
+/* ========================================
+   RESPONSIVE MOBILE DESIGN
+======================================== */
+
+@media (max-width: 768px) {
+  .sidebar-desktop {
+    transform: translateX(-100%);
+  }
+  
+  .sidebar-desktop.show {
+    transform: translateX(0);
+  }
+  
+  .main-content-with-sidebar {
+    margin-left: 0;
+  }
+  
+  .sidebar-toggle {
+    display: block !important;
+  }
+}
+
+/* Mobile Overlay */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1025;
+  display: none;
+}
+
+.sidebar-overlay.show {
+  display: block;
+}
+
+/* ========================================
+   LEGACY COMPATIBILITY
+======================================== */
+
+/* Keep existing working styles */
 .bg-gradient-cash {
-  background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
-}
-
-.btn-primary-custom {
-  background-color: #2563eb;
-  border-color: #2563eb;
-  transition: all 0.2s;
-}
-
-.btn-primary-custom:hover {
-  background-color: #1d4ed8;
-  border-color: #1d4ed8;
-}
-
-.btn-secondary-custom {
-  background-color: #10b981;
-  border-color: #10b981;
-  transition: all 0.2s;
-}
-
-.btn-secondary-custom:hover {
-  background-color: #047857;
-  border-color: #047857;
+  background: linear-gradient(135deg, var(--acidtech-success) 0%, var(--acidtech-secondary) 100%);
 }
 
 .card-hover {
@@ -32,15 +199,6 @@
 }
 
 .card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-/* Custom colors to match brand */
-:root {
-  --primary-color: #2563eb;
-  --secondary-color: #10b981;
-  --success-color: #10b981;
-  --warning-color: #f59e0b;
-  --danger-color: #ef4444;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }

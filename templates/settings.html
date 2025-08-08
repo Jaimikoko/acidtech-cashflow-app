@@ -1,0 +1,322 @@
+{% extends "base.html" %}
+
+{% block page_title %}System Settings{% endblock %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{{ url_for('main.dashboard') }}" class="text-decoration-none">Dashboard</a></li>
+<li class="breadcrumb-item active">Settings</li>
+{% endblock %}
+
+{% block content %}
+
+<!-- SETTINGS HEADER -->
+<div class="row mb-4">
+  <div class="col-12">
+    <div class="card bg-secondary text-white shadow">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col">
+            <h3 class="card-title mb-0">
+              <i class="fas fa-cog me-2"></i>
+              System Settings
+            </h3>
+            <p class="card-text mt-2 mb-0">
+              Configure AcidTech Cash Flow Management System
+            </p>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-tools fa-3x opacity-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS SECTIONS -->
+<div class="row g-4">
+  
+  <!-- ACCOUNT SETTINGS -->
+  <div class="col-lg-6">
+    <div class="card shadow-sm h-100">
+      <div class="card-header bg-white">
+        <h5 class="mb-0 fw-bold text-primary">
+          <i class="fas fa-user-cog me-2"></i>
+          Account Settings
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <label class="form-label fw-bold">Company Information</label>
+          <div class="border rounded p-3 bg-light">
+            <div class="row">
+              <div class="col-12 mb-2">
+                <strong>AcidTech Services</strong>
+              </div>
+              <div class="col-12 mb-1">
+                <small class="text-muted">Midland, TX • Established 2014</small>
+              </div>
+              <div class="col-12">
+                <small class="text-muted">Permian Basin Oil & Gas Services</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label fw-bold">Current User</label>
+          <div class="border rounded p-3 bg-light">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-user-circle fa-2x text-secondary me-3"></i>
+              <div>
+                <div class="fw-bold">{{ current_user.first_name or 'Demo' }} {{ current_user.last_name or 'User' }}</div>
+                <small class="text-muted">{{ current_user.email or 'demo@acidtech.com' }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="d-grid gap-2">
+          <button class="btn btn-outline-primary">
+            <i class="fas fa-edit me-2"></i>
+            Edit Profile
+          </button>
+          <button class="btn btn-outline-secondary">
+            <i class="fas fa-key me-2"></i>
+            Change Password
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SYSTEM SETTINGS -->
+  <div class="col-lg-6">
+    <div class="card shadow-sm h-100">
+      <div class="card-header bg-white">
+        <h5 class="mb-0 fw-bold text-primary">
+          <i class="fas fa-server me-2"></i>
+          System Configuration
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <label class="form-label fw-bold">Database Mode</label>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="dbMode" id="sqliteMode" checked>
+            <label class="form-check-label" for="sqliteMode">
+              SQLite Database (Current)
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="dbMode" id="excelMode">
+            <label class="form-check-label" for="excelMode">
+              Excel File Mode
+            </label>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-bold">Classification Settings</label>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="autoClassify" checked>
+            <label class="form-check-label" for="autoClassify">
+              Enable Auto-Classification
+            </label>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="realTimeSync" checked>
+            <label class="form-check-label" for="realTimeSync">
+              Real-time Data Sync
+            </label>
+          </div>
+        </div>
+
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary">
+            <i class="fas fa-save me-2"></i>
+            Save Settings
+          </button>
+          <button class="btn btn-outline-danger">
+            <i class="fas fa-undo me-2"></i>
+            Reset to Defaults
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DATA MANAGEMENT -->
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white">
+        <h5 class="mb-0 fw-bold text-primary">
+          <i class="fas fa-database me-2"></i>
+          Data Management
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="list-group list-group-flush">
+          <div class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>Total Transactions</strong>
+              <br><small class="text-muted">All accounts combined</small>
+            </div>
+            <span class="badge bg-success rounded-pill">594</span>
+          </div>
+          <div class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>Database Size</strong>
+              <br><small class="text-muted">SQLite file size</small>
+            </div>
+            <span class="badge bg-info rounded-pill">2.1 MB</span>
+          </div>
+          <div class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>Last Backup</strong>
+              <br><small class="text-muted">Automatic backup</small>
+            </div>
+            <span class="badge bg-secondary rounded-pill">Today</span>
+          </div>
+        </div>
+        
+        <div class="d-grid gap-2 mt-3">
+          <button class="btn btn-outline-success">
+            <i class="fas fa-download me-2"></i>
+            Export All Data
+          </button>
+          <button class="btn btn-outline-warning">
+            <i class="fas fa-upload me-2"></i>
+            Import Data
+          </button>
+          <button class="btn btn-outline-info">
+            <i class="fas fa-shield-alt me-2"></i>
+            Create Backup
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SYSTEM STATUS -->
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-light">
+        <h6 class="mb-0 fw-bold">
+          <i class="fas fa-heartbeat me-2 text-success"></i>
+          System Health
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="list-group list-group-flush">
+          <div class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>Database Connection</strong>
+              <br><small class="text-muted">SQLite connectivity</small>
+            </div>
+            <span class="badge bg-success rounded-pill">Connected</span>
+          </div>
+          <div class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>Classification Engine</strong>
+              <br><small class="text-muted">AI/ML Service</small>
+            </div>
+            <span class="badge bg-success rounded-pill">Active</span>
+          </div>
+          <div class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>API Endpoints</strong>
+              <br><small class="text-muted">REST API Status</small>
+            </div>
+            <span class="badge bg-success rounded-pill">Operational</span>
+          </div>
+          <div class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>File System</strong>
+              <br><small class="text-muted">Storage Access</small>
+            </div>
+            <span class="badge bg-success rounded-pill">Available</span>
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <button class="btn btn-outline-info w-100">
+            <i class="fas fa-stethoscope me-2"></i>
+            Run System Diagnostics
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- QUICK ACTIONS -->
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h6 class="mb-0 fw-bold">
+          <i class="fas fa-rocket me-2"></i>
+          Quick Actions
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-3">
+            <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline-primary w-100">
+              <i class="fas fa-home me-2"></i>
+              Back to Dashboard
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a href="{{ url_for('cash_flow.index') }}" class="btn btn-outline-success w-100">
+              <i class="fas fa-coins me-2"></i>
+              Cash Flow
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a href="{{ url_for('cash_flow.classification_dashboard') }}" class="btn btn-outline-warning w-100">
+              <i class="fas fa-robot me-2"></i>
+              Classification
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a href="{{ url_for('reports.index') }}" class="btn btn-outline-info w-100">
+              <i class="fas fa-chart-bar me-2"></i>
+              Reports
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Settings page loaded');
+    
+    // Handle settings form changes
+    const switches = document.querySelectorAll('.form-check-input[type="checkbox"]');
+    switches.forEach(switch => {
+        switch.addEventListener('change', function() {
+            console.log(`Setting ${this.id} changed to ${this.checked}`);
+            // Add AJAX call to save setting
+        });
+    });
+    
+    // Handle mode selection
+    const modeRadios = document.querySelectorAll('input[name="dbMode"]');
+    modeRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            console.log(`Database mode changed to ${this.id}`);
+            // Add logic to switch database mode
+        });
+    });
+});
+</script>
+{% endblock %}

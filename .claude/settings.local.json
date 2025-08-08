@@ -44,7 +44,14 @@
       "Bash(cat:*)",
       "Bash(curl:*)",
       "Bash(az webapp log tail:*)",
-      "Bash(az webapp log download:*)"
+      "Bash(az webapp log download:*)",
+      "Bash(source:*)",
+      "Bash(pip install:*)",
+      "Bash(pkill:*)",
+      "Bash(lsof:*)",
+      "Bash(kill:*)",
+      "Bash(sed:*)",
+      "Bash(echo:*)"
     ],
     "deny": []
   }

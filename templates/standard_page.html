@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+
+{% block page_title %}{% block page_name %}Page Title{% endblock %}{% endblock %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{{ url_for('main.dashboard') }}" class="text-decoration-none">Dashboard</a></li>
+{% block page_breadcrumbs %}{% endblock %}
+<li class="breadcrumb-item active">{% block breadcrumb_page_name %}Page{% endblock %}</li>
+{% endblock %}
+
+{% block content %}
+
+<!-- PAGE HEADER - STANDARD ACIDTECH DESIGN -->
+<div class="row mb-4">
+  <div class="col-12">
+    <div class="card {% block header_color %}bg-primary{% endblock %} text-white shadow">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col">
+            <h3 class="card-title mb-0">
+              <i class="{% block header_icon %}fas fa-chart-pie{% endblock %} me-2"></i>
+              {% block page_header %}Page Header{% endblock %}
+            </h3>
+            <p class="card-text mt-2 mb-0">
+              {% block page_description %}Page description for AcidTech Services{% endblock %}
+            </p>
+          </div>
+          <div class="col-auto">
+            <i class="{% block header_icon_large %}fas fa-chart-pie{% endblock %} fa-3x opacity-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- KPI CARDS - STANDARD 4-COLUMN LAYOUT -->
+{% block kpi_section %}
+<div class="row g-4 mb-4">
+  
+  <!-- KPI 1 -->
+  <div class="col-xl-3 col-md-6">
+    <div class="card border-start {% block kpi1_color %}border-success{% endblock %} border-4 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="text-xs fw-bold {% block kpi1_text_color %}text-success{% endblock %} text-uppercase mb-1">
+              {% block kpi1_label %}Metric 1{% endblock %}
+            </div>
+            <div class="h4 mb-0 fw-bold" id="kpi1-value">
+              {% block kpi1_value %}$0{% endblock %}
+            </div>
+          </div>
+          <div class="text-success">
+            <i class="{% block kpi1_icon %}fas fa-dollar-sign{% endblock %} fa-2x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPI 2 -->
+  <div class="col-xl-3 col-md-6">
+    <div class="card border-start {% block kpi2_color %}border-info{% endblock %} border-4 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="text-xs fw-bold {% block kpi2_text_color %}text-info{% endblock %} text-uppercase mb-1">
+              {% block kpi2_label %}Metric 2{% endblock %}
+            </div>
+            <div class="h4 mb-0 fw-bold" id="kpi2-value">
+              {% block kpi2_value %}0{% endblock %}
+            </div>
+          </div>
+          <div class="text-info">
+            <i class="{% block kpi2_icon %}fas fa-chart-line{% endblock %} fa-2x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPI 3 -->
+  <div class="col-xl-3 col-md-6">
+    <div class="card border-start {% block kpi3_color %}border-primary{% endblock %} border-4 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="text-xs fw-bold {% block kpi3_text_color %}text-primary{% endblock %} text-uppercase mb-1">
+              {% block kpi3_label %}Metric 3{% endblock %}
+            </div>
+            <div class="h4 mb-0 fw-bold" id="kpi3-value">
+              {% block kpi3_value %}0{% endblock %}
+            </div>
+          </div>
+          <div class="text-primary">
+            <i class="{% block kpi3_icon %}fas fa-users{% endblock %} fa-2x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPI 4 -->
+  <div class="col-xl-3 col-md-6">
+    <div class="card border-start {% block kpi4_color %}border-warning{% endblock %} border-4 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="text-xs fw-bold {% block kpi4_text_color %}text-warning{% endblock %} text-uppercase mb-1">
+              {% block kpi4_label %}Metric 4{% endblock %}
+            </div>
+            <div class="h4 mb-0 fw-bold" id="kpi4-value">
+              {% block kpi4_value %}0%{% endblock %}
+            </div>
+          </div>
+          <div class="text-warning">
+            <i class="{% block kpi4_icon %}fas fa-percentage{% endblock %} fa-2x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+<!-- MAIN CONTENT SECTIONS -->
+<div class="row g-4">
+  
+  <!-- LEFT COLUMN - MAIN CONTENT -->
+  <div class="col-lg-8">
+    {% block main_content %}
+    <div class="card shadow-sm">
+      <div class="card-header bg-white">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0 fw-bold text-primary">
+            <i class="fas fa-list me-2"></i>
+            {% block main_content_title %}Main Content{% endblock %}
+          </h5>
+          {% block main_content_actions %}{% endblock %}
+        </div>
+      </div>
+      <div class="card-body">
+        {% block main_content_body %}
+        <p class="text-muted">Main content area - override this block</p>
+        {% endblock %}
+      </div>
+    </div>
+    {% endblock %}
+  </div>
+
+  <!-- RIGHT COLUMN - SIDEBAR CONTENT -->
+  <div class="col-lg-4">
+    
+    <!-- QUICK ACTIONS -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-white">
+        <h6 class="mb-0 fw-bold text-primary">
+          <i class="fas fa-bolt me-2"></i>
+          Quick Actions
+        </h6>
+      </div>
+      <div class="card-body">
+        {% block quick_actions %}
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>
+            Primary Action
+          </button>
+          <button class="btn btn-outline-secondary">
+            <i class="fas fa-cog me-2"></i>
+            Secondary Action
+          </button>
+        </div>
+        {% endblock %}
+      </div>
+    </div>
+
+    <!-- STATUS/INFO PANEL -->
+    <div class="card shadow-sm">
+      <div class="card-header bg-light">
+        <h6 class="mb-0 fw-bold">
+          <i class="fas fa-info-circle me-2 text-primary"></i>
+          {% block info_panel_title %}System Status{% endblock %}
+        </h6>
+      </div>
+      <div class="card-body">
+        {% block info_panel_content %}
+        <div class="list-group list-group-flush">
+          <div class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>Status</strong>
+              <br><small class="text-muted">System operational</small>
+            </div>
+            <span class="badge bg-success rounded-pill">Active</span>
+          </div>
+        </div>
+        {% endblock %}
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ADDITIONAL CONTENT SECTIONS -->
+{% block additional_content %}{% endblock %}
+
+<!-- ACIDTECH FOOTER CONTEXT -->
+{% block company_context %}
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="card shadow-sm">
+      <div class="card-header bg-light">
+        <h6 class="mb-0 fw-bold">
+          <i class="fas fa-oil-well me-2 text-primary"></i>
+          AcidTech Services - Permian Basin Operations
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h6 class="fw-bold">Company Overview</h6>
+            <p class="text-muted">
+              Established in 2014, AcidTech Services operates in the heart of the Permian Basin 
+              with over three decades of combined management experience.
+            </p>
+          </div>
+          <div class="col-md-6">
+            <h6 class="fw-bold">{% block context_title %}Performance{% endblock %}</h6>
+            <p class="text-muted">
+              {% block context_description %}
+              Our systems demonstrate strong operational performance with 
+              excellent data integrity and consistent processing capabilities.
+              {% endblock %}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Standard AcidTech page loaded');
+    {% block page_scripts %}
+    // Page-specific JavaScript
+    {% endblock %}
+});
+</script>
+{% endblock %}

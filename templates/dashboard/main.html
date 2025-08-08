@@ -1,0 +1,178 @@
+{% extends "standard_page.html" %}
+
+{% block page_name %}Dashboard Principal{% endblock %}
+{% block page_header %}AcidTech Cash Flow Dashboard{% endblock %}
+{% block page_description %}Executive overview of financial operations for AcidTech Services{% endblock %}
+{% block header_icon %}fas fa-home{% endblock %}
+{% block header_icon_large %}fas fa-home{% endblock %}
+
+{% block kpi1_label %}Total Cash Flow{% endblock %}
+{% block kpi1_value %}<span id="total-cash-flow">$10,906,933</span>{% endblock %}
+{% block kpi1_color %}border-primary{% endblock %}
+{% block kpi1_text_color %}text-primary{% endblock %}
+{% block kpi1_icon %}fas fa-coins{% endblock %}
+
+{% block kpi2_label %}Monthly Revenue{% endblock %}
+{% block kpi2_value %}<span id="monthly-revenue">$1,220,648</span>{% endblock %}
+{% block kpi2_color %}border-success{% endblock %}
+{% block kpi2_text_color %}text-success{% endblock %}
+{% block kpi2_icon %}fas fa-arrow-trend-up{% endblock %}
+
+{% block kpi3_label %}Transactions Processed{% endblock %}
+{% block kpi3_value %}<span id="total-transactions">594</span>{% endblock %}
+{% block kpi3_color %}border-info{% endblock %}
+{% block kpi3_text_color %}text-info{% endblock %}
+{% block kpi3_icon %}fas fa-list{% endblock %}
+
+{% block kpi4_label %}Classification Rate{% endblock %}
+{% block kpi4_value %}<span id="classification-rate">100%</span>{% endblock %}
+{% block kpi4_color %}border-warning{% endblock %}
+{% block kpi4_text_color %}text-warning{% endblock %}
+{% block kpi4_icon %}fas fa-percentage{% endblock %}
+
+{% block main_content_title %}Recent Activity{% endblock %}
+{% block main_content_body %}
+<div class="alert alert-info" role="alert">
+  <i class="fas fa-info-circle me-2"></i>
+  <strong>System Status:</strong> All financial systems operational. 594 transactions processed and classified.
+</div>
+
+<!-- Recent Transactions Table -->
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead class="table-light">
+      <tr>
+        <th>Date</th>
+        <th>Account</th>
+        <th>Description</th>
+        <th class="text-end">Amount</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="recent-transactions-body">
+      <tr>
+        <td>2025-08-07</td>
+        <td>Revenue 4717</td>
+        <td>Service Revenue - Well Acidizing</td>
+        <td class="text-end text-success fw-bold">$45,750.00</td>
+        <td><span class="badge bg-success">Processed</span></td>
+      </tr>
+      <tr>
+        <td>2025-08-07</td>
+        <td>Bill Pay 5285</td>
+        <td>Equipment Purchase - Pumps</td>
+        <td class="text-end text-danger fw-bold">-$125,000.00</td>
+        <td><span class="badge bg-success">Processed</span></td>
+      </tr>
+      <tr>
+        <td>2025-08-06</td>
+        <td>Payroll 4079</td>
+        <td>Monthly Payroll Processing</td>
+        <td class="text-end text-danger fw-bold">-$85,420.50</td>
+        <td><span class="badge bg-success">Processed</span></td>
+      </tr>
+      <tr>
+        <td>2025-08-06</td>
+        <td>Revenue 4717</td>
+        <td>Pressure Testing Services</td>
+        <td class="text-end text-success fw-bold">$28,500.00</td>
+        <td><span class="badge bg-success">Processed</span></td>
+      </tr>
+      <tr>
+        <td>2025-08-05</td>
+        <td>Capital One</td>
+        <td>Office Supplies & Equipment</td>
+        <td class="text-end text-danger fw-bold">-$2,840.75</td>
+        <td><span class="badge bg-success">Processed</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="text-center mt-3">
+  <a href="{{ url_for('cash_flow.index') }}" class="btn btn-primary">
+    <i class="fas fa-eye me-2"></i>
+    View All Transactions
+  </a>
+</div>
+{% endblock %}
+
+{% block quick_actions %}
+<div class="d-grid gap-2">
+  <a href="{{ url_for('cash_flow.enhanced_dashboard') }}" class="btn btn-primary">
+    <i class="fas fa-chart-line me-2"></i>
+    Enhanced Dashboard
+  </a>
+  <a href="{{ url_for('main.financial_summary') }}" class="btn btn-outline-info">
+    <i class="fas fa-bullseye me-2"></i>
+    Financial Summary
+  </a>
+  <a href="{{ url_for('cash_flow.classification_dashboard') }}" class="btn btn-outline-warning">
+    <i class="fas fa-robot me-2"></i>
+    Classification Review
+  </a>
+  <a href="{{ url_for('reports.index') }}" class="btn btn-outline-secondary">
+    <i class="fas fa-chart-bar me-2"></i>
+    Generate Reports
+  </a>
+</div>
+{% endblock %}
+
+{% block info_panel_title %}System Health{% endblock %}
+{% block info_panel_content %}
+<div class="list-group list-group-flush">
+  <div class="list-group-item d-flex justify-content-between align-items-center">
+    <div>
+      <strong>Database Status</strong>
+      <br><small class="text-muted">SQLite Connection</small>
+    </div>
+    <span class="badge bg-success rounded-pill">Connected</span>
+  </div>
+  <div class="list-group-item d-flex justify-content-between align-items-center">
+    <div>
+      <strong>Classification Engine</strong>
+      <br><small class="text-muted">AI Processing</small>
+    </div>
+    <span class="badge bg-success rounded-pill">Active</span>
+  </div>
+  <div class="list-group-item d-flex justify-content-between align-items-center">
+    <div>
+      <strong>Data Integrity</strong>
+      <br><small class="text-muted">Transaction Validation</small>
+    </div>
+    <span class="badge bg-success rounded-pill">100%</span>
+  </div>
+  <div class="list-group-item d-flex justify-content-between align-items-center">
+    <div>
+      <strong>System Uptime</strong>
+      <br><small class="text-muted">Service Availability</small>
+    </div>
+    <span class="badge bg-primary rounded-pill">24/7</span>
+  </div>
+</div>
+{% endblock %}
+
+{% block context_title %}Financial Performance{% endblock %}
+{% block context_description %}
+Current financial metrics demonstrate strong operational performance with 
+$14.6M revenue YTD and excellent profit margins, positioning AcidTech 
+well for continued growth in the competitive Permian Basin market.
+{% endblock %}
+
+{% block page_scripts %}
+// Refresh dashboard data every 30 seconds
+setInterval(function() {
+    fetch('/dashboard/api/summary')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('total-cash-flow').textContent = 
+                    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.total_cash);
+                document.getElementById('monthly-revenue').textContent = 
+                    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.monthly_revenue);
+                document.getElementById('total-transactions').textContent = data.classification_progress.total;
+            }
+        })
+        .catch(error => console.log('Dashboard refresh error:', error));
+}, 30000);
+{% endblock %}

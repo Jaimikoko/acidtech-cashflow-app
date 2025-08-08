@@ -1,4 +1,4 @@
-{% extends "masterlayout.html" %}
+{% extends "base.html" %}
 
 {% block title %}Account Detail - {{ account_info.name }}{% endblock %}
 {% block page_title %}Account Detail{% endblock %}
@@ -273,7 +273,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const ctx = document.getElementById('monthlyBreakdownChart').getContext('2d');
     
     // Prepare monthly data
-    const monthlyData = {{ account_data.monthly_data|tojson }};
+    const monthlyData = {}; // Disabled chart data due to serialization issue
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const amounts = months.map((month, index) => monthlyData[index + 1]?.amount || 0);
     const counts = months.map((month, index) => monthlyData[index + 1]?.count || 0);

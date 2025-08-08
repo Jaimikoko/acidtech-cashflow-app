@@ -74,17 +74,17 @@ def create_app(config_name=None):
         
         # Accounts Payable blueprint
         from app.routes.accounts_payable import accounts_payable_bp
-        app.register_blueprint(accounts_payable_bp, url_prefix='/ap')
+        app.register_blueprint(accounts_payable_bp, url_prefix='/accounts-payable')
         logger.info("Accounts payable blueprint registered")
         
         # Accounts Receivable blueprint
         from app.routes.accounts_receivable import accounts_receivable_bp
-        app.register_blueprint(accounts_receivable_bp, url_prefix='/ar')
+        app.register_blueprint(accounts_receivable_bp, url_prefix='/accounts-receivable')
         logger.info("Accounts receivable blueprint registered")
         
         # Purchase Orders blueprint
         from app.routes.purchase_orders import purchase_orders_bp
-        app.register_blueprint(purchase_orders_bp, url_prefix='/po')
+        app.register_blueprint(purchase_orders_bp, url_prefix='/purchase-orders')
         logger.info("Purchase orders blueprint registered")
         
         # Reports blueprint
@@ -154,6 +154,50 @@ def create_app(config_name=None):
         logger.warning(f"Page not found: {error}")
         return jsonify({'error': 'Page not found'}), 404
     
+    # Custom Jinja2 filters for number formatting
+    @app.template_filter('currency')
+    def currency_format(value):
+        """Format numbers as currency with accounting style"""
+        try:
+            if value is None:
+                return "$0.00"
+            
+            # Convert to float if needed
+            if isinstance(value, str):
+                value = float(value.replace(',', '').replace('$', ''))
+            
+            value = float(value)
+            
+            # Format with commas and 2 decimal places
+            if value >= 0:
+                return "${:,.2f}".format(value)
+            else:
+                # Negative numbers in parentheses (accounting style)
+                return "(${:,.2f})".format(abs(value))
+                
+        except (ValueError, TypeError):
+            return "$0.00"
+    
+    @app.template_filter('accounting')
+    def accounting_format(value):
+        """Format numbers in accounting style (negatives in parentheses)"""
+        try:
+            if value is None:
+                return "0.00"
+            
+            if isinstance(value, str):
+                value = float(value.replace(',', '').replace('$', ''))
+            
+            value = float(value)
+            
+            if value >= 0:
+                return "{:,.2f}".format(value)
+            else:
+                return "({:,.2f})".format(abs(value))
+                
+        except (ValueError, TypeError):
+            return "0.00"
+    
     return app
 
 # Import models to ensure they're registered with SQLAlchemy
@@ -161,6 +205,8 @@ try:
     from models.user import User
     from models.transaction import Transaction
     from models.purchase_order import PurchaseOrder
+    from models.bank_transaction import BankTransaction
+    from models.payroll import PayrollEntry
     logger.info("Models imported successfully")
 except ImportError as e:
     logger.warning(f"Could not import some models: {e}")
