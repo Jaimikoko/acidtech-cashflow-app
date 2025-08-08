@@ -37,13 +37,13 @@ class ProductionConfig(Config):
     SESSION_COOKIE_SAMESITE = 'Lax'  # CSRF protection
     PERMANENT_SESSION_LIFETIME = 3600  # 1 hour session timeout
     
-    # Force strong secret key in production
-    @property
-    def SECRET_KEY(self):
+    # Force strong secret key in production - Fix: Use class attribute instead of property
+    def __init__(self):
+        super().__init__()
         key = os.environ.get('SECRET_KEY')
         if not key or key == 'dev-secret-key-acidtech-2024-change-in-production':
             raise ValueError("Must set SECRET_KEY environment variable in production!")
-        return key
+        self.SECRET_KEY = key
 
 config = {
     'development': DevelopmentConfig,
