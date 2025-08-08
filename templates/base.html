@@ -20,7 +20,10 @@
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 <body>
-    {% if current_user.is_authenticated %}
+    {# DEFENSIVE AUTH CHECK - TOLERANT TO DATABASE ERRORS #}
+    {% set user_authenticated = current_user and current_user.is_authenticated %}
+    
+    {% if user_authenticated %}
     <!-- AUTHENTICATED LAYOUT: Bootstrap Grid with Sidebar -->
     <div class="container-fluid">
         <div class="row">
@@ -44,10 +47,21 @@
                         {% block page_title %}Dashboard{% endblock %}
                     </h1>
                     
-                    <!-- User Info -->
+                    <!-- User Info - DEFENSIVE USER DATA ACCESS -->
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="btn-group me-2">
-                            <span class="text-muted me-3">Welcome, {{ current_user.first_name or 'User' }}</span>
+                            {% set user_display_name = 'User' %}
+                            {% if current_user %}
+                                {% if current_user.first_name %}
+                                    {% set user_display_name = current_user.first_name %}
+                                {% elif current_user.username %}
+                                    {% set user_display_name = current_user.username %}
+                                {% elif current_user.email %}
+                                    {% set user_display_name = current_user.email.split('@')[0] %}
+                                {% endif %}
+                            {% endif %}
+                            
+                            <span class="text-muted me-3">Welcome, {{ user_display_name }}</span>
                             <a href="{{ url_for('auth.logout') }}" class="btn btn-sm btn-outline-danger">
                                 <i class="fas fa-sign-out-alt me-1"></i>Logout
                             </a>
@@ -76,6 +90,15 @@
                     {% endif %}
                 {% endwith %}
                 
+                <!-- DATABASE CONNECTION WARNING -->
+                {% if config.get('SHOW_DB_WARNING', False) %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>System Notice:</strong> Some features may be limited due to database connectivity issues.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endif %}
+                
                 <!-- PAGE CONTENT -->
                 {% block content %}{% endblock %}
                 
@@ -90,6 +113,15 @@
         <div class="text-center">
             <h3>Authentication Required</h3>
             <p>Please <a href="{{ url_for('auth.login') }}">login</a> to access this page.</p>
+            
+            {% if config.get('DEBUG') %}
+            <div class="mt-3">
+                <small class="text-muted">
+                    Debug Info: user_authenticated = {{ user_authenticated }}, 
+                    current_user exists = {{ current_user is defined }}
+                </small>
+            </div>
+            {% endif %}
         </div>
     </div>
     {% endif %}

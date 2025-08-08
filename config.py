@@ -12,6 +12,9 @@ class Config:
     UPLOAD_FOLDER = os.path.join(basedir, 'static', 'uploads')
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB max file size
     
+    # Database connection monitoring
+    SHOW_DB_WARNING = os.environ.get('SHOW_DB_WARNING', 'false').lower() == 'true'
+    
     # File Mode Configuration for QA Testing
     USE_FILE_MODE = os.environ.get('USE_FILE_MODE', 'false').lower() == 'true'
     EXCEL_DATA_PATH = os.path.join(basedir, 'static', 'uploads', 'qa_data.xlsx')
