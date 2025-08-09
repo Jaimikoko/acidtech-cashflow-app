@@ -27,8 +27,8 @@ if __name__ == "__main__":
     sys.path.insert(0, str(current_dir))
     
     # Set development environment
-    os.environ['FLASK_ENV'] = 'development'
     os.environ['FLASK_CONFIG'] = 'development'
+    os.environ['FLASK_DEBUG'] = '1'
     
     try:
         from app import create_app
@@ -41,7 +41,7 @@ if __name__ == "__main__":
         print("=" * 60)
         print(f"📁 Working Directory: {current_dir}")
         print(f"🌍 Environment: Development")
-        print(f"🔧 Debug Mode: Disabled")
+        print(f"🔧 Debug Mode: {'Enabled' if app.debug else 'Disabled'}")
         print(f"🌐 URL: http://localhost:{PORT}")
         print(f"📊 Database: {app.config.get('SQLALCHEMY_DATABASE_URI', 'Not configured')}")
         print("=" * 60)
@@ -69,9 +69,9 @@ if __name__ == "__main__":
         app.run(
             host='0.0.0.0',  # Allow external connections
             port=PORT,  # Custom port to avoid conflicts
-            debug=False,
+            debug=app.debug,
             use_reloader=True,
-            use_debugger=False
+            use_debugger=app.debug
         )
         
     except ImportError as e:
