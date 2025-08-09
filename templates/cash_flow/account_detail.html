@@ -375,11 +375,11 @@ function applyFilters() {
     let url = window.location.pathname + '?';
     const params = [];
     
-    if (year) params.push('year=' + year);
-    if (month) params.push('month=' + month);
-    if (timePeriod === 'custom' && startDate) params.push('start_date=' + startDate);
-    if (timePeriod === 'custom' && endDate) params.push('end_date=' + endDate);
-    if (timePeriod !== 'custom') params.push('period=' + timePeriod);
+    if (year) params.push('year=' + encodeURIComponent(year));
+    if (month) params.push('month=' + encodeURIComponent(month));
+    if (timePeriod === 'custom' && startDate) params.push('start_date=' + encodeURIComponent(startDate));
+    if (timePeriod === 'custom' && endDate) params.push('end_date=' + encodeURIComponent(endDate));
+    if (timePeriod !== 'custom') params.push('period=' + encodeURIComponent(timePeriod));
     
     url += params.join('&');
     
