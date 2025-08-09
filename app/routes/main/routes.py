@@ -1,4 +1,14 @@
-from flask import render_template, render_template_string, request, jsonify, send_from_directory, current_app, flash, redirect, url_for
+from flask import (
+    render_template,
+    render_template_string,
+    request,
+    jsonify,
+    send_from_directory,
+    current_app,
+    flash,
+    redirect,
+    url_for,
+)
 from flask_login import login_required, current_user
 from datetime import datetime, date, timedelta
 from models.transaction import Transaction
@@ -11,6 +21,7 @@ import time
 import logging
 
 from . import main_bp
+from app.forms import LoginForm
 
 # Get logger for this module
 logger = logging.getLogger(__name__)
@@ -27,9 +38,10 @@ def index():
     # If user is already logged in, redirect to dashboard
     if current_user.is_authenticated:
         return redirect(url_for('main.dashboard'))
-    
+
+    form = LoginForm()
     # If not authenticated, show login page
-    return render_template('auth/login_main.html')
+    return render_template('auth/login_main.html', form=form)
 
 @main_bp.route('/dashboard')
 @login_required

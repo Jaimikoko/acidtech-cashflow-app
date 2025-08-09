@@ -17,40 +17,46 @@
             </p>
         </div>
         <form class="mt-4" method="POST">
+            {{ form.csrf_token }}
+            {% for field, errors in form.errors.items() %}
+                {% for error in errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+            {% endfor %}
             <div>
                 <div class="row mb-3">
                     <div class="col-6">
                         <label for="first_name" class="form-label small">First Name</label>
-                        <input id="first_name" name="first_name" type="text" required 
-                               class="form-control" 
-                               placeholder="First Name">
+                        <input id="first_name" name="first_name" type="text" required
+                               class="form-control"
+                               placeholder="First Name" value="{{ form.first_name.data }}">
                     </div>
                     <div class="col-6">
                         <label for="last_name" class="form-label small">Last Name</label>
-                        <input id="last_name" name="last_name" type="text" required 
-                               class="form-control" 
-                               placeholder="Last Name">
+                        <input id="last_name" name="last_name" type="text" required
+                               class="form-control"
+                               placeholder="Last Name" value="{{ form.last_name.data }}">
                     </div>
                 </div>
                 
                 <div class="mb-3">
                     <label for="username" class="form-label small">Username</label>
-                    <input id="username" name="username" type="text" required 
-                           class="form-control" 
-                           placeholder="Username">
+                    <input id="username" name="username" type="text" required
+                           class="form-control"
+                           placeholder="Username" value="{{ form.username.data }}">
                 </div>
                 
                 <div class="mb-3">
                     <label for="email" class="form-label small">Email Address</label>
-                    <input id="email" name="email" type="email" required 
-                           class="form-control" 
-                           placeholder="Email address">
+                    <input id="email" name="email" type="email" required
+                           class="form-control"
+                           placeholder="Email address" value="{{ form.email.data }}">
                 </div>
                 
                 <div class="mb-3">
                     <label for="password" class="form-label small">Password</label>
-                    <input id="password" name="password" type="password" required 
-                           class="form-control" 
+                    <input id="password" name="password" type="password" required
+                           class="form-control"
                            placeholder="Password">
                 </div>
             </div>

@@ -17,26 +17,32 @@
             </p>
         </div>
         <form class="mt-4" method="POST">
+            {{ form.csrf_token }}
+            {% for field, errors in form.errors.items() %}
+                {% for error in errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+            {% endfor %}
             <div class="mb-3">
                 <div>
                     <label for="username" class="sr-only">Username</label>
-                    <input id="username" name="username" type="text" required 
-                           class="form-control" 
-                           placeholder="Username">
+                    <input id="username" name="username" type="text" required
+                           class="form-control"
+                           placeholder="Username" value="{{ form.username.data }}">
                 </div>
             </div>
             <div class="mb-3">
                     <label for="password" class="sr-only">Password</label>
-                    <input id="password" name="password" type="password" required 
-                           class="form-control" 
+                    <input id="password" name="password" type="password" required
+                           class="form-control"
                            placeholder="Password">
             </div>
             </div>
 
             <div class="mb-3 d-flex align-items-center justify-content-between">
                 <div class="form-check">
-                    <input id="remember_me" name="remember_me" type="checkbox" 
-                           class="form-check-input">
+                    <input id="remember_me" name="remember_me" type="checkbox"
+                           class="form-check-input" {% if form.remember_me.data %}checked{% endif %}>
                     <label for="remember_me" class="form-check-label small">
                         Remember me
                     </label>
