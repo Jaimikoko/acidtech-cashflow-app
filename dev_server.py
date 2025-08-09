@@ -9,12 +9,16 @@ Usage:
 Environment:
     - Uses development configuration
     - Enables debug mode
-    - Runs on localhost:5000 by default
+    - Runs on localhost:5001 by default (configurable via DEV_SERVER_PORT)
 """
 
 import os
 import sys
 from pathlib import Path
+
+
+# Port configuration (allows override via DEV_SERVER_PORT environment variable)
+PORT = int(os.environ.get("DEV_SERVER_PORT", 5001))
 
 # Ensure we're in the correct directory
 if __name__ == "__main__":
@@ -38,7 +42,7 @@ if __name__ == "__main__":
         print(f"📁 Working Directory: {current_dir}")
         print(f"🌍 Environment: Development")
         print(f"🔧 Debug Mode: Disabled")
-        print(f"🌐 URL: http://localhost:5000")
+        print(f"🌐 URL: http://localhost:{PORT}")
         print(f"📊 Database: {app.config.get('SQLALCHEMY_DATABASE_URI', 'Not configured')}")
         print("=" * 60)
         print("📝 Available routes:")
@@ -64,7 +68,7 @@ if __name__ == "__main__":
         # Run development server
         app.run(
             host='0.0.0.0',  # Allow external connections
-            port=5001,  # Custom port to avoid conflicts
+            port=PORT,  # Custom port to avoid conflicts
             debug=False,
             use_reloader=True,
             use_debugger=False
