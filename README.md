@@ -116,6 +116,8 @@ AZURE_KEY_VAULT_URL=https://your-keyvault.vault.azure.net/
 APPINSIGHTS_CONNECTION_STRING=your-app-insights-connection-string
 ```
 
+> **Nota:** En producción, `SECRET_KEY` siempre debe establecerse mediante una variable de entorno. La clave por defecto `dev-secret-key` se utiliza únicamente para desarrollo.
+
 ## 📊 Sample Data
 
 The application includes comprehensive sample data:

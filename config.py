@@ -25,9 +25,9 @@ class Config:
     @classmethod
     def init_app(cls, app):
         """Initialize common configuration values."""
-        app.config['SECRET_KEY'] = os.environ.get(
-            'SECRET_KEY', 'dev-secret-key-acidtech-2024-change-in-production'
-        )
+        # Use a fixed secret key for development when none is provided.
+        # In production this must be overridden via the SECRET_KEY environment variable.
+        app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key')
         app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or \
             'sqlite:///' + os.path.join(basedir, 'app.db')
     
@@ -48,7 +48,7 @@ class ProductionConfig(Config):
         """Validate required configuration for production."""
         super().init_app(app)
         if not app.debug and not app.testing:
-            if app.config['SECRET_KEY'] == 'dev-secret-key-acidtech-2024-change-in-production':
+            if app.config['SECRET_KEY'] == 'dev-secret-key':
                 raise ValueError('SECRET_KEY is required')
             if app.config['SQLALCHEMY_DATABASE_URI'].startswith('sqlite:///'):
                 raise ValueError('DATABASE_URL is required')
