@@ -37,7 +37,7 @@ if __name__ == "__main__":
         print("=" * 60)
         print(f"📁 Working Directory: {current_dir}")
         print(f"🌍 Environment: Development")
-        print(f"🔧 Debug Mode: Enabled")
+        print(f"🔧 Debug Mode: Disabled")
         print(f"🌐 URL: http://localhost:5000")
         print(f"📊 Database: {app.config.get('SQLALCHEMY_DATABASE_URI', 'Not configured')}")
         print("=" * 60)
@@ -65,9 +65,9 @@ if __name__ == "__main__":
         app.run(
             host='0.0.0.0',  # Allow external connections
             port=5001,  # Custom port to avoid conflicts
-            debug=True,
+            debug=False,
             use_reloader=True,
-            use_debugger=True
+            use_debugger=False
         )
         
     except ImportError as e:
