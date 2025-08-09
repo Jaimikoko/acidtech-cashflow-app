@@ -10,6 +10,7 @@ from datetime import datetime
 from flask import Flask, jsonify
 from flask_migrate import Migrate, upgrade
 from flask_login import LoginManager
+from sqlalchemy import text
 
 # Configure basic logging for production compatibility
 import logging
@@ -134,7 +135,8 @@ def create_app(config_name=None):
         try:
             # Test database connection
             from database import db
-            db.engine.connect()
+            with db.engine.connect() as conn:
+                conn.execute(text('SELECT 1'))
             return jsonify({
                 'status': 'healthy',
                 'database': 'connected',
