@@ -39,6 +39,7 @@ def create_app(config_name=None):
     # Load configuration
     from config import config
     app.config.from_object(config[config_name])
+    config['production'].init_app(app)
     
     logger.info(f"Database URI: {app.config.get('SQLALCHEMY_DATABASE_URI', 'Not set')}")
     
