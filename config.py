@@ -37,7 +37,7 @@ class ProductionConfig(Config):
     DEBUG = False
 
     # Security enhancements for production
-    SESSION_COOKIE_SECURE = True  # HTTPS only
+    SESSION_COOKIE_SECURE = os.environ.get('SESSION_COOKIE_SECURE', 'true').lower() == 'true'  # HTTPS only
     SESSION_COOKIE_HTTPONLY = True  # Prevent XSS
     SESSION_COOKIE_SAMESITE = 'Lax'  # CSRF protection
     PERMANENT_SESSION_LIFETIME = 3600  # 1 hour session timeout
