@@ -8,7 +8,7 @@ import os
 import logging
 from datetime import datetime
 from flask import Flask, jsonify
-from flask_migrate import Migrate
+from flask_migrate import Migrate, upgrade
 from flask_login import LoginManager
 
 # Configure basic logging for production compatibility
@@ -118,8 +118,12 @@ def create_app(config_name=None):
     # Initialize database tables
     with app.app_context():
         try:
-            db.create_all()
-            logger.info("Database tables created/verified")
+            if app.config.get('ENV') == 'production':
+                upgrade()
+                logger.info("Database migrations applied")
+            else:
+                db.create_all()
+                logger.info("Database tables created/verified")
         except Exception as e:
             logger.error(f"Database initialization failed: {e}")
             # Don't raise here, let the app start anyway
