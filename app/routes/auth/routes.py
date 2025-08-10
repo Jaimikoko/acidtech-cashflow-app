@@ -1,7 +1,7 @@
-from flask import render_template, request, flash, redirect, url_for
-from flask_login import login_user, logout_user, login_required, current_user
-from urllib.parse import urlparse
 from datetime import datetime
+from flask import render_template, request, url_for, redirect, flash, current_app, session
+from flask_login import login_user, logout_user, login_required, current_user
+
 from models.user import User
 from database import db
 
@@ -15,28 +15,41 @@ def login():
 
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
+        username = form.username.data.strip()
+        user = User.query.filter_by(username=username).first()
+        if user and user.check_password(form.password.data):
+            # Persist session
+            login_user(user, remember=form.remember_me.data)
+            session.permanent = True
 
-        if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
-            return redirect(url_for('auth.login'))
+            # Update audit info
+            try:
+                user.last_login = datetime.utcnow()
+                db.session.commit()
+            except Exception as e:
+                current_app.logger.warning(f'Login audit commit failed: {e}')
 
-        user.last_login = datetime.utcnow()
-        db.session.commit()
+            # Safe redirect
+            next_url = request.args.get('next')
+            if not next_url or not next_url.startswith('/'):
+                next_url = url_for('main.dashboard')
+            current_app.logger.info(f'Login OK for {username}; redirecting to {next_url}')
+            return redirect(next_url)
 
-        login_user(user, remember=form.remember_me.data)
-        next_page = request.args.get('next')
-        if not next_page or urlparse(next_page).netloc != '':
-            next_page = url_for('main.dashboard')
-        return redirect(next_page)
+        current_app.logger.info('Login failed: bad credentials')
+        flash('Invalid username or password', 'error')
 
-    return render_template('auth/login.html', form=form)
+    # If GET or validation failed, re-render with errors
+    if form.errors:
+        current_app.logger.info(f'Login form errors: {form.errors}')
+    return render_template('auth/login.html', form=form), 200
 
 @auth_bp.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('main.index'))
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('auth.login'))
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
