@@ -5,7 +5,8 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
 
 class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key-acidtech-2024-change-in-production'
+    """Base configuration loaded from environment variables."""
+    SECRET_KEY = os.environ.get('SECRET_KEY', os.urandom(24))
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -37,13 +38,20 @@ class ProductionConfig(Config):
     SESSION_COOKIE_SAMESITE = 'Lax'  # CSRF protection
     PERMANENT_SESSION_LIFETIME = 3600  # 1 hour session timeout
     
-    # Force strong secret key in production - Fix: Use class attribute
+    # Force strong secrets and database configuration in production
     @property
     def SECRET_KEY(self):
         key = os.environ.get('SECRET_KEY')
-        if not key or key == 'dev-secret-key-acidtech-2024-change-in-production':
+        if not key:
             raise ValueError("Must set SECRET_KEY environment variable in production!")
         return key
+
+    @property
+    def SQLALCHEMY_DATABASE_URI(self):
+        uri = os.environ.get('DATABASE_URL')
+        if not uri:
+            raise ValueError("Must set DATABASE_URL environment variable in production!")
+        return uri
 
 config = {
     'development': DevelopmentConfig,
