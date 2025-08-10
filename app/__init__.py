@@ -8,8 +8,9 @@ import os
 import logging
 from datetime import datetime
 from flask import Flask, jsonify
-from flask_migrate import Migrate
+from flask_migrate import Migrate, upgrade
 from flask_login import LoginManager
+from sqlalchemy import text
 
 # Configure basic logging for production compatibility
 import logging
@@ -39,13 +40,17 @@ def create_app(config_name=None):
     # Load configuration
     from config import config
     app.config.from_object(config[config_name])
+    config['production'].init_app(app)
     
     logger.info(f"Database URI: {app.config.get('SQLALCHEMY_DATABASE_URI', 'Not set')}")
-    
+
     # Initialize extensions
     from database import db
-    db.init_app(app)
-    migrate.init_app(app, db)
+    if app.config.get('SQLALCHEMY_DATABASE_URI'):
+        db.init_app(app)
+        migrate.init_app(app, db)
+    else:
+        logger.warning('No SQLALCHEMY_DATABASE_URI configured; skipping database initialization')
     login_manager.init_app(app)
     login_manager.login_view = 'auth.login'
     login_manager.login_message = 'Please log in to access this page.'
@@ -113,23 +118,37 @@ def create_app(config_name=None):
         logger.info(f"Upload folder ready: {app.config['UPLOAD_FOLDER']}")
     except Exception as e:
         logger.warning(f"Could not create upload folder: {e}")
-    
+
     # Initialize database tables
     with app.app_context():
-        try:
-            db.create_all()
-            logger.info("Database tables created/verified")
-        except Exception as e:
-            logger.error(f"Database initialization failed: {e}")
-            # Don't raise here, let the app start anyway
+        if app.config.get('SQLALCHEMY_DATABASE_URI'):
+            try:
+                if app.config.get('ENV') == 'production':
+                    upgrade()
+                    logger.info("Database migrations applied")
+                else:
+                    db.create_all()
+                    logger.info("Database tables created/verified")
+            except Exception as e:
+                logger.error(f"Database initialization failed: {e}")
+                # Don't raise here, let the app start anyway
+        else:
+            logger.info('No database configured; skipping table creation')
     
     # Health check endpoint for Azure App Service
     @app.route('/health')
     def health():
+        if not app.config.get('SQLALCHEMY_DATABASE_URI'):
+            return jsonify({
+                'status': 'healthy',
+                'database': 'not configured',
+                'timestamp': datetime.utcnow().isoformat()
+            }), 200
         try:
             # Test database connection
             from database import db
-            db.engine.connect()
+            with db.engine.connect() as conn:
+                conn.execute(text('SELECT 1'))
             return jsonify({
                 'status': 'healthy',
                 'database': 'connected',
@@ -210,3 +229,4 @@ try:
     logger.info("Models imported successfully")
 except ImportError as e:
     logger.warning(f"Could not import some models: {e}")
+
