@@ -1,5 +1,6 @@
 from datetime import datetime
 from flask import render_template, request, url_for, redirect, flash, current_app, session
+from urllib.parse import urlparse
 from flask_login import login_user, logout_user, login_required, current_user
 
 from models.user import User
@@ -31,7 +32,13 @@ def login():
 
             # Safe redirect
             next_url = request.args.get('next')
-            if not next_url or not next_url.startswith('/'):
+            # Sanitize and validate next_url to prevent open redirect
+            if next_url:
+                next_url = next_url.replace('\\', '')
+                parsed_url = urlparse(next_url)
+                if parsed_url.netloc or parsed_url.scheme or not next_url.startswith('/'):
+                    next_url = url_for('main.dashboard')
+            else:
                 next_url = url_for('main.dashboard')
             current_app.logger.info(f'Login OK for {username}; redirecting to {next_url}')
             return redirect(next_url)
