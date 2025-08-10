@@ -19,6 +19,30 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+def install_dependencies():
+    """Install form dependencies only if they are missing."""
+    required = ["Flask-WTF", "WTForms", "email-validator"]
+    missing = []
+
+    for pkg in required:
+        try:
+            __import__(pkg.lower().replace("-", "_"))
+        except ImportError:
+            missing.append(pkg)
+
+    if not missing:
+        logger.info("All required dependencies already installed")
+        return
+
+    logger.info("=== INSTALLING REQUIRED DEPENDENCIES ===")
+    cmd = [sys.executable, "-m", "pip", "install", *missing]
+    try:
+        subprocess.check_call(cmd)
+        logger.info("✅ Dependency installation complete")
+    except subprocess.CalledProcessError as e:
+        logger.error(f"❌ Dependency installation failed: {e}")
+        sys.exit(1)
+
 def diagnose_environment():
     """Diagnose the environment and log critical information."""
     logger.info("=== AZURE APP SERVICE STARTUP DIAGNOSTICS ===")
@@ -107,6 +131,9 @@ def run_gunicorn():
 def main():
     """Main startup function."""
     try:
+        # Step 0: Ensure required packages are installed
+        install_dependencies()
+
         # Step 1: Diagnose environment
         diagnose_environment()
         
