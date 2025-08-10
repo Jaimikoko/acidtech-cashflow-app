@@ -181,6 +181,8 @@
 {% endblock %}
 
 {% block scripts %}
+    <!-- Load Plotly 2.27.0; clear browser cache if older version persists -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Aging chart
