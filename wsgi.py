@@ -42,8 +42,16 @@ except Exception as e:
     raise
 
 if __name__ == "__main__":
-    # Azure uses PORT environment variable, defaulting to 8000 for local dev
-    port = int(os.environ.get('PORT', 8000))
-    host = os.environ.get('HOST', '0.0.0.0')
+    # Respect environment variables but provide sensible defaults for local use
+    port = int(os.environ.get("PORT", 5001))
+    host = os.environ.get("HOST", "0.0.0.0")
+    use_reloader = os.environ.get("FLASK_ENV") == "development"
+
     logger.info(f"Starting Flask app on {host}:{port}")
-    app.run(host=host, port=port, debug=False)
+    app.run(
+        host=host,
+        port=port,
+        debug=False,
+        use_debugger=False,
+        use_reloader=use_reloader,
+    )
