@@ -53,6 +53,8 @@ def create_app(config_name=None):
         logger.warning('No SQLALCHEMY_DATABASE_URI configured; skipping database initialization')
     login_manager.init_app(app)
     login_manager.login_view = 'auth.login'
+    # Optional hardening
+    # login_manager.session_protection = 'strong'
     login_manager.login_message = 'Please log in to access this page.'
     
     # Configure user_loader for Flask-Login
