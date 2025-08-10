@@ -83,28 +83,23 @@ def test_database_connection(app):
         return False
 
 def run_gunicorn():
-    """Run gunicorn with optimal settings for Azure App Service."""
+    """Run gunicorn with production-ready settings."""
     logger.info("=== STARTING GUNICORN SERVER ===")
-    
-    port = os.environ.get('PORT', '8000')
-    workers = os.environ.get('GUNICORN_WORKERS', '1')  # Azure App Service works better with 1 worker
-    
+
+    port = os.environ.get("PORT", "5001")
+
     cmd = [
-        'gunicorn',
-        '--bind', f'0.0.0.0:{port}',
-        '--timeout', '600',
-        '--workers', workers,
-        '--access-logfile', '-',
-        '--error-logfile', '-',
-        '--log-level', 'info',
-        'wsgi:app'
+        "gunicorn",
+        "--bind", f"0.0.0.0:{port}",
+        "--timeout", "600",
+        "wsgi:app",
     ]
-    
+
     logger.info(f"Gunicorn command: {' '.join(cmd)}")
-    
+
     try:
         # Use exec to replace the current process
-        os.execvp('gunicorn', cmd)
+        os.execvp("gunicorn", cmd)
     except Exception as e:
         logger.error(f"Failed to start gunicorn: {e}")
         sys.exit(1)
@@ -135,3 +130,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
