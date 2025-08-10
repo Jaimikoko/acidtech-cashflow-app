@@ -7,7 +7,6 @@ This provides diagnostics and can serve as a gunicorn wrapper if needed.
 import os
 import sys
 import logging
-import subprocess
 
 # Configure logging
 logging.basicConfig(
