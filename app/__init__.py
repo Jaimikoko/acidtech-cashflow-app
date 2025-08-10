@@ -11,6 +11,7 @@ from flask import Flask, jsonify
 from flask_migrate import Migrate, upgrade
 from flask_login import LoginManager
 from sqlalchemy import text
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 # Configure basic logging for production compatibility
 import logging
@@ -36,6 +37,7 @@ def create_app(config_name=None):
     static_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static')
     
     app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
     
     # Load configuration
     from config import config
