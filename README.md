@@ -108,14 +108,12 @@ The application is configured for deployment to Azure App Service with GitHub Ac
 2. **Set up GitHub Secrets**:
    - `AZURE_WEBAPP_PUBLISH_PROFILE`: Download from Azure App Service
 
-3. **Install dependencies during deployment**
-   - The helper script `post_build.sh` installs the required form packages (`Flask-WTF`, `WTForms`, `email-validator`) and the test dependencies from `tests/requirements-test.txt` (including `requests`).
-   - In Azure App Service, set the `POST_BUILD_COMMAND` app setting to run the script:
-     ```bash
-     bash post_build.sh
-     ```
-   - After deployment, verify the build logs show both `Installing form dependencies...` and `Installing test dependencies...` messages followed by successful `pip` installations before the application starts.
 
+3. **Install form dependencies during deployment**
+   - In Azure App Service, set the `POST_BUILD_COMMAND` setting to:
+     ```bash
+     pip install Flask-WTF WTForms email-validator
+     ```
 4. **Deploy**: Push to the `main` branch to trigger automatic deployment
 
 ### Environment Variables
