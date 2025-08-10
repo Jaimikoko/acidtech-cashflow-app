@@ -8,9 +8,18 @@ from models.transaction import Transaction
 from models.purchase_order import PurchaseOrder, PurchaseOrderItem
 
 def init_database():
+    db_uri = os.getenv('DATABASE_URL') or os.getenv('SQLALCHEMY_DATABASE_URI')
+    if not db_uri:
+        print("No database URI configured; skipping initialization.")
+        return
+
     app = create_app()
-    
+
     with app.app_context():
+        if not app.config.get('SQLALCHEMY_DATABASE_URI'):
+            print("No database URI configured; aborting initialization.")
+            return
+
         # Create all tables
         db.create_all()
         
