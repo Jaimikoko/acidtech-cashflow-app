@@ -1,5 +1,4 @@
 import os
-import secrets
 from dotenv import load_dotenv
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -8,14 +7,6 @@ load_dotenv(os.path.join(basedir, '.env'))
 # Determine if running in production
 IS_PRODUCTION = os.getenv('FLASK_CONFIG') == 'production' or bool(os.getenv('WEBSITE_SITE_NAME'))
 
-# Resolve secret key with a stable development fallback
-_secret_key = os.getenv('SECRET_KEY')
-if IS_PRODUCTION:
-    if not _secret_key:
-        raise ValueError('SECRET_KEY is required in production')
-else:
-    _secret_key = _secret_key or secrets.token_urlsafe(32)
-
 # Resolve database URI
 _database_uri = os.getenv('DATABASE_URL') or os.getenv('SQLALCHEMY_DATABASE_URI')
 if IS_PRODUCTION and not _database_uri:
@@ -23,7 +14,7 @@ if IS_PRODUCTION and not _database_uri:
 
 
 class Config:
-    SECRET_KEY = _secret_key
+    SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key')
     SQLALCHEMY_DATABASE_URI = _database_uri
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
@@ -75,6 +66,7 @@ class TestingConfig(Config):
 
 
 class ProductionConfig(Config):
+    SECRET_KEY = os.environ['SECRET_KEY']
     DEBUG = False
     SESSION_COOKIE_SECURE = True
     REMEMBER_COOKIE_SECURE = True
