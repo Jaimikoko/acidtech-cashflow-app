@@ -5,7 +5,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
 
 class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key-acidtech-2024-change-in-production')
+    SECRET_KEY = os.environ.get('SECRET_KEY')
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -32,25 +32,31 @@ class Config:
     
 class DevelopmentConfig(Config):
     DEBUG = True
+    SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret")
+    SESSION_COOKIE_SECURE = False
 
 class ProductionConfig(Config):
     DEBUG = False
 
+    SECRET_KEY = os.environ.get("SECRET_KEY")
+    if SECRET_KEY is None:
+        raise ValueError("SECRET_KEY is required")
+
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
+    if SQLALCHEMY_DATABASE_URI is None:
+        raise ValueError("DATABASE_URL is required")
+
     # Security enhancements for production
-    SESSION_COOKIE_SECURE = os.environ.get('SESSION_COOKIE_SECURE', 'true').lower() == 'true'  # HTTPS only
+    SESSION_COOKIE_SECURE = True  # HTTPS only
+    REMEMBER_COOKIE_SECURE = True
+    SESSION_COOKIE_SAMESITE = "Lax"  # CSRF protection
     SESSION_COOKIE_HTTPONLY = True  # Prevent XSS
-    SESSION_COOKIE_SAMESITE = 'Lax'  # CSRF protection
     PERMANENT_SESSION_LIFETIME = 3600  # 1 hour session timeout
 
     @classmethod
     def init_app(cls, app):
-        """Validate required configuration for production."""
+        """Initialize configuration for production."""
         super().init_app(app)
-        if not app.debug and not app.testing:
-            if app.config['SECRET_KEY'] == 'dev-secret-key-acidtech-2024-change-in-production':
-                raise ValueError('SECRET_KEY is required')
-            if app.config['SQLALCHEMY_DATABASE_URI'].startswith('sqlite:///'):
-                raise ValueError('DATABASE_URL is required')
 
 config = {
     'development': DevelopmentConfig,
