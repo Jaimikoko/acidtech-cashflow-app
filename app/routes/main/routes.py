@@ -70,106 +70,43 @@ def inventory():
 @main_bp.route('/dashboard/api/summary')
 @login_required
 def dashboard_summary():
-    """API endpoint for dashboard summary data"""
+    """API endpoint for dashboard summary data using VCashflowDaily view"""
     try:
-        # Import necessary models
-        from models.bank_transaction import BankTransaction
-        from sqlalchemy import func, extract
-        from datetime import datetime, date, timedelta
-        
-        # Calculate total cash flow from BankTransaction
-        total_cash = 0
-        monthly_revenue = 0
-        pending_transactions = 0
-        classification_progress = {'classified': 0, 'total': 0}
-        recent_transactions = []
-        
-        # Get cash flow data from BankTransaction
-        try:
-            # Total cash flow (net of all transactions)
-            positive_total = db.session.query(func.sum(BankTransaction.amount)).filter(
-                BankTransaction.amount > 0
-            ).scalar() or 0
-            
-            negative_total = db.session.query(func.sum(BankTransaction.amount)).filter(
-                BankTransaction.amount < 0
-            ).scalar() or 0
-            
-            total_cash = float(positive_total) + float(negative_total)  # negative_total is already negative
-            
-            # Monthly revenue (current month from Revenue 4717)
-            current_month = datetime.now().month
-            current_year = datetime.now().year
-            
-            monthly_revenue_query = db.session.query(func.sum(BankTransaction.amount)).filter(
-                BankTransaction.account_name == 'Revenue 4717',
-                BankTransaction.amount > 0,
-                extract('month', BankTransaction.transaction_date) == current_month,
-                extract('year', BankTransaction.transaction_date) == current_year
-            ).scalar()
-            
-            monthly_revenue = float(monthly_revenue_query) if monthly_revenue_query else 0
-            
-            # Classification progress
-            total_transactions = BankTransaction.query.count()
-            classified_transactions = BankTransaction.query.filter(
-                BankTransaction.is_classified == True
-            ).count()
-            
-            classification_progress = {
-                'classified': classified_transactions,
-                'total': total_transactions
-            }
-            
-            # Recent transactions (last 5)
-            recent_query = BankTransaction.query.order_by(
-                BankTransaction.transaction_date.desc()
-            ).limit(5).all()
-            
-            for t in recent_query:
-                recent_transactions.append({
-                    'id': t.id,
-                    'description': t.description[:50] + '...' if len(t.description) > 50 else t.description,
-                    'amount': float(t.amount),
-                    'date': t.transaction_date.isoformat(),
-                    'account': t.account_name
-                })
-                
-        except Exception as e:
-            logger.error(f"Error getting cash flow data: {str(e)}")
-            # Fallback data
-            total_cash = 10906932.61  # From enhanced dashboard
-            monthly_revenue = 1220647.53
-            classification_progress = {'classified': 594, 'total': 594}
-        
-        # Pending transactions from Transaction model
-        try:
-            pending_transactions = Transaction.query.filter(
-                Transaction.status == 'pending'
-            ).count()
-        except Exception:
-            pending_transactions = 0
-        
+        from sqlalchemy import func
+        from models.views import VCashflowDaily
+        from datetime import datetime, timedelta
+
+        days = int(request.args.get('days', 30))
+        start_date = datetime.utcnow().date() - timedelta(days=days)
+
+        totals = db.session.query(
+            func.sum(VCashflowDaily.inflows).label('inflows'),
+            func.sum(VCashflowDaily.outflows).label('outflows'),
+            func.sum(VCashflowDaily.transaction_count).label('txns')
+        ).filter(VCashflowDaily.txn_date >= start_date).first()
+
+        inflows = float(totals.inflows or 0)
+        outflows = float(totals.outflows or 0)
+        txns = int(totals.txns or 0)
+        net_flow = inflows - outflows
+
         return jsonify({
             'success': True,
-            'total_cash': total_cash,
-            'monthly_revenue': monthly_revenue,
-            'pending_transactions': pending_transactions,
-            'classification_progress': classification_progress,
-            'recent_transactions': recent_transactions,
-            'last_updated': datetime.now().isoformat()
+            'total_inflows': inflows,
+            'total_outflows': outflows,
+            'net_flow': net_flow,
+            'transaction_count': txns,
+            'last_updated': datetime.utcnow().isoformat()
         })
-        
     except Exception as e:
-        logger.error(f"Error in dashboard_summary: {str(e)}")
+        logger.error(f"Error in dashboard_summary: {e}")
         return jsonify({
             'success': False,
-            'error': str(e),
-            'total_cash': 0,
-            'monthly_revenue': 0,
-            'pending_transactions': 0,
-            'classification_progress': {'classified': 0, 'total': 0},
-            'recent_transactions': []
+            'total_inflows': 0,
+            'total_outflows': 0,
+            'net_flow': 0,
+            'transaction_count': 0,
+            'error': str(e)
         }), 500
 
 @main_bp.route('/dashboard/legacy')

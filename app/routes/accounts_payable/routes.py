@@ -8,62 +8,30 @@ import os
 
 from . import accounts_payable_bp
 
-# Removed MockPagination - using real database pagination instead
-
 @accounts_payable_bp.route('/')
 def index():
-    """Accounts Payable index - showing expense transactions from BankTransaction"""
+    """Accounts Payable index using VApOpen view"""
     status_filter = request.args.get('status', 'all')
-    
+
     try:
-        # Get expense transactions from BankTransaction for AP view
-        # AP = outgoing money (negative amounts) that represent bills to be paid
-        from models.bank_transaction import BankTransaction
-        
-        # Query negative amounts (expenses) as these represent payables
-        query = BankTransaction.query.filter(
-            BankTransaction.amount < 0,
-            BankTransaction.business_category.in_(['OPERATING_EXPENSE', 'CAPITAL_EXPENSE'])
-        )
-        
-        transactions = query.order_by(BankTransaction.transaction_date.desc()).paginate(
+        from models.views import VApOpen
+        from sqlalchemy import func
+        query = VApOpen.query
+        if status_filter != 'all':
+            query = query.filter_by(status=status_filter)
+
+        transactions = query.order_by(VApOpen.due_date.asc()).paginate(
             page=request.args.get('page', 1, type=int),
             per_page=20,
             error_out=False
         )
-        
-        # Calculate totals - convert to payable amounts (positive values)
-        total_pending = abs(db.session.query(db.func.sum(BankTransaction.amount)).filter(
-            BankTransaction.amount < 0,
-            BankTransaction.business_category.in_(['OPERATING_EXPENSE', 'CAPITAL_EXPENSE'])
-        ).scalar() or 0)
-        
-        # For overdue, we'll use transactions needing review as proxy
-        overdue_count = BankTransaction.query.filter(
-            BankTransaction.amount < 0,
-            BankTransaction.needs_review == True
-        ).count()
-        
-        total_overdue = overdue_count * 1500  # Estimated average overdue amount
-        
-        # Format transactions for template compatibility
-        formatted_transactions = []
-        for trans in transactions.items:
-            formatted_transactions.append({
-                'id': trans.id,
-                'vendor_customer': trans.description[:50],  # Use description as vendor name
-                'amount': abs(trans.amount),  # Convert to positive for display
-                'due_date': trans.transaction_date,  # Use transaction date
-                'description': trans.description,
-                'invoice_number': trans.bank_reference or f'TX-{trans.id}',
-                'status': 'paid' if trans.is_reconciled else 'pending'
-            })
-        
-        # Update transactions items for template
-        transactions.items = formatted_transactions
-        
-    except Exception as e:
-        # Simple fallback
+
+        total_pending = db.session.query(func.sum(VApOpen.amount)).scalar() or 0
+        total_overdue = db.session.query(func.sum(VApOpen.amount)).filter(
+            VApOpen.due_date < date.today()
+        ).scalar() or 0
+
+    except Exception:
         transactions = type('obj', (object,), {
             'items': [],
             'page': 1,
@@ -76,7 +44,7 @@ def index():
         })()
         total_pending = 0
         total_overdue = 0
-    
+
     return render_template('accounts_payable/index.html',
                          transactions=transactions,
                          total_pending=total_pending,

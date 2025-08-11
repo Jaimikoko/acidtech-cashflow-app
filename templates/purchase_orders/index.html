@@ -165,49 +165,21 @@
               </tr>
             </thead>
             <tbody>
+              {% for po in purchase_orders.items %}
               <tr>
-                <td class="fw-bold">PO-2025-001</td>
-                <td>Weatherford International</td>
-                <td>2025-07-15</td>
-                <td>2025-08-15</td>
-                <td class="text-end fw-bold">$185,750.00</td>
-                <td><span class="badge bg-warning">Pending</span></td>
-                <td>
-                  <div class="btn-group btn-group-sm">
-                    <button class="btn btn-outline-info"><i class="fas fa-eye"></i></button>
-                    <button class="btn btn-outline-warning"><i class="fas fa-edit"></i></button>
-                    <button class="btn btn-outline-success"><i class="fas fa-check"></i></button>
-                  </div>
-                </td>
+                <td class="fw-bold">{{ po.po_number }}</td>
+                <td>{{ po.vendor }}</td>
+                <td>{{ po.order_date.strftime('%Y-%m-%d') if po.order_date else '' }}</td>
+                <td>{{ po.expected_delivery.strftime('%Y-%m-%d') if po.expected_delivery else '' }}</td>
+                <td class="text-end fw-bold">{{ po.total_amount|currency }}</td>
+                <td><span class="badge bg-warning">{{ po.status }}</span></td>
+                <td></td>
               </tr>
+              {% else %}
               <tr>
-                <td class="fw-bold">PO-2025-002</td>
-                <td>National Oilwell Varco</td>
-                <td>2025-07-20</td>
-                <td>2025-08-20</td>
-                <td class="text-end fw-bold">$325,500.00</td>
-                <td><span class="badge bg-success">Approved</span></td>
-                <td>
-                  <div class="btn-group btn-group-sm">
-                    <button class="btn btn-outline-info"><i class="fas fa-eye"></i></button>
-                    <button class="btn btn-outline-secondary"><i class="fas fa-file-pdf"></i></button>
-                  </div>
-                </td>
+                <td colspan="7" class="text-center">No data available</td>
               </tr>
-              <tr>
-                <td class="fw-bold">PO-2025-003</td>
-                <td>Liberty Oilfield Services</td>
-                <td>2025-07-25</td>
-                <td class="text-success">2025-08-01</td>
-                <td class="text-end fw-bold">$95,200.00</td>
-                <td><span class="badge bg-info">Fulfilled</span></td>
-                <td>
-                  <div class="btn-group btn-group-sm">
-                    <button class="btn btn-outline-info"><i class="fas fa-eye"></i></button>
-                    <button class="btn btn-outline-primary"><i class="fas fa-receipt"></i></button>
-                  </div>
-                </td>
-              </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>

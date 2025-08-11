@@ -165,49 +165,21 @@
               </tr>
             </thead>
             <tbody>
+              {% for t in transactions.items %}
               <tr>
-                <td class="fw-bold">BILL-2025-001</td>
-                <td>Halliburton Company</td>
-                <td>2025-07-15</td>
-                <td>2025-08-15</td>
-                <td class="text-end fw-bold">$85,750.00</td>
-                <td><span class="badge bg-warning">Pending</span></td>
-                <td>
-                  <div class="btn-group btn-group-sm">
-                    <button class="btn btn-outline-info"><i class="fas fa-eye"></i></button>
-                    <button class="btn btn-outline-warning"><i class="fas fa-edit"></i></button>
-                    <button class="btn btn-outline-success"><i class="fas fa-dollar-sign"></i></button>
-                  </div>
-                </td>
+                <td class="fw-bold">{{ t.invoice_number or 'N/A' }}</td>
+                <td>{{ t.vendor_customer }}</td>
+                <td></td>
+                <td>{{ t.due_date.strftime('%Y-%m-%d') if t.due_date else '' }}</td>
+                <td class="text-end fw-bold">{{ t.amount|currency }}</td>
+                <td><span class="badge bg-warning">{{ t.status }}</span></td>
+                <td></td>
               </tr>
+              {% else %}
               <tr>
-                <td class="fw-bold">BILL-2025-002</td>
-                <td>Baker Hughes</td>
-                <td>2025-07-20</td>
-                <td>2025-08-20</td>
-                <td class="text-end fw-bold">$62,500.00</td>
-                <td><span class="badge bg-success">Paid</span></td>
-                <td>
-                  <div class="btn-group btn-group-sm">
-                    <button class="btn btn-outline-info"><i class="fas fa-eye"></i></button>
-                    <button class="btn btn-outline-secondary"><i class="fas fa-file-pdf"></i></button>
-                  </div>
-                </td>
+                <td colspan="7" class="text-center">No data available</td>
               </tr>
-              <tr>
-                <td class="fw-bold">BILL-2025-003</td>
-                <td>Schlumberger</td>
-                <td>2025-07-25</td>
-                <td class="text-danger">2025-07-30</td>
-                <td class="text-end fw-bold">$125,200.00</td>
-                <td><span class="badge bg-danger">Overdue</span></td>
-                <td>
-                  <div class="btn-group btn-group-sm">
-                    <button class="btn btn-outline-info"><i class="fas fa-eye"></i></button>
-                    <button class="btn btn-outline-danger"><i class="fas fa-exclamation-triangle"></i></button>
-                  </div>
-                </td>
-              </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
