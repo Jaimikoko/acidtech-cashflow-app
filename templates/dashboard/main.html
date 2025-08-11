@@ -6,26 +6,26 @@
 {% block header_icon %}fas fa-home{% endblock %}
 {% block header_icon_large %}fas fa-home{% endblock %}
 
-{% block kpi1_label %}Total Cash Flow{% endblock %}
-{% block kpi1_value %}<span id="total-cash-flow">$10,906,933</span>{% endblock %}
+{% block kpi1_label %}Total Inflows{% endblock %}
+{% block kpi1_value %}<span id="total-inflows">$0</span>{% endblock %}
 {% block kpi1_color %}border-primary{% endblock %}
 {% block kpi1_text_color %}text-primary{% endblock %}
 {% block kpi1_icon %}fas fa-coins{% endblock %}
 
-{% block kpi2_label %}Monthly Revenue{% endblock %}
-{% block kpi2_value %}<span id="monthly-revenue">$1,220,648</span>{% endblock %}
+{% block kpi2_label %}Total Outflows{% endblock %}
+{% block kpi2_value %}<span id="total-outflows">$0</span>{% endblock %}
 {% block kpi2_color %}border-success{% endblock %}
 {% block kpi2_text_color %}text-success{% endblock %}
 {% block kpi2_icon %}fas fa-arrow-trend-up{% endblock %}
 
-{% block kpi3_label %}Transactions Processed{% endblock %}
-{% block kpi3_value %}<span id="total-transactions">594</span>{% endblock %}
+{% block kpi3_label %}Net Flow{% endblock %}
+{% block kpi3_value %}<span id="net-flow">$0</span>{% endblock %}
 {% block kpi3_color %}border-info{% endblock %}
 {% block kpi3_text_color %}text-info{% endblock %}
 {% block kpi3_icon %}fas fa-list{% endblock %}
 
-{% block kpi4_label %}Classification Rate{% endblock %}
-{% block kpi4_value %}<span id="classification-rate">100%</span>{% endblock %}
+{% block kpi4_label %}Transactions{% endblock %}
+{% block kpi4_value %}<span id="transaction-count">0</span>{% endblock %}
 {% block kpi4_color %}border-warning{% endblock %}
 {% block kpi4_text_color %}text-warning{% endblock %}
 {% block kpi4_icon %}fas fa-percentage{% endblock %}
@@ -49,43 +49,7 @@
         <th>Status</th>
       </tr>
     </thead>
-    <tbody id="recent-transactions-body">
-      <tr>
-        <td>2025-08-07</td>
-        <td>Revenue 4717</td>
-        <td>Service Revenue - Well Acidizing</td>
-        <td class="text-end text-success fw-bold">$45,750.00</td>
-        <td><span class="badge bg-success">Processed</span></td>
-      </tr>
-      <tr>
-        <td>2025-08-07</td>
-        <td>Bill Pay 5285</td>
-        <td>Equipment Purchase - Pumps</td>
-        <td class="text-end text-danger fw-bold">-$125,000.00</td>
-        <td><span class="badge bg-success">Processed</span></td>
-      </tr>
-      <tr>
-        <td>2025-08-06</td>
-        <td>Payroll 4079</td>
-        <td>Monthly Payroll Processing</td>
-        <td class="text-end text-danger fw-bold">-$85,420.50</td>
-        <td><span class="badge bg-success">Processed</span></td>
-      </tr>
-      <tr>
-        <td>2025-08-06</td>
-        <td>Revenue 4717</td>
-        <td>Pressure Testing Services</td>
-        <td class="text-end text-success fw-bold">$28,500.00</td>
-        <td><span class="badge bg-success">Processed</span></td>
-      </tr>
-      <tr>
-        <td>2025-08-05</td>
-        <td>Capital One</td>
-        <td>Office Supplies & Equipment</td>
-        <td class="text-end text-danger fw-bold">-$2,840.75</td>
-        <td><span class="badge bg-success">Processed</span></td>
-      </tr>
-    </tbody>
+    <tbody id="recent-transactions-body"></tbody>
   </table>
 </div>
 
@@ -166,11 +130,11 @@ setInterval(function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                document.getElementById('total-cash-flow').textContent = 
-                    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.total_cash);
-                document.getElementById('monthly-revenue').textContent = 
-                    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.monthly_revenue);
-                document.getElementById('total-transactions').textContent = data.classification_progress.total;
+                const fmt = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+                document.getElementById('total-inflows').textContent = fmt.format(data.total_inflows);
+                document.getElementById('total-outflows').textContent = fmt.format(data.total_outflows);
+                document.getElementById('net-flow').textContent = fmt.format(data.net_flow);
+                document.getElementById('transaction-count').textContent = data.transaction_count;
             }
         })
         .catch(error => console.log('Dashboard refresh error:', error));

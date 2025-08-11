@@ -32,43 +32,20 @@ def index():
         total_sent = PurchaseOrder.query.filter_by(status='sent').count()
         total_approved = PurchaseOrder.query.filter_by(status='approved').count()
         
-        # If no POs exist, show large expenses from BankTransaction as potential POs
+        # If no POs exist, use VPoSummary view
         if purchase_orders.total == 0:
-            from models.bank_transaction import BankTransaction
-            
-            # Get large expenses (>$5000) that could become POs
-            large_expenses = BankTransaction.query.filter(
-                BankTransaction.amount < -5000,  # Large negative amounts
-                BankTransaction.business_category.in_(['OPERATING_EXPENSE', 'CAPITAL_EXPENSE'])
-            ).order_by(BankTransaction.transaction_date.desc()).paginate(
+            from models.views import VPoSummary
+            view_query = VPoSummary.query
+            if status_filter != 'all':
+                view_query = view_query.filter_by(status=status_filter)
+            purchase_orders = view_query.order_by(VPoSummary.order_date.desc()).paginate(
                 page=request.args.get('page', 1, type=int),
                 per_page=20,
                 error_out=False
             )
-            
-            # Convert to PO format for display
-            formatted_pos = []
-            for trans in large_expenses.items:
-                vendor_name = trans.description.split(' ')[0] if trans.description else f'Vendor-{trans.id}'
-                formatted_pos.append({
-                    'id': f'BT-{trans.id}',  # Prefix with BT to show it's from BankTransaction
-                    'po_number': f'PO-AUTO-{trans.id}',
-                    'vendor': vendor_name,
-                    'total_amount': abs(trans.amount),
-                    'status': 'approved',  # Already paid
-                    'order_date': trans.transaction_date,
-                    'expected_delivery': trans.transaction_date,
-                    'description': trans.description[:100]
-                })
-            
-            # Update pagination items
-            large_expenses.items = formatted_pos
-            purchase_orders = large_expenses
-            
-            # Update counts for large expenses
-            total_approved = len(formatted_pos)
-            total_sent = 0
             total_draft = 0
+            total_sent = 0
+            total_approved = purchase_orders.total
         
     except Exception as e:
         # Simple fallback

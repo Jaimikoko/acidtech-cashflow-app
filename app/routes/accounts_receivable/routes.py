@@ -8,65 +8,30 @@ import os
 
 from . import accounts_receivable_bp
 
-# Using real database pagination instead of mock objects
-
 @accounts_receivable_bp.route('/')
 def index():
-    """Accounts Receivable index - showing income transactions from BankTransaction"""
+    """Accounts Receivable index using VArOpen view"""
     status_filter = request.args.get('status', 'all')
-    
+
     try:
-        # Get income transactions from BankTransaction for AR view
-        # AR = incoming money (positive amounts) that represent receivables
-        from models.bank_transaction import BankTransaction
-        
-        # Query positive amounts (revenue) as these represent receivables
-        query = BankTransaction.query.filter(
-            BankTransaction.amount > 0,
-            BankTransaction.business_category == 'REVENUE'
-        )
-        
-        transactions = query.order_by(BankTransaction.transaction_date.desc()).paginate(
+        from models.views import VArOpen
+        from sqlalchemy import func
+        query = VArOpen.query
+        if status_filter != 'all':
+            query = query.filter_by(status=status_filter)
+
+        transactions = query.order_by(VArOpen.due_date.asc()).paginate(
             page=request.args.get('page', 1, type=int),
             per_page=20,
             error_out=False
         )
-        
-        # Calculate totals
-        total_pending = db.session.query(db.func.sum(BankTransaction.amount)).filter(
-            BankTransaction.amount > 0,
-            BankTransaction.business_category == 'REVENUE'
+
+        total_pending = db.session.query(func.sum(VArOpen.amount)).scalar() or 0
+        total_overdue = db.session.query(func.sum(VArOpen.amount)).filter(
+            VArOpen.due_date < date.today()
         ).scalar() or 0
-        
-        # For overdue AR, we'll use unclassified revenue as proxy for pending invoices
-        overdue_count = BankTransaction.query.filter(
-            BankTransaction.amount > 0,
-            BankTransaction.is_classified == False
-        ).count()
-        
-        total_overdue = overdue_count * 5000  # Estimated average invoice amount
-        
-        # Format transactions for template compatibility
-        formatted_transactions = []
-        for trans in transactions.items:
-            # Extract customer name from description (first part before space/dash)
-            customer_name = trans.description.split(' ')[0] if trans.description else f'Customer-{trans.id}'
-            
-            formatted_transactions.append({
-                'id': trans.id,
-                'vendor_customer': customer_name,
-                'amount': trans.amount,
-                'due_date': trans.transaction_date,  # Use transaction date
-                'description': trans.description,
-                'invoice_number': trans.bank_reference or f'INV-{trans.id}',
-                'status': 'paid' if trans.is_reconciled else 'pending'
-            })
-        
-        # Update transactions items for template
-        transactions.items = formatted_transactions
-        
-    except Exception as e:
-        # Simple fallback
+
+    except Exception:
         transactions = type('obj', (object,), {
             'items': [],
             'page': 1,
@@ -79,7 +44,7 @@ def index():
         })()
         total_pending = 0
         total_overdue = 0
-    
+
     return render_template('accounts_receivable/index.html',
                          transactions=transactions,
                          total_pending=total_pending,
