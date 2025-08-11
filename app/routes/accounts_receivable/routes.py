@@ -49,8 +49,7 @@ def index():
                          transactions=transactions,
                          total_pending=total_pending,
                          total_overdue=total_overdue,
-                         status_filter=status_filter,
-                         file_mode=False)
+                         status_filter=status_filter)
 
 @accounts_receivable_bp.route('/create', methods=['GET', 'POST'])
 def create():

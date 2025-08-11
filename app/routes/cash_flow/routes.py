@@ -1,10 +1,9 @@
-from flask import render_template, request, jsonify, current_app, redirect, url_for, flash
+from flask import render_template, request, jsonify, redirect, url_for, flash
 from flask_login import login_required
 from datetime import datetime, date, timedelta
 from models.transaction import Transaction
 from models.bank_transaction import BankTransaction
 from database import db
-from utils.excel_data_manager import excel_manager
 from sqlalchemy import func
 import json
 
@@ -32,37 +31,17 @@ def index():
     month = request.args.get('month')
     month = int(month) if month else None
     
-    file_mode = current_app.config.get('USE_FILE_MODE', False)
-    
-    # Get account summaries for all accounts
+    # Get account summaries for all accounts from database
     account_summaries = {}
     for account_key in ACCOUNT_MAPPINGS.keys():
-        if file_mode:
-            try:
-                account_summaries[account_key] = excel_manager.get_account_summary(account_key, year)
-            except Exception as e:
-                account_summaries[account_key] = _get_default_account_summary(account_key)
-        else:
-            # Database mode - get real data from BankTransaction
-            account_summaries[account_key] = _get_account_summary_from_database(account_key, year)
-    
-    # Get overall cash flow data
-    if file_mode:
-        try:
-            cash_flow_data = _get_comprehensive_cash_flow_data(account_filter, year, month)
-        except Exception as e:
-            cash_flow_data = _get_sample_cash_flow_data()
-    else:
-        cash_flow_data = _get_comprehensive_cash_flow_data_from_database(account_filter, year, month)
-    
-    # Get aging analysis for Revenue 4717
+        account_summaries[account_key] = _get_account_summary_from_database(account_key, year)
+
+    # Get overall cash flow data from database
+    cash_flow_data = _get_comprehensive_cash_flow_data_from_database(account_filter, year, month)
+
+    # Aging analysis currently not implemented for DB mode
     aging_analysis = None
-    if file_mode:
-        try:
-            aging_analysis = excel_manager.get_aging_analysis('Revenue 4717')
-        except Exception as e:
-            aging_analysis = _get_default_aging_analysis()
-    
+
     return render_template('cash_flow/index.html',
                          cash_flow_data=cash_flow_data,
                          account_mappings=ACCOUNT_MAPPINGS,
@@ -70,8 +49,7 @@ def index():
                          aging_analysis=aging_analysis,
                          account_filter=account_filter,
                          year=year,
-                         month=month,
-                         file_mode=file_mode)
+                         month=month)
 
 @cash_flow_bp.route('/account/<path:account_name>')
 @login_required
@@ -92,7 +70,6 @@ def account_detail(account_name):
     end_date = request.args.get('end_date')
     
     month = int(month) if month and month.isdigit() else None
-    file_mode = current_app.config.get('USE_FILE_MODE', False)
     
     # Build filter parameters for data retrieval
     filter_params = {
@@ -104,17 +81,9 @@ def account_detail(account_name):
         'end_date': end_date
     }
     
-    if file_mode:
-        try:
-            account_data = excel_manager.get_account_summary(account_name, year, month)
-            transactions = excel_manager.get_cash_flow_transactions(**filter_params)
-        except Exception as e:
-            account_data = _get_default_account_summary(account_name)
-            transactions = []
-    else:
-        # Database mode - get real data from BankTransaction
-        account_data = _get_account_summary_from_database(account_name, year)
-        transactions = _get_transactions_from_database(account_name, filter_params)
+    # Database mode - get real data from BankTransaction
+    account_data = _get_account_summary_from_database(account_name, year)
+    transactions = _get_transactions_from_database(account_name, filter_params)
     
     return render_template('cash_flow/account_detail.html',
                          account_data=account_data,
@@ -123,7 +92,6 @@ def account_detail(account_name):
                          year=year,
                          month=month,
                          period=period,
-                         file_mode=file_mode,
                          filter_params=filter_params)
 
 @cash_flow_bp.route('/export/<path:account_name>')
@@ -137,15 +105,25 @@ def export_account_data(account_name):
         return redirect(url_for('cash_flow.index'))
     
     year = int(request.args.get('year', 2025))
-    file_mode = current_app.config.get('USE_FILE_MODE', False)
-    
-    if file_mode:
-        try:
-            transactions = excel_manager.get_cash_flow_transactions(account=account_name, year=year)
-        except Exception as e:
-            transactions = []
-    else:
-        transactions = []  # Database mode placeholder
+
+    # Get transactions from database
+    query = db.session.query(BankTransaction).filter(
+        BankTransaction.account_name == account_name
+    )
+    if year:
+        query = query.filter(func.extract('year', BankTransaction.transaction_date) == year)
+
+    db_transactions = query.all()
+
+    transactions = []
+    for t in db_transactions:
+        transactions.append({
+            'date': t.transaction_date,
+            'description': t.description,
+            'amount': float(t.amount),
+            'account': t.account_name,
+            'type': 'inflow' if float(t.amount) > 0 else 'outflow'
+        })
     
     # Create DataFrame and Excel file
     if transactions:
@@ -184,12 +162,7 @@ def chart_data():
         date_from = start_date.strftime('%Y-%m-%d')
         date_to = end_date.strftime('%Y-%m-%d')
     
-    file_mode = current_app.config.get('USE_FILE_MODE', False)
-    
-    if file_mode:
-        chart_data = _generate_chart_data_from_excel(account_filter, date_from, date_to, period)
-    else:
-        chart_data = _generate_chart_data_from_database(account_filter, date_from, date_to, period)
+    chart_data = _generate_chart_data_from_database(account_filter, date_from, date_to, period)
     
     return jsonify(chart_data)
 
@@ -201,93 +174,9 @@ def summary():
     date_from = request.args.get('date_from')
     date_to = request.args.get('date_to')
     
-    file_mode = current_app.config.get('USE_FILE_MODE', False)
-    
-    if file_mode:
-        summary_data = _get_summary_from_excel(account_filter, date_from, date_to)
-    else:
-        summary_data = _get_summary_from_database(account_filter, date_from, date_to)
+    summary_data = _get_summary_from_database(account_filter, date_from, date_to)
     
     return jsonify(summary_data)
-
-def _get_comprehensive_cash_flow_data(account_filter, year, month=None):
-    """Get comprehensive cash flow data from Excel with enhanced analysis"""
-    
-    # Get all transactions for the year
-    all_transactions = excel_manager.get_cash_flow_transactions(year=year)
-    
-    # Apply account filter
-    if account_filter != 'all':
-        filtered_transactions = [t for t in all_transactions if t.get('account') == account_filter]
-    else:
-        filtered_transactions = all_transactions
-    
-    # Apply month filter if specified
-    if month:
-        filtered_transactions = [t for t in filtered_transactions 
-                               if excel_manager._get_month_from_date(t.get('date')) == month]
-    
-    # Calculate totals
-    total_inflows = sum(t['amount'] for t in filtered_transactions if t['type'] == 'inflow')
-    total_outflows = sum(t['amount'] for t in filtered_transactions if t['type'] == 'outflow')
-    net_flow = total_inflows - total_outflows
-    
-    # Monthly breakdown for charts
-    monthly_data = {}
-    for m in range(1, 13):
-        month_transactions = [t for t in all_transactions 
-                            if excel_manager._get_month_from_date(t.get('date')) == m]
-        month_inflows = sum(t['amount'] for t in month_transactions if t['type'] == 'inflow')
-        month_outflows = sum(t['amount'] for t in month_transactions if t['type'] == 'outflow')
-        
-        if account_filter != 'all':
-            month_transactions = [t for t in month_transactions if t.get('account') == account_filter]
-            month_inflows = sum(t['amount'] for t in month_transactions if t['type'] == 'inflow')
-            month_outflows = sum(t['amount'] for t in month_transactions if t['type'] == 'outflow')
-        
-        monthly_data[m] = {
-            'inflows': month_inflows,
-            'outflows': month_outflows,
-            'net': month_inflows - month_outflows,
-            'transactions': len(month_transactions)
-        }
-    
-    # Group by account for summary
-    account_summary = {}
-    for account_key in ACCOUNT_MAPPINGS.keys():
-        account_transactions = [t for t in all_transactions if t.get('account') == account_key]
-        account_inflows = sum(t['amount'] for t in account_transactions if t['type'] == 'inflow')
-        account_outflows = sum(t['amount'] for t in account_transactions if t['type'] == 'outflow')
-        
-        account_summary[account_key] = {
-            'inflows': account_inflows,
-            'outflows': account_outflows,
-            'net': account_inflows - account_outflows,
-            'transaction_count': len(account_transactions)
-        }
-    
-    # Recent transactions for display
-    recent_transactions = sorted(filtered_transactions, 
-                               key=lambda x: x.get('date', ''), reverse=True)[:15]
-    
-    return {
-        'transactions': recent_transactions,
-        'total_inflows': total_inflows,
-        'total_outflows': total_outflows,
-        'net_flow': net_flow,
-        'monthly_data': monthly_data,
-        'account_summary': account_summary,
-        'transaction_count': len(filtered_transactions),
-        'year': year,
-        'month': month
-    }
-
-def _get_cash_flow_from_database(account_filter, date_from, date_to):
-    """Get cash flow data from database - placeholder for future implementation"""
-    
-    # For now, return sample data when database mode is used
-    # TODO: Implement database queries when cash flow tables are created
-    return _get_sample_cash_flow_data()
 
 @cash_flow_bp.route('/api/monthly-chart')
 def monthly_chart_data():
@@ -295,18 +184,9 @@ def monthly_chart_data():
     
     account_filter = request.args.get('account', 'all')
     year = int(request.args.get('year', 2025))
-    
-    file_mode = current_app.config.get('USE_FILE_MODE', False)
-    
-    if file_mode:
-        try:
-            cash_flow_data = _get_comprehensive_cash_flow_data(account_filter, year)
-            monthly_data = cash_flow_data['monthly_data']
-        except Exception as e:
-            monthly_data = {i: {'inflows': 0, 'outflows': 0, 'net': 0} for i in range(1, 13)}
-    else:
-        # Database mode placeholder
-        monthly_data = {i: {'inflows': 15000, 'outflows': 8000, 'net': 7000} for i in range(1, 13)}
+
+    cash_flow_data = _get_comprehensive_cash_flow_data_from_database(account_filter, year)
+    monthly_data = cash_flow_data.get('monthly_data', {i: {'inflows': 0, 'outflows': 0, 'net': 0} for i in range(1, 13)})
     
     # Prepare chart data
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
@@ -360,29 +240,59 @@ def monthly_chart_data():
     
     return jsonify(chart_data)
 
-def _generate_chart_data_from_excel(account_filter, date_from, date_to, period):
-    """Legacy chart data generation - kept for compatibility"""
-    
-    # Redirect to new monthly chart for better visualization
-    return _generate_monthly_chart_data(account_filter, 2025)
-
 def _generate_chart_data_from_database(account_filter, date_from, date_to, period):
-    """Generate chart data from database - placeholder"""
-    
-    # TODO: Implement database chart data generation
+    """Generate chart data from database"""
+
+    # Parse dates
+    start_date = datetime.strptime(date_from, '%Y-%m-%d').date()
+    end_date = datetime.strptime(date_to, '%Y-%m-%d').date()
+
+    query = db.session.query(BankTransaction).filter(
+        BankTransaction.transaction_date >= start_date,
+        BankTransaction.transaction_date <= end_date
+    )
+
+    if account_filter != 'all' and account_filter in ACCOUNT_MAPPINGS:
+        query = query.filter(BankTransaction.account_name == account_filter)
+
+    transactions = query.all()
+
+    # Group transactions by period
+    groups = {}
+    for t in transactions:
+        if period == 'monthly':
+            key = t.transaction_date.replace(day=1)
+            label = key.strftime('%Y-%m')
+        else:  # weekly
+            key = t.transaction_date - timedelta(days=t.transaction_date.weekday())
+            label = key.strftime('%Y-%m-%d')
+
+        if label not in groups:
+            groups[label] = {'inflows': 0, 'outflows': 0}
+
+        amt = float(t.amount)
+        if amt >= 0:
+            groups[label]['inflows'] += amt
+        else:
+            groups[label]['outflows'] += abs(amt)
+
+    labels = sorted(groups.keys())
+    inflows = [groups[l]['inflows'] for l in labels]
+    outflows = [groups[l]['outflows'] for l in labels]
+
     return {
-        'labels': ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+        'labels': labels,
         'datasets': [
             {
                 'label': 'Inflows',
-                'data': [15000, 12000, 18000, 16000],
+                'data': inflows,
                 'backgroundColor': 'rgba(16, 185, 129, 0.8)',
                 'borderColor': 'rgb(16, 185, 129)',
                 'borderWidth': 2
             },
             {
                 'label': 'Outflows',
-                'data': [8000, 9000, 7500, 8500],
+                'data': outflows,
                 'backgroundColor': 'rgba(239, 68, 68, 0.8)',
                 'borderColor': 'rgb(239, 68, 68)',
                 'borderWidth': 2
@@ -390,131 +300,46 @@ def _generate_chart_data_from_database(account_filter, date_from, date_to, perio
         ]
     }
 
-def _get_summary_from_excel(account_filter, date_from, date_to):
-    """Get summary data from Excel"""
-    
-    cash_flow_data = _get_cash_flow_from_excel(account_filter, date_from, date_to)
-    
-    return {
-        'total_inflows': cash_flow_data['total_inflows'],
-        'total_outflows': cash_flow_data['total_outflows'],
-        'net_flow': cash_flow_data['net_flow'],
-        'projected_balance': cash_flow_data['net_flow'] + 50000,  # Assuming starting balance
-        'account_summary': cash_flow_data['account_summary']
-    }
-
 def _get_summary_from_database(account_filter, date_from, date_to):
-    """Get summary data from database - placeholder"""
-    
-    # TODO: Implement database summary
-    return {
-        'total_inflows': 61000,
-        'total_outflows': 33000,
-        'net_flow': 28000,
-        'projected_balance': 78000,
-        'account_summary': {
-            'Revenue 4717': {'inflows': 45000, 'outflows': 0, 'net': 45000, 'transaction_count': 8},
-            'Bill Pay 4091': {'inflows': 0, 'outflows': 25000, 'net': -25000, 'transaction_count': 12},
-            'Capital One 4709': {'inflows': 16000, 'outflows': 8000, 'net': 8000, 'transaction_count': 6}
+    """Get summary data from database"""
+
+    query = db.session.query(BankTransaction)
+
+    if account_filter != 'all' and account_filter in ACCOUNT_MAPPINGS:
+        query = query.filter(BankTransaction.account_name == account_filter)
+
+    if date_from:
+        start = datetime.strptime(date_from, '%Y-%m-%d').date()
+        query = query.filter(BankTransaction.transaction_date >= start)
+
+    if date_to:
+        end = datetime.strptime(date_to, '%Y-%m-%d').date()
+        query = query.filter(BankTransaction.transaction_date <= end)
+
+    transactions = query.all()
+
+    total_inflows = sum(float(t.amount) for t in transactions if float(t.amount) > 0)
+    total_outflows = sum(abs(float(t.amount)) for t in transactions if float(t.amount) < 0)
+    net_flow = total_inflows - total_outflows
+
+    account_summary = {}
+    for account in ACCOUNT_MAPPINGS.keys():
+        acc_trans = [t for t in transactions if t.account_name == account]
+        inflows = sum(float(t.amount) for t in acc_trans if float(t.amount) > 0)
+        outflows = sum(abs(float(t.amount)) for t in acc_trans if float(t.amount) < 0)
+        account_summary[account] = {
+            'inflows': inflows,
+            'outflows': outflows,
+            'net': inflows - outflows,
+            'transaction_count': len(acc_trans)
         }
-    }
 
-def _get_sample_cash_flow_data():
-    """Enhanced sample data for fallback"""
-    
     return {
-        'transactions': [
-            {
-                'id': 1, 'date': date.today() - timedelta(days=5), 'description': 'Client Payment - Acme Corp',
-                'amount': 15000, 'type': 'inflow', 'account': 'Revenue 4717', 'customer': 'Acme Corporation'
-            },
-            {
-                'id': 2, 'date': date.today() - timedelta(days=3), 'description': 'Payroll Payment',
-                'amount': 8000, 'type': 'outflow', 'account': 'Bill Pay 4091', 'customer': 'Payroll'
-            },
-            {
-                'id': 3, 'date': date.today() - timedelta(days=1), 'description': 'Office Supplies',
-                'amount': 1200, 'type': 'outflow', 'account': 'Capital One 4709', 'customer': 'Office Depot'
-            }
-        ],
-        'total_inflows': 2131700,  # Match generated data
-        'total_outflows': 31900,
-        'net_flow': 2099800,
-        'monthly_data': {i: {'inflows': 177641, 'outflows': 2658, 'net': 174983} for i in range(1, 13)},
-        'account_summary': {
-            'Revenue 4717': {'inflows': 2131700, 'outflows': 0, 'net': 2131700, 'transaction_count': 373},
-            'Bill Pay 4091': {'inflows': 0, 'outflows': 25800, 'net': -25800, 'transaction_count': 8},
-            'Capital One 4709': {'inflows': 2500, 'outflows': 6100, 'net': -3600, 'transaction_count': 6}
-        },
-        'transaction_count': 387,
-        'year': 2025
-    }
-
-def _get_default_account_summary(account):
-    """Default account summary for fallback with updated account names"""
-    base_data = {
-        'Revenue 4717': {'total_amount': 2131700, 'count': 373, 'monthly_avg': 177641},
-        'Bill Pay 5285': {'total_amount': 125800, 'count': 45, 'monthly_avg': 10483},
-        'Payroll 4079': {'total_amount': 185600, 'count': 52, 'monthly_avg': 15466},
-        'Capital One': {'total_amount': 42500, 'count': 28, 'monthly_avg': 3541}
-    }
-    
-    data = base_data.get(account, {'total_amount': 50000, 'count': 20, 'monthly_avg': 4166})
-    
-    # Generate more realistic monthly data with variations
-    monthly_amounts = []
-    for i in range(1, 13):
-        variation = 1 + (i * 0.05 - 0.3)  # Growth trend
-        monthly_amount = max(0, data['monthly_avg'] * variation)
-        monthly_amounts.append(monthly_amount)
-    
-    peak_month = monthly_amounts.index(max(monthly_amounts)) + 1
-    lowest_month = monthly_amounts.index(min(monthly_amounts)) + 1
-    
-    monthly_data = {}
-    for i in range(1, 13):
-        monthly_data[i] = {
-            'amount': monthly_amounts[i-1],
-            'count': max(1, data['count'] // 12 + (i % 3)),
-            'transactions': []
-        }
-    
-    # Generate sample transactions
-    import datetime
-    sample_transactions = []
-    for i in range(min(20, data['count'])):
-        month = ((i % 12) + 1)
-        day = min(28, (i % 25) + 1)
-        sample_transactions.append({
-            'date': datetime.date(2025, month, day),
-            'description': f'Sample Transaction {i+1}',
-            'amount': max(100, data['monthly_avg'] * 0.1 * (i % 5 + 1)),
-            'type': 'inflow' if account == 'Revenue 4717' else 'outflow',
-            'status': 'completed',
-            'customer': f'Entity {i+1}' if account == 'Revenue 4717' else None
-        })
-    
-    return {
-        'account': account,
-        'year': 2025,
-        'total_amount': data['total_amount'],
-        'transaction_count': data['count'],
-        'monthly_data': monthly_data,
-        'variations': {i: 5.2 for i in range(2, 13)},
-        'top_entities': [(f'Top Entity {i}', data['total_amount'] * (0.4 - i*0.05)) for i in range(1, 6)],
-        'recent_transactions': sample_transactions,
-        'average_monthly': data['monthly_avg'],
-        'peak_month': peak_month,
-        'lowest_month': lowest_month
-    }
-
-def _get_default_aging_analysis():
-    """Default aging analysis for fallback"""
-    return {
-        'current': {'count': 5, 'amount': 45000, 'transactions': []},
-        '30_days': {'count': 2, 'amount': 18000, 'transactions': []},
-        '60_days': {'count': 1, 'amount': 8500, 'transactions': []},
-        '90_plus': {'count': 0, 'amount': 0, 'transactions': []}
+        'total_inflows': total_inflows,
+        'total_outflows': total_outflows,
+        'net_flow': net_flow,
+        'projected_balance': net_flow,
+        'account_summary': account_summary
     }
 
 def _get_account_summary_from_database(account_name, year):
@@ -527,9 +352,20 @@ def _get_account_summary_from_database(account_name, year):
     )
     
     transactions = query.all()
-    
+
     if not transactions:
-        return _get_default_account_summary(account_name)
+        return {
+            'account': account_name,
+            'year': year,
+            'total_amount': 0,
+            'transaction_count': 0,
+            'monthly_data': {m: {'amount': 0, 'count': 0, 'transactions': []} for m in range(1, 13)},
+            'average_monthly': 0,
+            'top_entities': [],
+            'recent_transactions': [],
+            'peak_month': None,
+            'lowest_month': None
+        }
     
     # Calculate totals
     total_amount = sum(float(t.amount) for t in transactions)
@@ -603,75 +439,70 @@ def _get_account_summary_from_database(account_name, year):
 
 def _get_comprehensive_cash_flow_data_from_database(account_filter, year, month=None):
     """Get comprehensive cash flow data from database"""
-    
+
     query = db.session.query(BankTransaction).filter(
         func.extract('year', BankTransaction.transaction_date) == year
     )
-    
+
     if account_filter != 'all' and account_filter in ACCOUNT_MAPPINGS:
         query = query.filter(BankTransaction.account_name == account_filter)
-    
+
     if month:
         query = query.filter(func.extract('month', BankTransaction.transaction_date) == month)
-    
+
     transactions = query.all()
-    
-    if not transactions:
-        return _get_sample_cash_flow_data()
-    
-    # Calculate totals
-    total_inflow = sum(float(t.amount) for t in transactions if float(t.amount) > 0)
-    total_outflow = sum(abs(float(t.amount)) for t in transactions if float(t.amount) < 0)
-    net_cash_flow = total_inflow - total_outflow
-    
-    # Account breakdown
-    account_breakdown = {}
-    for account_name in ACCOUNT_MAPPINGS.keys():
-        account_transactions = [t for t in transactions if t.account_name == account_name]
-        
-        if account_transactions:
-            if account_name == 'Revenue 4717':
-                # Only positive amounts for revenue
-                positive_transactions = [t for t in account_transactions if float(t.amount) > 0]
-                account_total = sum(float(t.amount) for t in positive_transactions)
-                account_count = len(positive_transactions)
-            else:
-                account_total = sum(float(t.amount) for t in account_transactions)
-                account_count = len(account_transactions)
+
+    monthly_data = {m: {'inflows': 0, 'outflows': 0, 'net': 0, 'transactions': 0} for m in range(1, 13)}
+    account_summary = {a: {'inflows': 0, 'outflows': 0, 'net': 0, 'transaction_count': 0} for a in ACCOUNT_MAPPINGS.keys()}
+
+    for t in transactions:
+        amt = float(t.amount)
+        m = t.transaction_date.month
+
+        if amt >= 0:
+            monthly_data[m]['inflows'] += amt
+            account_summary[t.account_name]['inflows'] += amt
         else:
-            account_total = 0
-            account_count = 0
-            
-        account_breakdown[account_name] = {
-            'total': account_total,
-            'count': account_count,
-            'type': ACCOUNT_MAPPINGS[account_name]['type']
-        }
-    
-    # Get recent transactions for the table (last 10)
-    recent_transactions = []
-    sorted_transactions = sorted(transactions, key=lambda t: t.transaction_date, reverse=True)[:10]
-    
-    for t in sorted_transactions:
-        recent_transactions.append({
+            monthly_data[m]['outflows'] += abs(amt)
+            account_summary[t.account_name]['outflows'] += abs(amt)
+
+        monthly_data[m]['transactions'] += 1
+
+    for m in monthly_data:
+        monthly_data[m]['net'] = monthly_data[m]['inflows'] - monthly_data[m]['outflows']
+
+    for account in account_summary:
+        summary = account_summary[account]
+        summary['net'] = summary['inflows'] - summary['outflows']
+        summary['transaction_count'] = sum(1 for t in transactions if t.account_name == account)
+
+    total_inflow = sum(data['inflows'] for data in monthly_data.values())
+    total_outflow = sum(data['outflows'] for data in monthly_data.values())
+    net_cash_flow = total_inflow - total_outflow
+
+    recent_transactions = sorted(transactions, key=lambda t: t.transaction_date, reverse=True)[:10]
+    recent_list = []
+    for t in recent_transactions:
+        recent_list.append({
             'id': t.id,
             'date': t.transaction_date,
-            'description': t.description[:50] + '...' if len(t.description) > 50 else t.description,
-            'account': t.account_name,
-            'type': 'inflow' if float(t.amount) > 0 else 'outflow',
+            'description': t.description,
             'amount': float(t.amount),
-            'status': 'completed'
+            'type': 'inflow' if float(t.amount) > 0 else 'outflow',
+            'account': t.account_name,
+            'customer': t.description.split(' ')[0] if t.description else 'Unknown'
         })
-    
+
     return {
-        'period': f"{year}" + (f"-{month:02d}" if month else ""),
+        'transactions': recent_list,
         'total_inflows': total_inflow,
         'total_outflows': total_outflow,
         'net_flow': net_cash_flow,
-        'net_cash_flow': net_cash_flow,
+        'monthly_data': monthly_data,
+        'account_summary': account_summary,
         'transaction_count': len(transactions),
-        'account_breakdown': account_breakdown,
-        'transactions': recent_transactions
+        'year': year,
+        'month': month
     }
 
 def _get_transactions_from_database(account_name, filter_params):

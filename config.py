@@ -30,9 +30,6 @@ class Config:
     # Monitoreo / flags
     SHOW_DB_WARNING = os.getenv('SHOW_DB_WARNING', 'false').lower() == 'true'
 
-    # Modo archivo para QA
-    USE_FILE_MODE = os.getenv('USE_FILE_MODE', 'false').lower() == 'true'
-    EXCEL_DATA_PATH = os.path.join(basedir, 'static', 'uploads', 'qa_data.xlsx')
     TEMP_UPLOAD_PATH = os.getenv('TEMP_UPLOAD_PATH', '/tmp' if os.name != 'nt' else os.path.join(basedir, 'temp'))
 
     # Azure
