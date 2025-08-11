@@ -1,4 +1,4 @@
-from flask import render_template, request, jsonify, current_app
+from flask import render_template, request, jsonify
 from flask_login import login_required
 from datetime import datetime, date, timedelta
 from models.transaction import Transaction
@@ -10,9 +10,8 @@ from . import reports_bp
 
 @reports_bp.route('/')
 def index():
-    """Reports index with File Mode support"""
-    file_mode = current_app.config.get('USE_FILE_MODE', False)
-    return render_template('reports/index.html', file_mode=file_mode)
+    """Reports index"""
+    return render_template('reports/index.html')
 
 @reports_bp.route('/cash-flow')
 def cash_flow():
@@ -33,7 +32,7 @@ def cash_flow():
 
 @reports_bp.route('/api/cash-flow-chart')
 def cash_flow_chart():
-    """Cash flow chart API with File Mode support"""
+    """Cash flow chart API"""
     start_date_str = request.args.get('start_date')
     end_date_str = request.args.get('end_date')
     

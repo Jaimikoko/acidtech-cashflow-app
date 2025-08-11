@@ -15,11 +15,6 @@
                         <div>
                             <h2 class="fw-bold text-dark mb-1">{{ account_info.name }}</h2>
                             <p class="text-muted mb-0">Detailed analysis for {{ year }} - {{ account_data.transaction_count }} transactions</p>
-                            {% if file_mode %}
-                                <span class="badge bg-info mt-1">
-                                    <i class="fas fa-file-excel"></i> File Mode Active
-                                </span>
-                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -28,7 +23,7 @@
                         <i class="fas fa-arrow-left"></i> Back to Overview
                     </a>
                     <a href="{{ url_for('cash_flow.export_account_data', account_name=account_data.account, year=year) }}" class="btn btn-success">
-                        <i class="fas fa-download"></i> Export Excel
+                        <i class="fas fa-download"></i> Export Data
                     </a>
                 </div>
             </div>

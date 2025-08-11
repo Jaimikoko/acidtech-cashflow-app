@@ -21,7 +21,6 @@ class TestCashFlowAccounts(unittest.TestCase):
         """Set up test client and app context"""
         self.app = create_app()
         self.app.config['TESTING'] = True
-        self.app.config['USE_FILE_MODE'] = True
         self.client = self.app.test_client()
         self.app_context = self.app.app_context()
         self.app_context.push()
@@ -98,7 +97,7 @@ class TestCashFlowAccounts(unittest.TestCase):
                     'Growth Trend',    # KPI card
                     'Monthly Breakdown', # Chart section
                     'Recent Transactions', # Transaction table
-                    'Export Excel',    # Export button
+                    'Export Data',    # Export button
                     'Back to Overview', # Navigation
                     'timePeriodFilter', # Filter controls
                     'monthFilter',
@@ -108,16 +107,6 @@ class TestCashFlowAccounts(unittest.TestCase):
                 for element in required_elements:
                     self.assertIn(element, response_text,
                                 f"{account_name} page should contain '{element}'")
-
-    def test_file_mode_indicator(self):
-        """Test that File Mode indicator appears when active"""
-        # Test with File Mode active
-        with self.app.test_request_context():
-            self.app.config['USE_FILE_MODE'] = True
-            response = self.client.get('/cash-flow/account/Revenue 4717')
-            response_text = response.get_data(as_text=True)
-            self.assertIn('File Mode Active', response_text,
-                        "Should show 'File Mode Active' indicator when USE_FILE_MODE is True")
 
     def test_invalid_account_redirect(self):
         """Test that invalid account names redirect to main cash flow page"""

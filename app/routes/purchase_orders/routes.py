@@ -68,8 +68,7 @@ def index():
                          total_draft=total_draft,
                          total_sent=total_sent,
                          total_approved=total_approved,
-                         status_filter=status_filter,
-                         file_mode=False)
+                         status_filter=status_filter)
 
 @purchase_orders_bp.route('/create', methods=['GET', 'POST'])
 def create():

@@ -4,7 +4,6 @@ from flask import (
     request,
     jsonify,
     send_from_directory,
-    current_app,
     flash,
     redirect,
     url_for,
@@ -14,7 +13,6 @@ from datetime import datetime, date, timedelta
 from models.transaction import Transaction
 from models.purchase_order import PurchaseOrder
 from database import db
-from utils.excel_data_manager import excel_manager
 import json
 import os
 import time
@@ -112,27 +110,9 @@ def dashboard_summary():
 @main_bp.route('/dashboard/legacy')
 @login_required
 def dashboard_legacy():
-    """Legacy dashboard with File Mode support - kept for compatibility"""
-    
-    if current_app.config.get('USE_FILE_MODE', False):
-        # File Mode: Use Excel data
-        try:
-            totals = excel_manager.calculate_totals()
-            recent_transactions = excel_manager.get_transactions()[:5]  # Get first 5 transactions
-            
-            return render_template('dashboard.html', 
-                                 total_receivables=totals['total_receivables'],
-                                 total_payables=totals['total_payables'],
-                                 cash_available=totals['cash_available'],
-                                 recent_transactions=recent_transactions,
-                                 overdue_receivables=totals['overdue_receivables'],
-                                 overdue_payables=totals['overdue_payables'],
-                                 file_mode=True)
-        except Exception as e:
-            # Fallback to default data if Excel fails
-            pass
-    
-    # Database Mode or fallback: Use database queries
+    """Legacy dashboard using database data"""
+
+    # Database queries
     try:
         # Calculate totals from database
         total_receivables = db.session.query(db.func.sum(Transaction.amount)).filter(
@@ -194,14 +174,13 @@ def dashboard_legacy():
     
     cash_available = total_receivables - total_payables
     
-    return render_template('dashboard.html', 
+    return render_template('dashboard.html',
                          total_receivables=total_receivables,
                          total_payables=total_payables,
                          cash_available=cash_available,
                          recent_transactions=recent_transactions,
                          overdue_receivables=overdue_receivables,
-                         overdue_payables=overdue_payables,
-                         file_mode=current_app.config.get('USE_FILE_MODE', False))
+                         overdue_payables=overdue_payables)
 
 @main_bp.route('/api/cash-flow-data')
 def cash_flow_data():
@@ -378,73 +357,3 @@ def init_sample_data():
         db.session.rollback()
         return f"<h1>❌ Error initializing data:</h1><p>{str(e)}</p>"
 
-@main_bp.route('/upload-excel', methods=['GET', 'POST'])
-def upload_excel():
-    """Upload Excel file for File Mode QA testing"""
-    if request.method == 'POST':
-        if 'excel_file' not in request.files:
-            flash('No file selected', 'error')
-            return redirect(request.url)
-        
-        file = request.files['excel_file']
-        if file.filename == '':
-            flash('No file selected', 'error')
-            return redirect(request.url)
-        
-        if file and file.filename.endswith(('.xlsx', '.xls')):
-            import os
-            from werkzeug.utils import secure_filename
-            
-            filename = secure_filename('qa_data.xlsx')  # Always use this name
-            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-            
-            # Create upload directory if it doesn't exist
-            os.makedirs(os.path.dirname(file_path), exist_ok=True)
-            
-            try:
-                file.save(file_path)
-                
-                # Force reload Excel data
-                excel_manager.load_excel_data(force_reload=True)
-                
-                flash('Excel file uploaded successfully! File Mode data updated.', 'success')
-                return redirect(url_for('main.dashboard'))
-                
-            except Exception as e:
-                flash(f'Error uploading file: {str(e)}', 'error')
-        else:
-            flash('Please upload an Excel file (.xlsx or .xls)', 'error')
-    
-    # Check current file status
-    excel_path = current_app.config.get('EXCEL_DATA_PATH')
-    file_exists = os.path.exists(excel_path) if excel_path else False
-    file_mode_enabled = current_app.config.get('USE_FILE_MODE', False)
-    
-    return render_template('upload_excel.html', 
-                         file_exists=file_exists, 
-                         file_mode_enabled=file_mode_enabled,
-                         excel_path=excel_path)
-
-@main_bp.route('/generate-sample-excel')
-def generate_sample_excel():
-    """Generate and download sample Excel file"""
-    try:
-        # Import and run the generate function
-        import sys  
-        sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-        from generate_sample_excel import generate_sample_excel
-        
-        # Generate the Excel file
-        output_path = generate_sample_excel()
-        
-        # Return the file for download
-        return send_from_directory(
-            os.path.dirname(output_path),
-            os.path.basename(output_path),
-            as_attachment=True,
-            download_name='sample_qa_data.xlsx'
-        )
-        
-    except Exception as e:
-        flash(f'Error generating sample Excel file: {str(e)}', 'error')
-        return redirect(url_for('main.upload_excel'))
