@@ -14,6 +14,7 @@ from sqlalchemy import func
 from models.transaction import Transaction
 from models.bank_transaction import BankTransaction
 from models.purchase_order import PurchaseOrder
+from models.inventory import InventoryItem
 from database import db
 import json
 import os
@@ -131,17 +132,68 @@ def settings():
 @main_bp.route('/inventory')
 @login_required
 def inventory():
-    """Inventory page"""
-    inventory_data = {
-        'total_items': 0,
-        'low_stock': 0,
-        'total_value': 0,
-        'out_of_stock': 0,
-        'items': [],
-        'categories': [],
-        'alerts': []
-    }
-    return render_template('inventory.html', inventory=inventory_data)
+    """Inventory page - load real data from database"""
+    try:
+        items = InventoryItem.query.order_by(InventoryItem.category.asc(), InventoryItem.code.asc()).all()
+
+        total_items = len(items)
+        low_stock = sum(1 for i in items if i.status and i.status.lower() == 'low stock' or (i.reorder_point is not None and i.current_stock <= i.reorder_point))
+        out_of_stock = sum(1 for i in items if (i.status and i.status.lower() == 'out of stock') or i.current_stock == 0)
+        total_value = sum((i.total_value or 0) for i in items)
+
+        # categorías para la sidebar
+        cat_counts = (
+            db.session.query(InventoryItem.category, func.count(InventoryItem.id))
+            .group_by(InventoryItem.category)
+            .all()
+        )
+        categories = [
+            {
+                "name": cat,
+                "count": cnt,
+                "icon": "fas fa-tags",   # si quieres variar por categoría: equipo, químicos, etc.
+                "color": "primary",      # idem
+            }
+        for cat, cnt in cat_counts]
+
+        inv_items = [{
+            "code": i.code,
+            "description": i.description,
+            "category": i.category,
+            "current_stock": i.current_stock,
+            "unit_price": i.unit_price,
+            "total_value": i.total_value,
+            "status": i.status or ("Out of Stock" if i.current_stock == 0 else "In Stock"),
+        } for i in items]
+
+        inventory_data = {
+            "total_items": total_items,
+            "low_stock": low_stock,
+            "total_value": total_value,
+            "out_of_stock": out_of_stock,
+            "items": inv_items,
+            "categories": categories,
+            "alerts": [
+                {"type": "danger",  "icon": "fas fa-times-circle",         "message": f"{out_of_stock} items are out of stock"},
+                {"type": "warning", "icon": "fas fa-exclamation-triangle", "message": f"{low_stock} items are running low"},
+            ] if total_items else []
+        }
+
+        return render_template('inventory.html', inventory=inventory_data)
+        
+    except Exception as e:
+        logger.error(f"Error loading inventory data: {e}")
+        # Fallback to empty data if there's an error
+        inventory_data = {
+            'total_items': 0,
+            'low_stock': 0,
+            'total_value': 0,
+            'out_of_stock': 0,
+            'items': [],
+            'categories': [],
+            'alerts': [{"type": "danger", "icon": "fas fa-exclamation-triangle", "message": "Error loading inventory data"}]
+        }
+        return render_template('inventory.html', inventory=inventory_data)
 
 @main_bp.route('/dashboard/api/summary')
 @login_required

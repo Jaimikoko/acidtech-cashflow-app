@@ -5,6 +5,7 @@ from .purchase_order import PurchaseOrder, PurchaseOrderItem
 from .bank_transaction import BankTransaction
 from .payroll import PayrollEntry
 from .views import VCashflowDaily, VApOpen, VArOpen, VPoSummary
+from .inventory import InventoryItem
 
 __all__ = [
     'User',
