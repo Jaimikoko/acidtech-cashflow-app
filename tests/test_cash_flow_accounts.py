@@ -97,7 +97,6 @@ class TestCashFlowAccounts(unittest.TestCase):
                     'Growth Trend',    # KPI card
                     'Monthly Breakdown', # Chart section
                     'Recent Transactions', # Transaction table
-                    'Export Data',    # Export button
                     'Back to Overview', # Navigation
                     'timePeriodFilter', # Filter controls
                     'monthFilter',
@@ -118,15 +117,6 @@ class TestCashFlowAccounts(unittest.TestCase):
                 # Should redirect (302) or not found (404)
                 self.assertIn(response.status_code, [302, 404],
                             f"Invalid account {invalid_account} should redirect or return 404")
-
-    def test_export_functionality(self):
-        """Test that export endpoints exist for all accounts"""
-        for account_name in ACCOUNT_MAPPINGS.keys():
-            with self.subTest(account=account_name):
-                response = self.client.get(f'/cash-flow/export/{account_name}')
-                # Should not return 404 (endpoint should exist)
-                self.assertNotEqual(response.status_code, 404,
-                                  f"Export endpoint should exist for {account_name}")
 
     def test_chart_data_structure(self):
         """Test that chart data is properly structured in account detail pages"""

@@ -94,58 +94,6 @@ def account_detail(account_name):
                          period=period,
                          filter_params=filter_params)
 
-@cash_flow_bp.route('/export/<path:account_name>')
-def export_account_data(account_name):
-    """Export account data to Excel"""
-    
-    # URL decode account name to handle spaces like "Revenue 4717"
-    account_name = account_name.replace('%20', ' ').replace('+', ' ')
-    
-    if account_name not in ACCOUNT_MAPPINGS:
-        return redirect(url_for('cash_flow.index'))
-    
-    year = int(request.args.get('year', 2025))
-
-    # Get transactions from database
-    query = db.session.query(BankTransaction).filter(
-        BankTransaction.account_name == account_name
-    )
-    if year:
-        query = query.filter(func.extract('year', BankTransaction.transaction_date) == year)
-
-    db_transactions = query.all()
-
-    transactions = []
-    for t in db_transactions:
-        transactions.append({
-            'date': t.transaction_date,
-            'description': t.description,
-            'amount': float(t.amount),
-            'account': t.account_name,
-            'type': 'inflow' if float(t.amount) > 0 else 'outflow'
-        })
-    
-    # Create DataFrame and Excel file
-    if transactions:
-        import pandas as pd
-        import os
-        from flask import send_file
-        import tempfile
-        
-        df = pd.DataFrame(transactions)
-        
-        # Create temporary file
-        temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.xlsx')
-        df.to_excel(temp_file.name, index=False, sheet_name=f'{account_name}_{year}')
-        temp_file.close()
-        
-        filename = f"{account_name.replace(' ', '_')}_{year}_export.xlsx"
-        
-        return send_file(temp_file.name, as_attachment=True, download_name=filename)
-    
-    flash('No data available for export', 'warning')
-    return redirect(url_for('cash_flow.account_detail', account_name=account_name))
-
 @cash_flow_bp.route('/api/chart-data')
 def chart_data():
     """API endpoint for cash flow chart data"""
