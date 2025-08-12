@@ -19,11 +19,8 @@
                     </div>
                 </div>
                 <div class="col-md-4 text-end">
-                    <a href="{{ url_for('cash_flow.index') }}" class="btn btn-outline-secondary me-2">
+                    <a href="{{ url_for('cash_flow.index') }}" class="btn btn-outline-secondary">
                         <i class="fas fa-arrow-left"></i> Back to Overview
-                    </a>
-                    <a href="{{ url_for('cash_flow.export_account_data', account_name=account_data.account, year=year) }}" class="btn btn-success">
-                        <i class="fas fa-download"></i> Export Data
                     </a>
                 </div>
             </div>

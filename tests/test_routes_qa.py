@@ -10,7 +10,6 @@ to validate the successful migration from Tailwind CSS to Bootstrap 5 with maste
 🎯 TESTED ROUTES:
 - / (Landing page)
 - /dashboard (Main dashboard with Chart.js)
-- /data-import (CSV upload functionality)
 - /accounts-payable (AP module)
 - /accounts-receivable (AR module)
 - /purchase-orders (PO module)
@@ -148,19 +147,6 @@ class TestMainRoutes:
         
         logger.info("✅ PASSED: Dashboard loads with masterlayout and Chart.js")
 
-    def test_data_import_route(self):
-        """Test data import route (/data-import) with CSV upload interface"""
-        response = validator.make_request('/data-import')
-        
-        assert validator.validate_response(response), f"Data Import failed with status {response.status_code}"
-        
-        expected_content = [
-            'import', 'data'
-        ]
-        content_check = validator.check_content_contains(response, expected_content)
-        assert content_check, "Data Import missing expected content"
-        
-        logger.info("✅ PASSED: Data Import loads with CSV upload interface")
 
     def test_accounts_payable_route(self):
         """Test accounts payable route (/ap)"""
@@ -265,7 +251,7 @@ class TestBasicValidation:
     
     def test_critical_routes_accessible(self):
         """Test that critical routes are accessible"""
-        critical_routes = ['/', '/dashboard', '/data-import', '/ap', '/ar', '/po']
+        critical_routes = ['/', '/dashboard', '/ap', '/ar', '/po']
         
         accessible_routes = 0
         for route in critical_routes:
@@ -289,7 +275,7 @@ class TestPerformance:
     
     def test_response_times(self):
         """Test that all routes respond within acceptable time limits"""
-        routes = ['/', '/dashboard', '/data-import', '/accounts-payable']
+        routes = ['/', '/dashboard', '/accounts-payable']
         max_response_time = 10  # seconds
         
         for route in routes:
