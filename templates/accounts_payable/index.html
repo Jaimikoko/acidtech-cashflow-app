@@ -46,7 +46,7 @@
               Total Outstanding
             </div>
             <div class="h4 mb-0 fw-bold" id="total-outstanding">
-              $425,800
+              {{ ap.total_outstanding|default(0)|currency }}
             </div>
           </div>
           <div class="text-danger">
@@ -67,7 +67,7 @@
               Bills Pending
             </div>
             <div class="h4 mb-0 fw-bold" id="pending-bills">
-              18
+              {{ ap.pending_bills|default(0) }}
             </div>
           </div>
           <div class="text-warning">
@@ -88,7 +88,7 @@
               Payments YTD
             </div>
             <div class="h4 mb-0 fw-bold" id="payments-ytd">
-              $8,750,000
+              {{ ap.total_ytd|default(0)|currency }}
             </div>
           </div>
           <div class="text-primary">
@@ -109,7 +109,7 @@
               Payment Accuracy
             </div>
             <div class="h4 mb-0 fw-bold" id="payment-accuracy">
-              99.2%
+              {{ ap.payment_accuracy|default(0)|round(1) }}%
             </div>
           </div>
           <div class="text-info">
@@ -147,7 +147,7 @@
       <div class="card-body">
         <div class="alert alert-info" role="alert">
           <i class="fas fa-info-circle me-2"></i>
-          <strong>A/P Status:</strong> 18 bills pending payment with excellent 99.2% accuracy rate.
+          <strong>A/P Status:</strong> {{ ap.pending_bills|default(0) }} bills pending payment with excellent {{ ap.payment_accuracy|default(0)|round(1) }}% accuracy rate.
           Strategic vendor relationships maintained for operational continuity.
         </div>
         
@@ -277,7 +277,7 @@
           <div class="col-md-6">
             <h6 class="fw-bold">Payment Performance</h6>
             <p class="text-muted">
-              Our A/P management maintains excellent vendor relationships with 99.2% payment accuracy 
+              Our A/P management maintains excellent vendor relationships with {{ ap.payment_accuracy|default(0)|round(1) }}% payment accuracy
               and average payment time of 25 days. Strategic partnerships with major service providers.
             </p>
           </div>

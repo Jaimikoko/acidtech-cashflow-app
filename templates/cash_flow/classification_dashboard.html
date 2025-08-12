@@ -47,7 +47,7 @@
               Total Transactions
             </div>
             <div class="h4 mb-0 fw-bold">
-              {{ summary.total if summary else '594' }}
+              {{ summary.total if summary else '0' }}
             </div>
           </div>
           <div class="text-success">
@@ -68,7 +68,7 @@
               Classified
             </div>
             <div class="h4 mb-0 fw-bold">
-              {{ summary.classified if summary else '594' }}
+              {{ summary.classified if summary else '0' }}
             </div>
           </div>
           <div class="text-info">
@@ -162,7 +162,7 @@
         {% else %}
         <div class="alert alert-info">
           <i class="fas fa-info-circle me-2"></i>
-          <strong>All transactions classified:</strong> All 594 transactions have been successfully classified by the AI system.
+          <strong>All transactions classified:</strong> All {{ summary.total if summary else 0 }} transactions have been successfully classified by the AI system.
         </div>
         {% endif %}
       </div>

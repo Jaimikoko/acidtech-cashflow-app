@@ -2,6 +2,7 @@ from flask import render_template, request, flash, redirect, url_for, current_ap
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 from datetime import datetime, date, timedelta
+from sqlalchemy import func
 from models.transaction import Transaction
 from database import db
 import os
@@ -15,7 +16,6 @@ def index():
 
     try:
         from models.views import VArOpen
-        from sqlalchemy import func
         query = VArOpen.query
         if status_filter != 'all':
             query = query.filter_by(status=status_filter)
@@ -25,12 +25,6 @@ def index():
             per_page=20,
             error_out=False
         )
-
-        total_pending = db.session.query(func.sum(VArOpen.amount)).scalar() or 0
-        total_overdue = db.session.query(func.sum(VArOpen.amount)).filter(
-            VArOpen.due_date < date.today()
-        ).scalar() or 0
-
     except Exception:
         transactions = type('obj', (object,), {
             'items': [],
@@ -42,14 +36,49 @@ def index():
             'prev_num': None,
             'next_num': None
         })()
-        total_pending = 0
-        total_overdue = 0
 
-    return render_template('accounts_receivable/index.html',
-                         transactions=transactions,
-                         total_pending=total_pending,
-                         total_overdue=total_overdue,
-                         status_filter=status_filter)
+    current_year = date.today().year
+    total_outstanding = db.session.query(func.sum(Transaction.amount)).filter(
+        Transaction.type == 'receivable',
+        Transaction.status == 'pending'
+    ).scalar() or 0
+
+    total_ytd = db.session.query(func.sum(Transaction.amount)).filter(
+        Transaction.type == 'receivable',
+        func.extract('year', Transaction.due_date) == current_year
+    ).scalar() or 0
+
+    paid_count = db.session.query(func.count(Transaction.id)).filter(
+        Transaction.type == 'receivable',
+        Transaction.status == 'paid',
+        func.extract('year', Transaction.due_date) == current_year
+    ).scalar() or 0
+
+    issued_count = db.session.query(func.count(Transaction.id)).filter(
+        Transaction.type == 'receivable',
+        func.extract('year', Transaction.due_date) == current_year
+    ).scalar() or 0
+
+    collection_rate = (paid_count / issued_count * 100) if issued_count else 0
+
+    pending_invoices = db.session.query(func.count(Transaction.id)).filter(
+        Transaction.type == 'receivable',
+        Transaction.status == 'pending'
+    ).scalar() or 0
+
+    ar = {
+        'total_outstanding': total_outstanding,
+        'total_ytd': total_ytd,
+        'collection_rate': collection_rate,
+        'pending_invoices': pending_invoices
+    }
+
+    return render_template(
+        'accounts_receivable/index.html',
+        transactions=transactions,
+        ar=ar,
+        status_filter=status_filter
+    )
 
 @accounts_receivable_bp.route('/create', methods=['GET', 'POST'])
 def create():

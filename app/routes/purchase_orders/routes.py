@@ -1,6 +1,7 @@
 from flask import render_template, request, flash, redirect, url_for, jsonify, current_app
 from flask_login import login_required, current_user
 from datetime import datetime, date, timedelta
+from sqlalchemy import func
 from models.purchase_order import PurchaseOrder, PurchaseOrderItem
 from database import db
 import json
@@ -17,21 +18,21 @@ def index():
     try:
         # First try to get real POs from database
         query = PurchaseOrder.query
-        
+
         if status_filter != 'all':
             query = query.filter_by(status=status_filter)
-        
+
         purchase_orders = query.order_by(PurchaseOrder.order_date.desc()).paginate(
             page=request.args.get('page', 1, type=int),
             per_page=20,
             error_out=False
         )
-        
+
         # Calculate status counts
         total_draft = PurchaseOrder.query.filter_by(status='draft').count()
         total_sent = PurchaseOrder.query.filter_by(status='sent').count()
         total_approved = PurchaseOrder.query.filter_by(status='approved').count()
-        
+
         # If no POs exist, use VPoSummary view
         if purchase_orders.total == 0:
             from models.views import VPoSummary
@@ -46,7 +47,7 @@ def index():
             total_draft = 0
             total_sent = 0
             total_approved = purchase_orders.total
-        
+
     except Exception as e:
         # Simple fallback
         purchase_orders = type('obj', (object,), {
@@ -62,13 +63,28 @@ def index():
         total_draft = 0
         total_sent = 0
         total_approved = 0
-    
-    return render_template('purchase_orders/index.html',
-                         purchase_orders=purchase_orders,
-                         total_draft=total_draft,
-                         total_sent=total_sent,
-                         total_approved=total_approved,
-                         status_filter=status_filter)
+
+    total_value = db.session.query(func.sum(PurchaseOrder.total_amount)).scalar() or 0
+    total_count = PurchaseOrder.query.count()
+    completed = PurchaseOrder.query.filter(PurchaseOrder.status == 'approved').count()
+    completion_rate = (completed / total_count * 100) if total_count else 0
+    pending_orders = PurchaseOrder.query.filter(PurchaseOrder.status == 'sent').count()
+
+    po = {
+        'total_value': total_value,
+        'completion_rate': completion_rate,
+        'pending_orders': pending_orders
+    }
+
+    return render_template(
+        'purchase_orders/index.html',
+        purchase_orders=purchase_orders,
+        total_draft=total_draft,
+        total_sent=total_sent,
+        total_approved=total_approved,
+        status_filter=status_filter,
+        po=po
+    )
 
 @purchase_orders_bp.route('/create', methods=['GET', 'POST'])
 def create():
