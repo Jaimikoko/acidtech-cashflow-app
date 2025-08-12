@@ -46,7 +46,7 @@
               Total PO Value
             </div>
             <div class="h4 mb-0 fw-bold" id="total-po-value">
-              $1,250,000
+              {{ po.total_value|default(0)|currency }}
             </div>
           </div>
           <div class="text-info">
@@ -67,7 +67,7 @@
               Pending Orders
             </div>
             <div class="h4 mb-0 fw-bold" id="pending-orders">
-              12
+              {{ po.pending_orders|default(0) }}
             </div>
           </div>
           <div class="text-warning">
@@ -109,7 +109,7 @@
               Fulfillment Rate
             </div>
             <div class="h4 mb-0 fw-bold" id="fulfillment-rate">
-              94.8%
+              {{ po.completion_rate|default(0)|round(1) }}%
             </div>
           </div>
           <div class="text-primary">
@@ -147,7 +147,7 @@
       <div class="card-body">
         <div class="alert alert-info" role="alert">
           <i class="fas fa-info-circle me-2"></i>
-          <strong>Procurement Status:</strong> 12 orders pending fulfillment with excellent 94.8% completion rate.
+          <strong>Procurement Status:</strong> {{ po.pending_orders|default(0) }} orders pending fulfillment with excellent {{ po.completion_rate|default(0)|round(1) }}% completion rate.
           Strong supplier relationships ensure operational continuity.
         </div>
         
@@ -277,7 +277,7 @@
           <div class="col-md-6">
             <h6 class="fw-bold">Procurement Excellence</h6>
             <p class="text-muted">
-              Our procurement management achieves excellent performance with 94.8% fulfillment rate 
+              Our procurement management achieves excellent performance with {{ po.completion_rate|default(0)|round(1) }}% fulfillment rate
               and 3-day average processing time. Strategic sourcing from top-tier suppliers.
             </p>
           </div>

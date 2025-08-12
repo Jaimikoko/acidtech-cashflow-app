@@ -9,8 +9,10 @@ Date: 2025-08-08
 
 from flask import jsonify, request, render_template
 from datetime import datetime, date, timedelta
+from sqlalchemy import func
 from services.cash_flow_calculator import CashFlowCalculator
 from models.bank_transaction import BankTransaction
+from database import db
 
 from . import cash_flow_bp
 
@@ -302,24 +304,66 @@ def enhanced_dashboard():
     try:
         # Get initial data for page load
         summary = calculator.get_dashboard_summary()
-        
+
         # Get quick stats for template
         kpis = summary['kpis']
         classification_status = summary['classification_status']
-        
-        return render_template('cash_flow/enhanced_dashboard.html',
-                             kpis=kpis,
-                             classification_status=classification_status,
-                             account_summaries=summary['account_summaries'],
-                             transfer_reconciliation=summary['transfer_reconciliation'],
-                             credit_card_summary=summary['credit_card_summary'],
-                             last_updated=summary['last_updated'])
+
+        today = date.today()
+        start_current = today - timedelta(days=30)
+        start_prev = today - timedelta(days=60)
+
+        current_inflow = db.session.query(func.sum(BankTransaction.amount)).filter(
+            BankTransaction.transaction_date >= start_current,
+            BankTransaction.amount > 0
+        ).scalar() or 0
+        prev_inflow = db.session.query(func.sum(BankTransaction.amount)).filter(
+            BankTransaction.transaction_date >= start_prev,
+            BankTransaction.transaction_date < start_current,
+            BankTransaction.amount > 0
+        ).scalar() or 0
+
+        current_outflow = db.session.query(func.sum(func.abs(BankTransaction.amount))).filter(
+            BankTransaction.transaction_date >= start_current,
+            BankTransaction.amount < 0
+        ).scalar() or 0
+        prev_outflow = db.session.query(func.sum(func.abs(BankTransaction.amount))).filter(
+            BankTransaction.transaction_date >= start_prev,
+            BankTransaction.transaction_date < start_current,
+            BankTransaction.amount < 0
+        ).scalar() or 0
+
+        net_current = current_inflow - current_outflow
+        net_prev = prev_inflow - prev_outflow
+
+        def pct_change(curr, prev):
+            return ((curr - prev) / prev * 100) if prev else 0
+
+        trends = {
+            'inflow_change_pct': pct_change(current_inflow, prev_inflow),
+            'outflow_change_pct': pct_change(current_outflow, prev_outflow),
+            'net_change_pct': pct_change(net_current, net_prev),
+        }
+
+        return render_template(
+            'cash_flow/enhanced_dashboard.html',
+            kpis=kpis,
+            classification_status=classification_status,
+            account_summaries=summary['account_summaries'],
+            transfer_reconciliation=summary['transfer_reconciliation'],
+            credit_card_summary=summary['credit_card_summary'],
+            last_updated=summary['last_updated'],
+            trends=trends,
+        )
         
     except Exception as e:
-        return render_template('cash_flow/enhanced_dashboard.html',
-                             error=f'Failed to load dashboard: {str(e)}',
-                             kpis={},
-                             classification_status={})
+        return render_template(
+            'cash_flow/enhanced_dashboard.html',
+            error=f'Failed to load dashboard: {str(e)}',
+            kpis={},
+            classification_status={},
+            trends={},
+        )
 
 @cash_flow_bp.route('/real-time-dashboard')  
 def real_time_dashboard():

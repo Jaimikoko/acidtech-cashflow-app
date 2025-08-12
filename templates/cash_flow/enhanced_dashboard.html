@@ -159,7 +159,7 @@
                     </h3>
                     <p class="kpi-label text-muted mb-0">Total Revenue</p>
                     <span class="trend-indicator trend-up">
-                        <i class="fas fa-arrow-up"></i> +12.5%
+                        <i class="fas fa-arrow-up"></i> {{ trends.inflow_change_pct|default('0%') }}
                     </span>
                 </div>
             </div>
@@ -176,7 +176,7 @@
                     </h3>
                     <p class="kpi-label text-muted mb-0">Total Expenses</p>
                     <span class="trend-indicator trend-down">
-                        <i class="fas fa-arrow-down"></i> -5.2%
+                        <i class="fas fa-arrow-down"></i> {{ trends.outflow_change_pct|default('0%') }}
                     </span>
                 </div>
             </div>
@@ -193,7 +193,7 @@
                     </h3>
                     <p class="kpi-label text-muted mb-0">Net Cash Flow</p>
                     <span class="trend-indicator trend-up">
-                        <i class="fas fa-arrow-up"></i> +18.3%
+                        <i class="fas fa-arrow-up"></i> {{ trends.net_change_pct|default('0%') }}
                     </span>
                 </div>
             </div>

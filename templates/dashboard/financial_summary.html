@@ -46,7 +46,7 @@
               Total Revenue YTD
             </div>
             <div class="h4 mb-0 fw-bold" id="total-revenue-ytd">
-              $14,647,770
+              {{ kpis.total_revenue_ytd|default(0)|currency }}
             </div>
           </div>
           <div class="text-success">
@@ -67,7 +67,7 @@
               Profit Margin
             </div>
             <div class="h4 mb-0 fw-bold" id="profit-margin">
-              74.5%
+              {{ kpis.profit_margin|default(0)|round(1) }}%
             </div>
           </div>
           <div class="text-info">
@@ -88,7 +88,7 @@
               Net Cash Flow
             </div>
             <div class="h4 mb-0 fw-bold" id="net-cash-flow">
-              $10,906,933
+              {{ kpis.net_cash_flow|default(0)|currency }}
             </div>
           </div>
           <div class="text-primary">
@@ -109,7 +109,7 @@
               Transaction Processing
             </div>
             <div class="h4 mb-0 fw-bold">
-              100%
+              {{ kpis.processing_rate|default('0%') }}
             </div>
           </div>
           <div class="text-warning">
@@ -144,32 +144,32 @@
       <div class="card-body">
         <div class="alert alert-info" role="alert">
           <i class="fas fa-info-circle me-2"></i>
-          <strong>Revenue Growth:</strong> YTD revenue of $14.6M represents strong performance in oil & gas services.
-          Current profit margin of 74.5% indicates excellent operational efficiency.
+          <strong>Revenue Growth:</strong> YTD revenue of {{ kpis.total_revenue_ytd|default(0)|currency }} represents strong performance in oil & gas services.
+          Current profit margin of {{ kpis.profit_margin|default(0)|round(1) }}% indicates excellent operational efficiency.
         </div>
         
         <!-- Quick Stats -->
         <div class="row text-center mb-4">
           <div class="col-md-3 col-6">
             <div class="border-end">
-              <div class="h5 mb-1 text-success fw-bold">594</div>
+              <div class="h5 mb-1 text-success fw-bold">{{ kpis.transactions_processed|default(0) }}</div>
               <small class="text-muted">Transactions Processed</small>
             </div>
           </div>
           <div class="col-md-3 col-6">
             <div class="border-end">
-              <div class="h5 mb-1 text-primary fw-bold">$24,647</div>
+              <div class="h5 mb-1 text-primary fw-bold">{{ kpis.avg_transaction_value|default(0)|currency }}</div>
               <small class="text-muted">Avg Transaction Value</small>
             </div>
           </div>
           <div class="col-md-3 col-6">
             <div class="border-end">
-              <div class="h5 mb-1 text-warning fw-bold">$3.7M</div>
+              <div class="h5 mb-1 text-warning fw-bold">{{ kpis.total_expenses_ytd|default(0)|currency }}</div>
               <small class="text-muted">Total Expenses</small>
             </div>
           </div>
           <div class="col-md-3 col-6">
-            <div class="h5 mb-1 text-info fw-bold">8 months</div>
+            <div class="h5 mb-1 text-info fw-bold">{{ kpis.ytd_months|default(0) }} months</div>
             <small class="text-muted">YTD Coverage</small>
           </div>
         </div>
@@ -202,7 +202,7 @@
               <strong>Revenue Growth</strong>
               <br><small class="text-muted">Year-over-Year</small>
             </div>
-            <span class="badge bg-success rounded-pill">+22.5%</span>
+            <span class="badge bg-success rounded-pill">{{ kpis.revenue_growth|default(0)|round(1) }}%</span>
           </div>
           <div class="list-group-item d-flex justify-content-between align-items-center">
             <div>

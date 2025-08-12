@@ -10,7 +10,9 @@ from flask import (
 )
 from flask_login import login_required, current_user
 from datetime import datetime, date, timedelta
+from sqlalchemy import func
 from models.transaction import Transaction
+from models.bank_transaction import BankTransaction
 from models.purchase_order import PurchaseOrder
 from database import db
 import json
@@ -23,6 +25,72 @@ from app.forms import LoginForm
 
 # Get logger for this module
 logger = logging.getLogger(__name__)
+
+
+def get_financial_summary_kpis():
+    """Calculate financial summary KPIs from bank transactions."""
+    try:
+        current_year = date.today().year
+
+        revenue = db.session.query(func.sum(BankTransaction.amount)).filter(
+            BankTransaction.amount > 0,
+            func.extract('year', BankTransaction.transaction_date) == current_year,
+        ).scalar() or 0
+
+        expenses = db.session.query(func.sum(func.abs(BankTransaction.amount))).filter(
+            BankTransaction.amount < 0,
+            func.extract('year', BankTransaction.transaction_date) == current_year,
+        ).scalar() or 0
+
+        net_cash_flow = revenue - expenses
+
+        transactions_processed = db.session.query(func.count(BankTransaction.id)).scalar() or 0
+
+        avg_transaction_value = (
+            db.session.query(func.avg(func.abs(BankTransaction.amount))).scalar() or 0
+        )
+
+        # Revenue growth vs same period last year
+        today = date.today()
+        start_current_year = date(current_year, 1, 1)
+        days_elapsed = (today - start_current_year).days + 1
+        start_prev_year = date(current_year - 1, 1, 1)
+        end_prev_period = start_prev_year + timedelta(days=days_elapsed - 1)
+
+        revenue_prev = db.session.query(func.sum(BankTransaction.amount)).filter(
+            BankTransaction.amount > 0,
+            BankTransaction.transaction_date >= start_prev_year,
+            BankTransaction.transaction_date <= end_prev_period,
+        ).scalar() or 0
+
+        revenue_growth = (
+            ((revenue - revenue_prev) / revenue_prev) * 100 if revenue_prev else 0
+        )
+
+        profit_margin = (net_cash_flow / revenue * 100) if revenue else 0
+
+        return {
+            "total_revenue_ytd": revenue,
+            "total_expenses_ytd": expenses,
+            "net_cash_flow": net_cash_flow,
+            "transactions_processed": transactions_processed,
+            "avg_transaction_value": avg_transaction_value,
+            "revenue_growth": revenue_growth,
+            "profit_margin": profit_margin,
+            "processing_rate": 100 if transactions_processed else 0,
+            "ytd_months": today.month,
+        }
+    except Exception as e:
+        logger.error(f"Error calculating financial KPIs: {e}")
+        return {
+            "total_revenue_ytd": 0,
+            "total_expenses_ytd": 0,
+            "net_cash_flow": 0,
+            "transactions_processed": 0,
+            "avg_transaction_value": 0,
+            "revenue_growth": 0,
+            "profit_margin": 0,
+        }
 
 @main_bp.route('/favicon.ico')
 def favicon():
@@ -51,7 +119,8 @@ def dashboard():
 @login_required
 def financial_summary():
     """Financial Summary page - executive overview"""
-    return render_template('dashboard/financial_summary.html')
+    kpis = get_financial_summary_kpis()
+    return render_template('dashboard/financial_summary.html', kpis=kpis)
 
 @main_bp.route('/settings')
 @login_required
@@ -63,7 +132,16 @@ def settings():
 @login_required
 def inventory():
     """Inventory page"""
-    return render_template('inventory.html')
+    inventory_data = {
+        'total_items': 0,
+        'low_stock': 0,
+        'total_value': 0,
+        'out_of_stock': 0,
+        'items': [],
+        'categories': [],
+        'alerts': []
+    }
+    return render_template('inventory.html', inventory=inventory_data)
 
 @main_bp.route('/dashboard/api/summary')
 @login_required

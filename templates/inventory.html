@@ -46,7 +46,7 @@
               Total Items
             </div>
             <div class="h4 mb-0 fw-bold">
-              124
+              {{ inventory.total_items|default(0) }}
             </div>
           </div>
           <div class="text-primary">
@@ -67,7 +67,7 @@
               Low Stock Items
             </div>
             <div class="h4 mb-0 fw-bold">
-              8
+              {{ inventory.low_stock|default(0) }}
             </div>
           </div>
           <div class="text-warning">
@@ -88,7 +88,7 @@
               Inventory Value
             </div>
             <div class="h4 mb-0 fw-bold">
-              $847,250
+              {{ inventory.total_value|default(0)|currency }}
             </div>
           </div>
           <div class="text-success">
@@ -109,7 +109,7 @@
               Out of Stock
             </div>
             <div class="h4 mb-0 fw-bold">
-              3
+              {{ inventory.out_of_stock|default(0) }}
             </div>
           </div>
           <div class="text-danger">
@@ -158,110 +158,40 @@
               </tr>
             </thead>
             <tbody>
-              <!-- Sample Oil & Gas Equipment -->
-              <tr>
-                <td class="fw-bold">PUMP-001</td>
-                <td>High-Pressure Acid Pump</td>
-                <td><span class="badge bg-primary">Equipment</span></td>
-                <td>2</td>
-                <td>$125,000</td>
-                <td>$250,000</td>
-                <td><span class="badge bg-success">In Stock</span></td>
-                <td>
-                  <div class="btn-group btn-group-sm">
-                    <button class="btn btn-outline-info"><i class="fas fa-eye"></i></button>
-                    <button class="btn btn-outline-warning"><i class="fas fa-edit"></i></button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="fw-bold">HOSE-150</td>
-                <td>3" High-Pressure Hose (150ft)</td>
-                <td><span class="badge bg-info">Supplies</span></td>
-                <td>5</td>
-                <td>$2,850</td>
-                <td>$14,250</td>
-                <td><span class="badge bg-warning">Low Stock</span></td>
-                <td>
-                  <div class="btn-group btn-group-sm">
-                    <button class="btn btn-outline-info"><i class="fas fa-eye"></i></button>
-                    <button class="btn btn-outline-warning"><i class="fas fa-edit"></i></button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="fw-bold">CHEM-HF</td>
-                <td>Hydrofluoric Acid (15% solution)</td>
-                <td><span class="badge bg-warning">Chemicals</span></td>
-                <td>850</td>
-                <td>$45</td>
-                <td>$38,250</td>
-                <td><span class="badge bg-success">In Stock</span></td>
-                <td>
-                  <div class="btn-group btn-group-sm">
-                    <button class="btn btn-outline-info"><i class="fas fa-eye"></i></button>
-                    <button class="btn btn-outline-warning"><i class="fas fa-edit"></i></button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="fw-bold">VALVE-BOP</td>
-                <td>Blowout Preventer Control Valve</td>
-                <td><span class="badge bg-primary">Equipment</span></td>
-                <td>0</td>
-                <td>$15,750</td>
-                <td>$0</td>
-                <td><span class="badge bg-danger">Out of Stock</span></td>
-                <td>
-                  <div class="btn-group btn-group-sm">
-                    <button class="btn btn-outline-info"><i class="fas fa-eye"></i></button>
-                    <button class="btn btn-outline-danger"><i class="fas fa-shopping-cart"></i></button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="fw-bold">SAND-FRAC</td>
-                <td>Frac Sand 20/40 Mesh (tons)</td>
-                <td><span class="badge bg-secondary">Materials</span></td>
-                <td>2400</td>
-                <td>$125</td>
-                <td>$300,000</td>
-                <td><span class="badge bg-success">In Stock</span></td>
-                <td>
-                  <div class="btn-group btn-group-sm">
-                    <button class="btn btn-outline-info"><i class="fas fa-eye"></i></button>
-                    <button class="btn btn-outline-warning"><i class="fas fa-edit"></i></button>
-                  </div>
-                </td>
-              </tr>
+              {% if inventory.items %}
+                {% for item in inventory.items %}
+                  <tr>
+                    <td class="fw-bold">{{ item.code }}</td>
+                    <td>{{ item.description }}</td>
+                    <td><span class="badge bg-primary">{{ item.category }}</span></td>
+                    <td>{{ item.current_stock }}</td>
+                    <td>{{ item.unit_price|currency }}</td>
+                    <td>{{ item.total_value|currency }}</td>
+                    <td><span class="badge bg-success">{{ item.status }}</span></td>
+                    <td>
+                      <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-info"><i class="fas fa-eye"></i></button>
+                        <button class="btn btn-outline-warning"><i class="fas fa-edit"></i></button>
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% else %}
+                <tr>
+                  <td colspan="8" class="text-center">No data available</td>
+                </tr>
+              {% endif %}
             </tbody>
           </table>
         </div>
         
+        {% if inventory.items %}
         <div class="d-flex justify-content-between align-items-center mt-3">
           <div class="text-muted">
-            Showing 5 of 124 items
+            Showing {{ inventory.items|length }} items
           </div>
-          <nav>
-            <ul class="pagination pagination-sm mb-0">
-              <li class="page-item disabled">
-                <span class="page-link">Previous</span>
-              </li>
-              <li class="page-item active">
-                <span class="page-link">1</span>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#">2</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#">3</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-              </li>
-            </ul>
-          </nav>
         </div>
+        {% endif %}
       </div>
     </div>
   </div>
@@ -309,34 +239,19 @@
       </div>
       <div class="card-body">
         <div class="list-group list-group-flush">
-          <div class="list-group-item d-flex justify-content-between align-items-center">
-            <div>
-              <i class="fas fa-cogs me-2 text-primary"></i>
-              <strong>Equipment</strong>
-            </div>
-            <span class="badge bg-primary rounded-pill">45</span>
-          </div>
-          <div class="list-group-item d-flex justify-content-between align-items-center">
-            <div>
-              <i class="fas fa-flask me-2 text-warning"></i>
-              <strong>Chemicals</strong>
-            </div>
-            <span class="badge bg-warning rounded-pill">28</span>
-          </div>
-          <div class="list-group-item d-flex justify-content-between align-items-center">
-            <div>
-              <i class="fas fa-toolbox me-2 text-info"></i>
-              <strong>Supplies</strong>
-            </div>
-            <span class="badge bg-info rounded-pill">35</span>
-          </div>
-          <div class="list-group-item d-flex justify-content-between align-items-center">
-            <div>
-              <i class="fas fa-cube me-2 text-secondary"></i>
-              <strong>Materials</strong>
-            </div>
-            <span class="badge bg-secondary rounded-pill">16</span>
-          </div>
+          {% if inventory.categories %}
+            {% for cat in inventory.categories %}
+              <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                  <i class="{{ cat.icon }} me-2 text-{{ cat.color }}"></i>
+                  <strong>{{ cat.name }}</strong>
+                </div>
+                <span class="badge bg-{{ cat.color }} rounded-pill">{{ cat.count }}</span>
+              </div>
+            {% endfor %}
+          {% else %}
+            <p class="text-center mb-0">No data available</p>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -357,24 +272,18 @@
       </div>
       <div class="card-body">
         <div class="row g-3">
-          <div class="col-md-4">
-            <div class="alert alert-danger mb-0">
-              <i class="fas fa-times-circle me-2"></i>
-              <strong>3 items</strong> are out of stock
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="alert alert-warning mb-0">
-              <i class="fas fa-exclamation-triangle me-2"></i>
-              <strong>8 items</strong> are running low
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="alert alert-info mb-0">
-              <i class="fas fa-clock me-2"></i>
-              <strong>Next audit</strong> due in 15 days
-            </div>
-          </div>
+          {% if inventory.alerts %}
+            {% for alert in inventory.alerts %}
+              <div class="col-md-4">
+                <div class="alert alert-{{ alert.type }} mb-0">
+                  <i class="{{ alert.icon }} me-2"></i>
+                  {{ alert.message }}
+                </div>
+              </div>
+            {% endfor %}
+          {% else %}
+            <p class="text-center mb-0">No alerts</p>
+          {% endif %}
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@ from flask import render_template, request, flash, redirect, url_for, current_ap
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 from datetime import datetime, date, timedelta
+from sqlalchemy import func
 from models.transaction import Transaction
 from database import db
 import os
@@ -15,7 +16,6 @@ def index():
 
     try:
         from models.views import VApOpen
-        from sqlalchemy import func
         query = VApOpen.query
         if status_filter != 'all':
             query = query.filter_by(status=status_filter)
@@ -25,12 +25,6 @@ def index():
             per_page=20,
             error_out=False
         )
-
-        total_pending = db.session.query(func.sum(VApOpen.amount)).scalar() or 0
-        total_overdue = db.session.query(func.sum(VApOpen.amount)).filter(
-            VApOpen.due_date < date.today()
-        ).scalar() or 0
-
     except Exception:
         transactions = type('obj', (object,), {
             'items': [],
@@ -42,14 +36,49 @@ def index():
             'prev_num': None,
             'next_num': None
         })()
-        total_pending = 0
-        total_overdue = 0
 
-    return render_template('accounts_payable/index.html',
-                         transactions=transactions,
-                         total_pending=total_pending,
-                         total_overdue=total_overdue,
-                         status_filter=status_filter)
+    current_year = date.today().year
+    total_outstanding = db.session.query(func.sum(Transaction.amount)).filter(
+        Transaction.type == 'payable',
+        Transaction.status == 'pending'
+    ).scalar() or 0
+
+    total_ytd = db.session.query(func.sum(Transaction.amount)).filter(
+        Transaction.type == 'payable',
+        func.extract('year', Transaction.due_date) == current_year
+    ).scalar() or 0
+
+    paid_count = db.session.query(func.count(Transaction.id)).filter(
+        Transaction.type == 'payable',
+        Transaction.status == 'paid',
+        func.extract('year', Transaction.due_date) == current_year
+    ).scalar() or 0
+
+    total_count = db.session.query(func.count(Transaction.id)).filter(
+        Transaction.type == 'payable',
+        func.extract('year', Transaction.due_date) == current_year
+    ).scalar() or 0
+
+    payment_accuracy = (paid_count / total_count * 100) if total_count else 0
+
+    pending_bills = db.session.query(func.count(Transaction.id)).filter(
+        Transaction.type == 'payable',
+        Transaction.status == 'pending'
+    ).scalar() or 0
+
+    ap = {
+        'total_outstanding': total_outstanding,
+        'total_ytd': total_ytd,
+        'payment_accuracy': payment_accuracy,
+        'pending_bills': pending_bills
+    }
+
+    return render_template(
+        'accounts_payable/index.html',
+        transactions=transactions,
+        ap=ap,
+        status_filter=status_filter
+    )
 
 @accounts_payable_bp.route('/create', methods=['GET', 'POST'])
 def create():

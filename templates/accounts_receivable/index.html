@@ -46,7 +46,7 @@
               Total Outstanding
             </div>
             <div class="h4 mb-0 fw-bold" id="total-outstanding">
-              $847,250
+              {{ ar.total_outstanding|default(0)|currency }}
             </div>
           </div>
           <div class="text-success">
@@ -67,7 +67,7 @@
               Invoices Pending
             </div>
             <div class="h4 mb-0 fw-bold" id="pending-invoices">
-              24
+              {{ ar.pending_invoices|default(0) }}
             </div>
           </div>
           <div class="text-warning">
@@ -88,7 +88,7 @@
               Collections YTD
             </div>
             <div class="h4 mb-0 fw-bold" id="collections-ytd">
-              $12,450,000
+              {{ ar.total_ytd|default(0)|currency }}
             </div>
           </div>
           <div class="text-primary">
@@ -109,7 +109,7 @@
               Collection Rate
             </div>
             <div class="h4 mb-0 fw-bold" id="collection-rate">
-              96.5%
+              {{ ar.collection_rate|default(0)|round(1) }}%
             </div>
           </div>
           <div class="text-info">
@@ -147,7 +147,7 @@
       <div class="card-body">
         <div class="alert alert-info" role="alert">
           <i class="fas fa-info-circle me-2"></i>
-          <strong>A/R Status:</strong> 24 invoices pending with excellent 96.5% collection rate.
+          <strong>A/R Status:</strong> {{ ar.pending_invoices|default(0) }} invoices pending with excellent {{ ar.collection_rate|default(0)|round(1) }}% collection rate.
           Strong relationships with major Permian Basin operators.
         </div>
         
@@ -277,7 +277,7 @@
           <div class="col-md-6">
             <h6 class="fw-bold">Collection Performance</h6>
             <p class="text-muted">
-              Our A/R management demonstrates excellent performance with a 96.5% collection rate 
+              Our A/R management demonstrates excellent performance with a {{ ar.collection_rate|default(0)|round(1) }}% collection rate
               and average collection time of 28 days. Strong relationships with major operators.
             </p>
           </div>
