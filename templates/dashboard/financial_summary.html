@@ -1,11 +1,8 @@
-{% extends "base.html" %}
+{% extends "layouts/flexy_base.html" %}
 
-{% block page_title %}Financial Summary{% endblock %}
+{% block title %}Financial Summary · AcidTech{% endblock %}
 
-{% block breadcrumbs %}
-<li class="breadcrumb-item"><a href="{{ url_for('main.dashboard') }}" class="text-decoration-none">Dashboard</a></li>
-<li class="breadcrumb-item active">Financial Summary</li>
-{% endblock %}
+
 
 {% block content %}
 
@@ -292,7 +289,7 @@
 
 {% endblock %}
 
-{% block scripts %}
+{% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Add any executive dashboard specific JavaScript here

@@ -1,0 +1,49 @@
+<nav class="sidebar-nav">
+  <ul id="sidebarnav">
+    <li class="sidebar-item">
+      <a class="sidebar-link" href="{{ url_for('main.dashboard') }}">
+        <i class="fa fa-gauge-high me-2"></i><span class="hide-menu">Dashboard</span>
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a class="sidebar-link" href="{{ url_for('cash_flow.enhanced_dashboard') }}">
+        <i class="fa fa-chart-line me-2"></i><span class="hide-menu">Enhanced Dashboard</span>
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a class="sidebar-link" href="{{ url_for('main.financial_summary') }}">
+        <i class="fa fa-coins me-2"></i><span class="hide-menu">Financial Summary</span>
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a class="sidebar-link" href="{{ url_for('cash_flow.index') }}">
+        <i class="fa fa-water me-2"></i><span class="hide-menu">Cash Flow</span>
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a class="sidebar-link" href="{{ url_for('accounts_receivable.index') }}">
+        <i class="fa fa-file-invoice-dollar me-2"></i><span class="hide-menu">Accounts Receivable</span>
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a class="sidebar-link" href="{{ url_for('accounts_payable.index') }}">
+        <i class="fa fa-credit-card me-2"></i><span class="hide-menu">Accounts Payable</span>
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a class="sidebar-link" href="{{ url_for('purchase_orders.index') }}">
+        <i class="fa fa-cart-shopping me-2"></i><span class="hide-menu">Purchase Orders</span>
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a class="sidebar-link" href="{{ url_for('main.inventory') }}">
+        <i class="fa fa-boxes-stacked me-2"></i><span class="hide-menu">Inventory</span>
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a class="sidebar-link" href="{{ url_for('main.settings') }}">
+        <i class="fa fa-gear me-2"></i><span class="hide-menu">Settings</span>
+      </a>
+    </li>
+  </ul>
+</nav>

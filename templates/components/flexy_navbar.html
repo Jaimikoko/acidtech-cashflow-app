@@ -1,0 +1,13 @@
+<header class="app-header">
+  <nav class="navbar navbar-expand-lg navbar-light px-3">
+    <ul class="navbar-nav">
+      <li class="nav-item d-block d-xl-none">
+        <a class="nav-link sidebartoggler" id="headerCollapse"><i class="fa fa-bars"></i></a>
+      </li>
+    </ul>
+    <div class="ms-auto d-flex align-items-center gap-3">
+      <span class="text-muted small">Welcome, {{ (current_user.first_name or current_user.username) if current_user.is_authenticated else 'User' }}</span>
+      <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-primary btn-sm">Logout</a>
+    </div>
+  </nav>
+</header>

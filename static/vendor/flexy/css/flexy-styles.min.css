@@ -1,0 +1,9 @@
+/*! Flexy Bootstrap Lite 1.0.0 */
+body{font-family:"Poppins",sans-serif;}
+.page-wrapper{display:flex;width:100%;min-height:100vh;}
+.left-sidebar{width:260px;background:#fff;box-shadow:0 0 30px rgba(31,45,61,.1);}
+.body-wrapper{flex:1;display:flex;flex-direction:column;min-width:0;}
+.sidebar-nav{list-style:none;padding-left:0;margin:0;}
+.sidebar-nav .sidebar-item{display:block;}
+.sidebar-nav .sidebar-link{display:flex;align-items:center;padding:.5rem 1rem;color:#6c757d;text-decoration:none;transition:all .2s;}
+.sidebar-nav .sidebar-link:hover{color:#000;background:rgba(0,0,0,.04);}
