@@ -1,0 +1,49 @@
+<nav class="sidebar-nav">
+  <ul id="sidebarnav">
+    <li class="sidebar-item">
+      <a class="sidebar-link" href="{{ url_for('main.dashboard') }}">
+        <i class="fa fa-gauge-high me-2"></i>Dashboard
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a class="sidebar-link" href="{{ url_for('main.financial_summary') }}">
+        <i class="fa fa-chart-line me-2"></i>Financial Summary
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a class="sidebar-link" href="{{ url_for('accounts_receivable.index') }}">
+        <i class="fa fa-hand-holding-dollar me-2"></i>Accounts Receivable
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a class="sidebar-link" href="{{ url_for('accounts_payable.index') }}">
+        <i class="fa fa-file-invoice-dollar me-2"></i>Accounts Payable
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a class="sidebar-link" href="{{ url_for('cash_flow.index') }}">
+        <i class="fa fa-money-bill-trend-up me-2"></i>Cash Flow
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a class="sidebar-link" href="{{ url_for('purchase_orders.index') }}">
+        <i class="fa fa-cart-shopping me-2"></i>Purchase Orders
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a class="sidebar-link" href="{{ url_for('reports.index') }}">
+        <i class="fa fa-chart-column me-2"></i>Reports
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a class="sidebar-link" href="{{ url_for('main.inventory') }}">
+        <i class="fa fa-boxes-stacked me-2"></i>Inventory
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a class="sidebar-link" href="{{ url_for('main.settings') }}">
+        <i class="fa fa-gear me-2"></i>Settings
+      </a>
+    </li>
+  </ul>
+</nav>
